@@ -12,22 +12,25 @@
         <button class="navBar__buttons--Login">Log In</button>
       </div>
     </nav>
+    <Carrusel /> <!-- Aquí colocas el componente Carrusel -->
   </section>
 </template>
 
 <script>
-import BprcsLogo from '@/assets/Bprcs_logo.png';
+import BprcsLogo from '@/assets/Bprcs_logo.png'; // Importa el logo
+import Carrusel from '@/components/CarouselComponent.vue'; // Importa el componente Carrusel
+
 export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String
+  name: 'HelloWord', // Nombre del componente
+  components: {
+    Carrusel // Registra el componente Carrusel
   },
   data() {
     return {
-      BprcsLogo
+      BprcsLogo // Asocia el logo al componente
     };
   }
-}
+};
 </script>
 
 <style scoped>
