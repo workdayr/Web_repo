@@ -1,0 +1,70 @@
+.Homepage__navBar {
+    height: 60px;
+    display: flex;
+    align-items: center; /* Centra los elementos verticalmente */
+    justify-content: space-between; /* Espaciado uniforme */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    padding: 0 40px; /* Añade margen interno a los lados */
+  }
+  
+  .navBar__BprcsLogo {
+    display: flex;
+    align-items: center;
+  }
+  
+  .navBar__BprcsLogo img {
+    width: 120px;
+    height: auto;
+  }
+  
+  .navBar__searchBar {
+    border-radius: 20px;
+    border: 1px solid #FFF;
+    width: 400px;
+    height: 30px;
+    padding-left: 10px;
+  }
+  
+  .navBar__menu {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Espaciado entre elementos */
+  }
+  
+  .navBar__li--FQA,
+  .navBar__li--Explore {
+    font-size: 13px;
+    color: #FFF;
+  }
+  
+  .navBar__buttons {
+    display: flex;
+    gap: 15px; /* Espaciado entre los botones */
+  }
+  
+  .navBar__buttons--SignUp,
+  .navBar__buttons--Login {
+    font-size: 11px;
+    width: 90px;
+    padding: 8px;
+    border-radius: 30px;
+    text-align: center;
+  }
+  
+  .navBar__buttons--SignUp {
+    background-color: transparent;
+    color: #FFF;
+    border: 1px solid #FFF;
+  }
+  
+  .navBar__buttons--Login {
+    background-color: #FFF;
+    color: #0D0E36;
+    border: none;
+  }
+  
