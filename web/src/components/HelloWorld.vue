@@ -4,7 +4,7 @@
     <NavbarComponent />
 
     <!-- Ajuste para que el carrusel no se superponga con el navbar -->
-    <div style="margin-top: 80px;">
+    <div style="margin-top: 60px;">
       <CarouselComponent />
     </div>
   </section>

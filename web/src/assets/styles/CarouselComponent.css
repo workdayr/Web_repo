@@ -1,0 +1,18 @@
+.gradient-placeholder-purple {
+    width: 100%;
+    height: 600px; /* Ajusta según tu diseño */
+    background: linear-gradient(to bottom, #3b0a56, #6a1b9a);
+    background-size: 100% 150%;
+  }
+.gradient-placeholder-LightPurple {
+    width: 100%;
+    height: 600px; /* Ajusta según tu diseño */
+    background: linear-gradient(to right, #8750A1, #3B0A56);
+    background-size: 100% 150%;
+  }
+.gradient-placeholder-gray {
+    width: 100%;
+    height: 600px; /* Ajusta según tu diseño */
+    background: linear-gradient(to right, #5C3B54, #2A1E2D);
+    background-size: 100% 150%;
+  }
