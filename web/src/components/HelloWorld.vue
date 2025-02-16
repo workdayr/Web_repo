@@ -16,7 +16,7 @@
     <OpinionsComponent />
 
     <FooterComponent />
-    
+
 
   </section>
 </template>
@@ -49,17 +49,20 @@ export default {
 
 <style scoped>
 /* Estilos para la Navbar */
-@import "@/assets/styles/NavbarComponent.css"; /* Asegura que se carguen los estilos */
+@import "@/assets/styles/NavbarComponent.css";
+/* Asegura que se carguen los estilos */
 
 /* Corrección para navbar: fixed y ajuste de fondo */
 .Homepage__navBar {
   height: 60px;
   display: flex;
-  position: fixed; /* Asegura que siempre esté en la parte superior */
   top: 0;
   width: 100%;
-  background-color: rgba(0, 0, 0, 0.8); /* Fondo para mayor visibilidad */
-  z-index: 1000; /* Se mantiene sobre el carrusel */
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.2);
+  /* Fondo para mayor visibilidad */
+  z-index: 1000;
+  /* Se mantiene sobre el carrusel */
 }
 
 /* Corrección del buscador */

@@ -14,7 +14,7 @@
 .cardHolder__title--Opinions{
     margin-top: 80px;
     margin-left: 87px;
-    font-weight:800;
+    font-weight:bold;
     background: linear-gradient(to right,#D2C0FD, #562F7F );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;

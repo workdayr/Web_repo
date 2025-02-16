@@ -1,42 +1,43 @@
 .cta-container {
   margin-top: 100px;
-    background: linear-gradient(to right, #1B0F26, #0F0715);
-    color: white;
-    padding: 60px 20px;
-    margin-bottom: 100px;
-    
-  }
+  color: white;
+  padding: 60px 20px;
+  margin-bottom: 100px;
 
-  .cta-container__welcomeText{
-    font-size: 2rem; /* Adjust size as needed */
-    font-weight: bold;
-    background: linear-gradient(to right,#D2C0FD, #562F7F );
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-align: center;
-  }
+}
 
-  .welcomeText__description{
-    width: auto;
-    background: linear-gradient(to bottom,#562F7F, #9B55E5 );
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    align-items: center;
+.cta-container__welcomeText {
+  font-size: 2rem;
+  /* Adjust size as needed */
+  font-weight: bold;
+  background: linear-gradient(to right, #D2C0FD, #562F7F);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
+}
 
-  }
-  .cta-button {
-    font-weight:500;
-    background-color:rgb(255, 255, 255);
-    color: black;
-    border:none;
-    padding: 10px 20px;
-    font-size: 1.2rem;
-    margin-top: 15px;
-    border-radius:25px;
-    cursor: pointer;
-    transition: background 0.3s;
-  }
-  
-  .cta-button:hover {
-    background-color: #6c5ce7;
-  }
+.welcomeText__description {
+  width: auto;
+  background: linear-gradient(to bottom, #562F7F, #9B55E5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  align-items: center;
+
+}
+
+.cta-button {
+  font-weight: 500;
+  background-color: rgb(255, 255, 255);
+  color: black;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  margin-top: 15px;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.cta-button:hover {
+  background-color: #6c5ce7;
+}

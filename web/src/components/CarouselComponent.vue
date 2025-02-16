@@ -1,18 +1,10 @@
 <template>
   <div id="carouselExample" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
     <div class="carousel-inner">
-      <div 
-        v-for="(slide, index) in slides" 
-        :key="index" 
-        class="carousel-item" 
-        :class="{ active: index === 0 }"
-      >
+      <div v-for="(slide, index) in slides" :key="index" class="carousel-item" :class="{ active: index === 0 }">
         <div :class="slide.gradientClass">
           <!-- Usamos v-html para procesar los saltos de línea -->
           <p :class="['carousel-text', 'text-slide-' + (index + 1)]" v-html="formatText(slide.text)"></p>
-
-
-
         </div>
       </div>
     </div>
@@ -49,5 +41,6 @@ export default {
 </script>
 
 <style scoped>
-@import "@/assets/styles/CarouselComponent.css"; /* Importa el archivo de estilos */
+@import "@/assets/styles/CarouselComponent.css";
+/* Importa el archivo de estilos */
 </style>
