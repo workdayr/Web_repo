@@ -7,6 +7,10 @@
     <div style="margin-top: 60px;">
       <CarouselComponent />
     </div>
+
+    <!-- Sección "Start finding the best prices for you" -->
+    <FindBestPrices />
+    <Footer />
   </section>
 </template>
 
@@ -14,12 +18,16 @@
 import NavbarComponent from '@/components/NavbarComponent.vue';
 import CarouselComponent from '@/components/CarouselComponent.vue'; // Asegurando que coincida el nombre del componente
 import BprcsLogo from '@/assets/Bprcs_logo.png';
+import FindBestPrices from '@/components/FindBestPrices.vue'; // Importamos el componente
+import Footer from "@/components/Footer.vue";
 
 export default {
   name: 'HelloWorld',
   components: {
     NavbarComponent,
-    CarouselComponent // Antes estaba como "Carrusel", ahora coincide con el import
+    CarouselComponent, // Antes estaba como "Carrusel", ahora coincide con el import
+    FindBestPrices,
+    Footer
   },
   data() {
     return {
