@@ -7,9 +7,13 @@
     <div style="margin-top: 60px;">
       <CarouselComponent />
     </div>
+
+    <FindBestPrices />
     <div>
       <ProductsComponent />
     </div>
+
+    <OpinionsComponent />
 
     <FooterComponent />
     
@@ -23,13 +27,17 @@ import CarouselComponent from '@/components/CarouselComponent.vue'; // Asegurand
 import BprcsLogo from '@/assets/Bprcs_logo.png';
 import ProductsComponent from './ProductsComponent.vue';
 import FooterComponent from './Footer.vue';
+import OpinionsComponent from './OpinionsComponent.vue';
+import FindBestPrices from './FindBestPrices.vue';
 export default {
   name: 'HelloWorld',
   components: {
     NavbarComponent,
     CarouselComponent, // Antes estaba como "Carrusel", ahora coincide con el import
     ProductsComponent,
-    FooterComponent 
+    FooterComponent,
+    OpinionsComponent,
+    FindBestPrices
   },
   data() {
     return {

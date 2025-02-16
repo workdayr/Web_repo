@@ -18,7 +18,6 @@ body {
   width: 100vw;
   height: 100vh;
   font-family: 'Poppins', sans-serif;
-  background: linear-gradient(to right, #121212, #270d27);
-}
+  background: linear-gradient(to right, #1B0F26, #0F0715);}
 
 </style>

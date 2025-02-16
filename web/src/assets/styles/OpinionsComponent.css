@@ -1,0 +1,82 @@
+#Opinions{
+    margin-bottom: 50px;
+}
+
+#cardHolder__Opinions{
+    padding: 0px 80px 0px;
+    margin-top: 25px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 55px;
+}
+
+.cardHolder__title--Opinions{
+    margin-top: 80px;
+    margin-left: 87px;
+    font-weight:800;
+    background: linear-gradient(to right,#D2C0FD, #562F7F );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size:xx-large;
+    color: #FFFF;
+    flex-grow: 1;
+}
+
+.cardHolder__card--Opinions{
+    position: relative;
+    height: 500px;
+    margin: 0;
+    flex-grow: 1;
+    border-radius: 50px;
+    background-color: #FFFF;
+    overflow: hidden;
+}
+
+.card__username{
+    font-weight: 800;
+    font-size:x-large;
+    background: linear-gradient(to right,#562F7F, #9B55E5 );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-align: center;
+    margin-top: 35px;
+}
+ .card__opinion{
+    text-align: justify;
+    text-justify: inter-word;
+    font-weight: bold;
+    background: linear-gradient(to bottom,#562F7F, #9B55E5 );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    padding: 0px 50px 0px;
+    margin-top: 50px;
+ }
+
+ .card__button{
+    margin-left: 250px;
+    margin-top: 70px;
+    border-color: transparent;
+    background: linear-gradient( to bottom, #562F7F, #9B55E5);
+    padding: 10px 20px 10px;
+    font-weight: 600;
+    color: #F9F9F9;
+    border-radius: 100px;
+ }
+
+ .shareOp__button{
+    font-size: large;
+    margin-left: 1120px;
+    margin-top: 70px;
+    border: solid 1px #F9F9F9;
+    background: linear-gradient( to right, #562F7F, #9B55E5);
+    padding: 10px 20px 10px;
+    font-weight: 600;
+    color: #F9F9F9;
+    border-radius: 100px;
+ }
+
+
+
+
+

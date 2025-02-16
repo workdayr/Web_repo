@@ -1,9 +1,9 @@
 <template>
     <section class="cta-container text-center">
-      <h2>
-        Start finding the <span class="highlight">best prices</span> for you
+      <h2 class="cta-container__welcomeText">
+        Start finding the best prices for you
       </h2>
-      <p>Click and find your best deal</p>
+      <h5 class="welcomeText__description">Click and find your best <br> deal</h5>
       <button class="cta-button">Sign up</button>
     </section>
   </template>
