@@ -10,6 +10,9 @@
         <div :class="slide.gradientClass">
           <!-- Usamos v-html para procesar los saltos de línea -->
           <p :class="['carousel-text', 'text-slide-' + (index + 1)]" v-html="formatText(slide.text)"></p>
+
+
+
         </div>
       </div>
     </div>
