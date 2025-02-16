@@ -7,6 +7,8 @@
     <div style="margin-top: 60px;">
       <CarouselComponent />
     </div>
+    <ProductsComponent />
+
   </section>
 </template>
 
@@ -14,12 +16,14 @@
 import NavbarComponent from '@/components/NavbarComponent.vue';
 import CarouselComponent from '@/components/CarouselComponent.vue'; // Asegurando que coincida el nombre del componente
 import BprcsLogo from '@/assets/Bprcs_logo.png';
+import ProductsComponent from './ProductsComponent.vue';
 
 export default {
   name: 'HelloWorld',
   components: {
     NavbarComponent,
-    CarouselComponent // Antes estaba como "Carrusel", ahora coincide con el import
+    CarouselComponent,
+    ProductsComponent // Antes estaba como "Carrusel", ahora coincide con el import
   },
   data() {
     return {
