@@ -53,6 +53,14 @@
     border-radius: 30px;
     text-align: center;
   }
+  .navBar__buttons--Login:hover{
+    background-color:#562F7F ;
+    color: white;
+  }
+  .navBar__buttons--SignUp:hover{
+    background-color: white;
+    color: black;
+  }
   
   .navBar__buttons--SignUp {
     background-color: transparent;
