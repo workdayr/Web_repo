@@ -18,6 +18,8 @@
     <FooterComponent />
 
 
+
+
   </section>
 </template>
 
@@ -37,7 +39,7 @@ export default {
     ProductsComponent,
     FooterComponent,
     OpinionsComponent,
-    FindBestPrices
+    FindBestPrices,
   },
   data() {
     return {

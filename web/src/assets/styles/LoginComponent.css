@@ -1,0 +1,11 @@
+#login_background {
+    background: linear-gradient(to bottom, #0F0715, #321647);
+}
+
+.background_shape {
+    width: 100%;
+    height: 650px;
+    background: url('data:image/svg+xml,<svg viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg"><path fill="%231b0e29" fill-opacity="1" d="M0,192L60,170.7C120,149,240,107,360,122.7C480,139,600,213,720,245.3C840,277,960,267,1080,234.7C1200,203,1320,149,1900,122.7L1440,96V320H0Z"></path></svg>');
+    background-size: cover;
+    background-position: right;
+}
