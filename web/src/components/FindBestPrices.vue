@@ -36,8 +36,4 @@ export default {
 <style scoped>
 @import "@/assets/styles/FindBestPrices.css";
 
-h2 {
-  font-size: 2rem;
-  font-weight: bold;
-}
 </style>
