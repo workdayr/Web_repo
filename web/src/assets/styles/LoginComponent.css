@@ -1,11 +1,164 @@
-#login_background {
+#login__background {
+    display: flex;
+    position: relative;
+    width: 100vw;
+    height: 100vh;
     background: linear-gradient(to bottom, #0F0715, #321647);
+    z-index: 0;
 }
 
-.background_shape {
-    width: 100%;
-    height: 650px;
-    background: url('data:image/svg+xml,<svg viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg"><path fill="%231b0e29" fill-opacity="1" d="M0,192L60,170.7C120,149,240,107,360,122.7C480,139,600,213,720,245.3C840,277,960,267,1080,234.7C1200,203,1320,149,1900,122.7L1440,96V320H0Z"></path></svg>');
-    background-size: cover;
-    background-position: right;
+.background__shape1 {
+    position: fixed;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 0;
+}
+
+.background__shape2 {
+    position: absolute;
+    width: 400px;
+    bottom: 0;
+    left: 0;
+    margin-right: auto;
+    z-index: 0;
+}
+
+.login__container {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #FFFFFF;
+    border-radius: 40px;
+    text-align: center;
+    width: 400px;
+    height: 500px;
+    z-index: 10;
+}
+
+.login__container--header {
+    font-size: 3rem;
+    margin-top: 20px;
+    font-weight: 900;
+    color: #382051;
+}
+
+.login__input--username {
+    display: inline-block;
+    margin: 45px 60px 0px;
+    font-size: smaller;
+    font-weight: 500;
+    background-color: #F2F2F2;
+    height: 45px;
+    border: transparent;
+    border-radius: 12px;
+
+}
+
+.login__input--password {
+    display: inline-block;
+    margin: 17px 60px 0px;
+    font-size: smaller;
+    font-weight: 500;
+    background-color: #F2F2F2;
+    height: 45px;
+    border: transparent;
+    border-radius: 12px;
+}
+
+#login__inputs {
+    font-size: 13px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 15px;
+    gap: 8px;
+    text-align: center;
+}
+
+#login__input--rememberMe {
+    margin-right: 5px;
+}
+
+.input__rememberMe--label {
+    margin-right: 30px;
+    cursor: pointer;
+}
+
+.login__link--forgotPw {
+    color: #000;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.login__button {
+    height: 45px;
+    font-size: small;
+    font-weight: 700;
+    border: transparent;
+    border-radius: 12px;
+    margin: 17px 60px 0px;
+    color: #FFFFFF;
+    background-color: #1C1C1C;
+}
+
+#login__other-login-options {
+    margin-top: 12px;
+}
+
+.login__other-login-options--highlited-word {
+    font-weight: bolder;
+}
+
+.other-login-opitons__icons {
+    display: flex;
+    justify-content: center;
+    gap: 22px;
+    height: 35px;
+}
+.GoogleIcon{
+    transition: transform 0.3s ease-in-out;
+}
+.GoogleIcon:hover{
+    transform: scale(1.3);
+}
+
+.FacebookIcon {
+    height: 40px;
+    transition: transform 0.3s ease-in-out;
+    
+}
+.FacebookIcon:hover {
+    height: 40px;
+    transform: scale(1.3);
+}
+
+.AppleIcon{
+    transition: transform 0.3s ease-in-out;
+}
+
+.AppleIcon:Hover{
+    transform: scale(1.3);
+}
+
+
+#create-account-container{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    
+}
+.create-account-container__header{
+    color: #000;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.userIcon{
+    position: relative;
+    margin-right: 12px;
 }
