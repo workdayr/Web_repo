@@ -58,8 +58,8 @@
     color: white;
   }
   .navBar__buttons--SignUp:hover{
-    background-color: white;
-    color: black;
+    background-color: rgb(114, 80, 136);
+    color: rgb(255, 255, 255);
   }
   
   .navBar__buttons--SignUp {

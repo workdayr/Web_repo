@@ -4,7 +4,7 @@
       Start finding the best prices for you
     </h2>
     <h5 class="welcomeText__description" v-scroll-animate>Click and find your best <br> deal</h5>
-    <button class="cta-button">Sign up</button>
+    <button class="cta-button" @click="$router.push('/Register')">Sign up</button>
   </section>
 </template>
 

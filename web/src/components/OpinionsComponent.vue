@@ -3,7 +3,7 @@
     <section id="Opinions">
         <div id="cardHolder__Opinions" class="Opinions">
             <div class="cardHolder__card--Opinions">
-                <h5 class="card__username">{{Username1}}</h5>
+                <h5 class="card__username">{{ Username1 }}</h5>
                 <p class="card__opinion">
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
                     et
@@ -16,7 +16,7 @@
                 <button class="card__button">Answer</button>
             </div>
             <div class="cardHolder__card--Opinions">
-                <h5 class="card__username">{{Username2}}</h5>
+                <h5 class="card__username">{{ Username2 }}</h5>
                 <p class="card__opinion">
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
                     et
@@ -29,7 +29,7 @@
                 <button class="card__button">Answer</button>
             </div>
             <div class="cardHolder__card--Opinions">
-                <h5 class="card__username">{{Username3}}</h5>
+                <h5 class="card__username">{{ Username3 }}</h5>
                 <p class="card__opinion">
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
                     et
@@ -42,7 +42,9 @@
                 <button class="card__button">Answer</button>
             </div>
         </div>
-        <button class="shareOp__button">Share your opinion</button>
+        <div class="shareOp__button--container">
+            <button class="shareOp__button">Share your opinion</button>
+        </div>
     </section>
 
 </template>
@@ -51,12 +53,12 @@
 import stars from '@/assets/generalIcons/stars.png';
 export default {
     name: 'OpinionsComponent',
-    props:['Username1', 'Username2', 'Username3'],
-    data(){
-        return{
+    props: ['Username1', 'Username2', 'Username3'],
+    data() {
+        return {
             stars
         };
-    
+
     }
 };
 

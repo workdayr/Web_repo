@@ -63,11 +63,16 @@
     color: #F9F9F9;
     border-radius: 100px;
  }
-
+ .shareOp__button--container{
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    padding-right: 80px;;
+    
+ }
  .shareOp__button{
     font-size: large;
-    margin-left: 1090px;
-    margin-top: 70px;
+    margin-top: 25px;
     border: solid 1px #F9F9F9;
     background: linear-gradient( to right, #562F7F, #9B55E5);
     padding: 10px 20px 10px;

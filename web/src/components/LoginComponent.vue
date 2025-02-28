@@ -6,7 +6,7 @@
     <div class="login__container">
         <h1 class="login__container--header"> Log In</h1>
         <input class="login__input--username" type="text" placeholder="Username" aria-label="Username">
-        <input class="login__input--password" type="text" placeholder="Password" aria-label="Password">
+        <input class="login__input--password" type="password" placeholder="Password" aria-label="Password">
         <div id="login__inputs">
             <label>
                 <input id="login__input--rememberMe" type="checkbox" name="Remember me">

@@ -4,6 +4,7 @@ import LoginComponent from "@/components/LoginComponent.vue";
 import FindBestPrices from "@/components/FindBestPrices.vue";
 import OpinionsComponent from "@/components/OpinionsComponent.vue";
 import ProductsComponent from "@/components/ProductsComponent.vue";
+import RegisterComponent from "@/components/RegisterComponent.vue";
 
 const routes = [
   { path: "/", component: HelloWorld }, // Default page
@@ -11,6 +12,7 @@ const routes = [
   { path: "/find-best-prices", component: FindBestPrices },
   { path: "/opinions", component: OpinionsComponent },
   { path: "/products", component: ProductsComponent },
+  { path: "/Register", component: RegisterComponent},
 ];
 
 const router = createRouter({

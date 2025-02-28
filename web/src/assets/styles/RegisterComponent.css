@@ -1,0 +1,87 @@
+#register__background {
+    display: flex;
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(to bottom, #0F0715, #321647);
+    z-index: 0;
+}
+
+.background__shape1 {
+    position: fixed;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 0;
+}
+
+.background__shape2 {
+    position: absolute;
+    width: 400px;
+    bottom: 0;
+    left: 0;
+    margin-right: auto;
+    z-index: 0;
+}
+
+.register__container {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #FFFFFF;
+    border-radius: 40px;
+    text-align: center;
+    width: 450px;
+    height: 600px;
+    z-index: 10;
+}
+
+.register__container--header {
+    font-size: 3rem;
+    margin-top: 20px;
+    font-weight: 900;
+    color: #382051;
+}
+
+.register__input {
+    display: inline-block;
+    font-size: smaller;
+    font-weight: 500;
+    background-color: #F2F2F2;
+    height: 45px;
+    border: transparent;
+    border-radius: 12px;
+
+}
+
+.create--account {
+    align-content: center;
+    text-align: center;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #000000;
+    border-radius: 12px;
+    width: 282px;
+}
+.terms__button{
+    border:none;
+    font-weight: bold;
+    background-color: #ffffff;
+    cursor: pointer;
+}
+.privacy__button{
+    border:none;
+    font-weight: bold;
+    background-color: #FFFFFF;
+    cursor: pointer;
+}
+
+.form__container{
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
