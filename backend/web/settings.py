@@ -37,7 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'Web_repo',
+    'rest_framework',  # Agregar Django REST Framework
+    'web',  # Reemplaza 'web' con el nombre correcto de tu aplicación
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
