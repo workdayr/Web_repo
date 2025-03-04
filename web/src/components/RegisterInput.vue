@@ -1,0 +1,186 @@
+<script setup>
+import { defineProps, defineModel} from 'vue';
+
+defineProps({
+    modelValue: String,
+    src: String,
+    placeholder: String,
+    type: { type: String, default: 'text' },
+    options: { type: Array, default: () => [] },
+    isValid: Boolean,
+    submitted: Boolean,
+    errorMessage: {type: String,default: '',},
+});
+const model = defineModel('modelValue');
+
+</script>
+
+<template>
+    <div>
+        <div class="register__input-group" >
+            <img v-if="src" class="register__icon" :src="src" alt="icon">
+            <input v-if="type!=='select'" class="register__input" :class="{ 'valid': isValid, 'has-value': modelValue}" v-model="model" :type="type" :placeholder="placeholder">
+            <select v-else class="register__input" v-model="model" :class="{ 'valid': isValid }" :type="type" :placeholder="placeholder" >
+                <option value="" disabled>{{placeholder}}</option>
+                <option v-for="option in options" :key="option" :value="option">{{ option }}</option>     
+                
+            </select>
+            <img v-if="type=='select'" id="arrow" class="register__icon" src="@/assets/Register_icons/Select_arrow.svg" alt="icon">      
+        </div>
+        <Transition name="fade">
+            <p v-if="!isValid && submitted" class="error__message">{{errorMessage}}</p>
+        </Transition>
+    </div>
+</template>
+
+<style lang="css">
+
+
+.register__input-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.register__icon {
+    width: 20px;
+    height: 20px;       
+    position: absolute;
+    left: 10px;
+    pointer-events: none;
+}
+
+.register__input {
+    flex: 1;
+    padding:10px;
+    background-color: #F2F2F2;
+    height: 55px;
+    padding-left: 40px;
+    padding-right: 40px; /* Ensure space for the arrow */
+    width: 100%;
+    border: transparent;
+    border-radius: 13px;
+    font-size: smaller;
+    appearance: none;
+    width: 100%;
+    outline: none;
+}
+
+.register__input:focus{
+    border: 1px solid #4E136D; 
+    
+}
+.register__input::placeholder {
+    display: inline-block;
+    font-weight: 400;
+    color: #1C1C1C;
+}
+
+/* ============================
+   Date style
+   ============================ */
+
+input[type="date"]{
+    padding-right: 0;
+}
+
+input[type="date"]:not(:focus):not(.has-value){
+    color:#F2F2F2;
+}
+
+input[type="date"]:not(.has-value):not(:focus):before {
+    display: inline-block;
+    font-weight: 400;
+    color: #1C1C1C;
+    content: attr(placeholder);
+    position: absolute;
+    left: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+/* Hide the default date picker icon in some browsers */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    opacity: 0;
+}
+
+/* ============================
+   Select style
+   ============================ */
+
+#arrow {
+    width: 14px;
+    height: 14px;
+    position: absolute;
+    right: 15px; /* Adjust this for perfect alignment */
+    pointer-events: none; /* Prevent clicks on the image */
+    left: auto; /* Override inherited left positioning */
+}
+
+/* ============================
+   Validation Style
+   ============================ */
+
+.valid:focus{
+    outline: none; 
+}
+
+.valid {
+  animation: pulseShadow 0.3s 1 normal ease-out forwards;
+}
+
+
+@keyframes pulseShadow {
+    0% {
+    box-shadow: 0 0 0 #4E136D, 0 0 0 #4E136D, 0 0 0 #4E136D;
+  }
+  50% {
+    box-shadow: 0 0 0.2rem #4E136D, 0 0 0.2rem #4E136D, 0 0 0.8rem #4E136D;
+  }
+  100% {
+    box-shadow: 0 0 0.1rem #4E136D, 0 0 0.1rem #4E136D, 0 0 0.6rem #4E136D;
+  }
+}
+
+.error__message{
+    margin: 0;
+    font-size: 0.7rem;
+    text-align: left;
+    margin-left: 10px;
+}
+
+.fade-enter-active {
+  animation: fadeAndFall 0.3s ease-out;
+}
+
+.fade-leave-active {
+  animation: fadeAndRise 0.3s ease-in;
+}
+
+/* Keyframes for fade and fall */
+@keyframes fadeAndFall {
+  from {
+    opacity: 0;
+    transform: translateY(-7px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Keyframes for fade and rise */
+@keyframes fadeAndRise {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-7px);
+  }
+}
+
+</style>

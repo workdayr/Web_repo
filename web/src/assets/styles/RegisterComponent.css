@@ -1,87 +1,192 @@
-#register__background {
-    display: flex;
-    position: relative;
-    width: 100vw;
-    height: 100vh;
-    background: linear-gradient(to bottom, #0F0715, #321647);
-    z-index: 0;
+/* Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+/* ============================
+   Background Section
+   ============================ */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%; /* Ensure they take up the full height */
+}
+
+.register__background {
+    position: fixed; /* Use fixed positioning to cover the entire viewport */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, #2F0B4A 32%, #140221);
+    z-index: -1;
 }
 
 .background__shape1 {
     position: fixed;
     right: 0;
-    top: 50%;
-    transform: translateY(-50%);
+    top: 0;
     z-index: 0;
-}
-
-.background__shape2 {
-    position: absolute;
-    width: 400px;
+  }
+  
+  .background__shape2 {
+    position: fixed;
     bottom: 0;
     left: 0;
-    margin-right: auto;
     z-index: 0;
-}
+  }
+/* ============================
+   Register Section
+   ============================ */
 
 .register__container {
     display: flex;
     flex-direction: column;
-    gap: 40px;
     position: absolute;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
     background-color: #FFFFFF;
-    border-radius: 40px;
+    border-radius: 55px;
     text-align: center;
-    width: 450px;
-    height: 600px;
-    z-index: 10;
+    width: 90%; 
+    max-width: 500px; 
+    height: auto;
+    z-index: 1;
+    font-family: 'Poppins';
 }
 
-.register__container--header {
-    font-size: 3rem;
-    margin-top: 20px;
-    font-weight: 900;
-    color: #382051;
-}
-
-.register__input {
-    display: inline-block;
-    font-size: smaller;
-    font-weight: 500;
-    background-color: #F2F2F2;
-    height: 45px;
-    border: transparent;
-    border-radius: 12px;
-
-}
-
-.create--account {
-    align-content: center;
-    text-align: center;
-    font-weight: bold;
-    color: #ffffff;
-    background-color: #000000;
-    border-radius: 12px;
-    width: 282px;
-}
-.terms__button{
-    border:none;
-    font-weight: bold;
-    background-color: #ffffff;
-    cursor: pointer;
-}
-.privacy__button{
-    border:none;
-    font-weight: bold;
-    background-color: #ffffff;
-    cursor: pointer;
-}
-
-.form__container{
+.register__header { 
+    position: relative;
     display: flex;
-    flex-direction: column;
-    gap: 1em;
+    justify-content: center; 
+    align-items: center;
+    margin-top: 4%;
+    margin-bottom: 5%;
+}
+
+.register__title {
+    font-family: "Inter", sans-serif;
+    margin: 0;
+    font-weight: 900;
+    font-size: 3.5rem;
+    width: 100%;
+    text-align: center;
+    color: #382051;
+    position: relative; 
+    z-index: 1; 
+}
+
+.back-arrow {
+    width: 20px;
+    height: auto;
+    position: absolute;
+    left: 40px; 
+    z-index: 2;
+    cursor: pointer;
+}
+
+.register__form {
+    margin: 0 13%;
+    display: flex;
+    flex-direction: column; 
+    gap: 15px; 
+
+}
+
+.register__row {
+    flex: 1;
+    display: flex;
+    gap: 6%; 
+}
+
+/* ============================
+   Button
+   ============================ */
+
+.register__button--container {
+    margin-top: 10px;
+}
+
+.register__button {
+    color: #FFFFFF;
+    font-size: 0.8rem;
+    font-weight: 700;
+    background-color: #1C1C1C;
+    height: 55px;
+    width: 100%;
+    border: transparent;
+    border-radius: 13px;
+}
+
+.loader {
+    height: 50%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    display: inline-block;
+    border-top: 3px solid #FFF;
+    border-right: 3px solid transparent;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+  }
+  
+  @keyframes rotation {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  } 
+
+
+/* ============================
+   Bottom
+   ============================ */
+
+.register__text {
+    font-size: smaller;
+    margin: 15px 20%;
+    font-weight: 500;
+}
+
+.register__link {
+    color: inherit; 
+    text-decoration: none;
+    font-weight: 700; 
+    cursor: pointer; 
+}
+
+/* ============================
+   Responsive Adjustments
+   ============================ */
+   @media (max-width: 600px) {
+    .register__container {
+        width: 95%;
+    }
+    .register__header {
+        font-size: 2.5rem;
+    }
+
+    .register__form {
+        margin: 0 8%;
+    }
+
+    .register__row {
+        flex-direction: column; /* Stack inputs on small screens */
+        gap: 10px;
+    }
+
+    .register__input {
+        height: 45px;
+        font-size: 0.9rem;
+    }
+
+    .register__button {
+        height: 45px;
+        font-size: 0.9rem;
+    }
+
+    .register__text {
+        font-size: 0.7rem;
+        margin: 15px 12%;
+    }
 }
