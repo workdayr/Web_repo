@@ -33,7 +33,7 @@ const submitForm = async () => {
 <template>
 	<form class="register__form" @submit.prevent="submitForm">
 		
-		<AppInput v-model="form.fullName" :src="require('@/assets/Form/Full_name.svg')" placeholder="Full Name" :is-valid="validFields['fullName']" :submitted="submitted" :error-message="errorMessage['fullName']"/>
+		<AppInput v-model="form.fullName" :src="require('@/assets/Form/FullName.svg')" placeholder="Full Name" :is-valid="validFields['fullName']" :submitted="submitted" :error-message="errorMessage['fullName']"/>
 		<AppInput v-model="form.email" :src="require('@/assets/Form/Email.svg')" placeholder="Email" type="email" :is-valid="validFields['email']" :submitted="submitted" :error-message="errorMessage['email']"/>
 		<AppInput v-model="form.password" :src="require('@/assets/Form/Password.svg')" placeholder="Password" type="password" :is-valid="validFields['password']" :submitted="submitted" :error-message="errorMessage['password']"/>
 		<AppInput v-model="form.confirmPassword" :src="require('@/assets/Form/Password.svg')" placeholder="Confirm Password" type="password" :is-valid="validFields['confirmPassword']" :submitted="submitted" :error-message="errorMessage['confirmPassword']"/>

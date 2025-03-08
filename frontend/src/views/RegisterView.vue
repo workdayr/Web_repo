@@ -6,8 +6,8 @@ import RegisterFrom from '@/components/Register/RegisterForm.vue';
 <template>
     
     <div class="register__background">
-        <img class="background__shape1" src="@/assets/svg/Vector.svg" alt="Vector">
-        <img class="background__shape2" src="@/assets/svg/backgroundShape.svg" alt="Background Shape">
+        <img class="background__shape1" src="@/assets/Form/BackgroundShape2.svg" alt="Vector">
+        <img class="background__shape2" src="@/assets/Form/BackgroundShape1.svg" alt="Background Shape">
     </div>
     
     <div class="register__container">

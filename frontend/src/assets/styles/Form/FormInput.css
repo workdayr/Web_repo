@@ -144,3 +144,10 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     transform: translateY(-7px);
   }
 }
+
+@media (max-width: 600px) {
+  .register__input {
+      height: 45px;
+      font-size: 0.8rem;
+  }
+}

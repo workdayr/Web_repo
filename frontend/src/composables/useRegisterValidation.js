@@ -24,7 +24,7 @@ export function useRegisterValidation(form) {
   const minDate = new Date();
   minDate.setFullYear(minDate.getFullYear() - 100);
   const maxDate = new Date();
-  maxDate.setFullYear(minDate.getFullYear() - 10);
+  maxDate.setFullYear(maxDate.getFullYear() - 10);
 
   const validFields = computed(() => {
     return Object.keys(form.value).reduce((acc, key) => {

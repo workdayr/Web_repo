@@ -11,21 +11,21 @@ const form = ref({
 });
 const {validFields, errorMessage} = useRegisterValidation(form, 'login');
 const submitted = ref(false);
-
+const sent = ref(false);
 
 const submitForm = () => {
     submitted.value = true;
 
     if (validFields.value.username && validFields.value.passwordLogin) {
+        sent.value = true;
         console.log('Login successful!', form.value);
     }
 };  
 </script>
 
 <template>
-        <form @submit.prevent="submitForm">
-            <div class="login__input--container">
-                <FormInput id="login__input--username" v-model="form.username" :src="require('@/assets/Form/Full_name.svg')"
+        <form class="login__form" @submit.prevent="submitForm" >
+                <FormInput id="login__input--username" v-model="form.username" :src="require('@/assets/Form/FullName.svg')"
                     :placeholder="'Username'" :is-valid="validFields.username" :submitted="submitted"
                     :error-message="errorMessage.username" />
                 <FormInput id="login__input--password" v-model="form.passwordLogin" :src="require('@/assets/Form/Password.svg')"
@@ -40,8 +40,7 @@ const submitForm = () => {
                 <a class="login__link--forgotPw" @click="$router.push('/')" >Forgot password?</a>
             </div>
 
-            <FormSubmitButton text="NEXT" />
-        </div>
+            <FormSubmitButton text="NEXT" :sent="sent"/>
         </form>
 </template>
 <style scoped>
