@@ -25,7 +25,7 @@ const model = defineModel('modelValue');
                 <option v-for="option in options" :key="option" :value="option">{{ option }}</option>     
                 
             </select>
-            <img v-if="type=='select'" id="arrow" class="register__icon" src="@/assets/Register_icons/Select_arrow.svg" alt="icon">      
+            <img v-if="type=='select'" id="arrow" class="register__icon" src="@/assets/Form/Select_arrow.svg" alt="icon">      
         </div>
         <Transition name="fade">
             <p v-if="!isValid && submitted" class="error__message">{{errorMessage}}</p>

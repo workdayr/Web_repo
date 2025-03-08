@@ -6,6 +6,8 @@ export function useRegisterValidation(form) {
     email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
     password: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
     confirmPassword: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+    username: /^.{3,}$/,
+    passwordLogin:/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
   };
 
   const errorMessage = {
@@ -15,6 +17,8 @@ export function useRegisterValidation(form) {
     confirmPassword: "Passwords do not match",
     birthday: "Invalid date",
     state: "Select at least one",
+    username: "Username is required",
+    passwordLogin: "Password is required",
   };
 
   const minDate = new Date();
