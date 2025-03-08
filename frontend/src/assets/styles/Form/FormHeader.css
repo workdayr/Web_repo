@@ -1,0 +1,29 @@
+.register__header { 
+    position: relative;
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    margin-top: 4%;
+    margin-bottom: 5%;
+}
+
+.register__title {
+    font-family: "Inter", sans-serif;
+    margin: 0;
+    font-weight: 900;
+    font-size: 3.5rem;
+    width: 100%;
+    text-align: center;
+    color: #382051;
+    position: relative; 
+    z-index: 1; 
+}
+
+.back-arrow {
+    width: 20px;
+    height: auto;
+    position: absolute;
+    left: 40px; 
+    z-index: 2;
+    cursor: pointer;
+}

@@ -1,7 +1,7 @@
 <template>
   <section id="Homepage">
     <!-- Navbar -->
-    <NavbarComponent />
+    <Navbar />
 
     <!-- Ajuste para que el carrusel no se superponga con el navbar -->
     <div style="margin-top: 60px;">
@@ -24,17 +24,17 @@
 </template>
 
 <script>
-import NavbarComponent from '@/components/NavbarComponent.vue';
-import CarouselComponent from '@/components/CarouselComponent.vue'; // Asegurando que coincida el nombre del componente
+import Navbar from '@/components/Layout/Navbar.vue';
+import CarouselComponent from '@/components/Layout/CarouselComponent.vue'; // Asegurando que coincida el nombre del componente
 import BprcsLogo from '@/assets/Bprcs_logo.png';
-import ProductsComponent from './ProductsComponent.vue';
-import FooterComponent from './Footer.vue';
-import OpinionsComponent from './OpinionsComponent.vue';
-import FindBestPrices from './FindBestPrices.vue';
+import ProductsComponent from '@/components/ProductsComponent.vue';
+import FooterComponent from '@/components/Layout/Footer.vue';
+import OpinionsComponent from '@/components//OpinionsComponent.vue';
+import FindBestPrices from '@/components/FindBestPrices.vue';
 export default {
   name: 'HelloWorld',
   components: {
-    NavbarComponent,
+    Navbar,
     CarouselComponent, // Antes estaba como "Carrusel", ahora coincide con el import
     ProductsComponent,
     FooterComponent,
@@ -51,7 +51,7 @@ export default {
 
 <style scoped>
 /* Estilos para la Navbar */
-@import "@/assets/styles/NavbarComponent.css";
+@import "@/assets/styles/Layout/NavbarComponent.css";
 /* Asegura que se carguen los estilos */
 
 /* Corrección para navbar: fixed y ajuste de fondo */

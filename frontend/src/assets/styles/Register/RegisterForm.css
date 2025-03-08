@@ -1,0 +1,37 @@
+
+.register__container {
+ display: flex;
+ flex-direction: column;
+ position: absolute;
+ left: 50%;
+ top: 50%;
+ transform: translate(-50%, -50%);
+ background-color: #FFFFFF;
+ border-radius: 55px;
+ text-align: center;
+ width: 90%; 
+ max-width: 500px; 
+ height: auto;
+ z-index: 1;
+ font-family: 'Poppins';
+}
+
+.register__form {
+ margin: 0 13%;
+ display: flex;
+ flex-direction: column; 
+ gap: 15px; 
+
+}
+
+.register__row {
+ display: flex;
+ justify-content: space-between; 
+ gap: 6%; 
+ width: 100%;
+}
+
+.register__row > * {
+ flex: 1; 
+ max-width: 47%; 
+}

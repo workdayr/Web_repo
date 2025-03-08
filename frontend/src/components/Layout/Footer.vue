@@ -64,5 +64,5 @@
   </script>
   
   <style scoped>
-  @import "@/assets/styles/Footer.css";
+  @import "@/assets/styles/Layout/Footer.css";
   </style>

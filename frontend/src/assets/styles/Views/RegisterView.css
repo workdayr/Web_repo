@@ -54,36 +54,6 @@ html, body {
     font-family: 'Poppins';
 }
 
-.register__header { 
-    position: relative;
-    display: flex;
-    justify-content: center; 
-    align-items: center;
-    margin-top: 4%;
-    margin-bottom: 5%;
-}
-
-.register__title {
-    font-family: "Inter", sans-serif;
-    margin: 0;
-    font-weight: 900;
-    font-size: 3.5rem;
-    width: 100%;
-    text-align: center;
-    color: #382051;
-    position: relative; 
-    z-index: 1; 
-}
-
-.back-arrow {
-    width: 20px;
-    height: auto;
-    position: absolute;
-    left: 40px; 
-    z-index: 2;
-    cursor: pointer;
-}
-
 .register__form {
     margin: 0 13%;
     display: flex;
@@ -93,50 +63,16 @@ html, body {
 }
 
 .register__row {
-    flex: 1;
     display: flex;
+    justify-content: space-between; 
     gap: 6%; 
-}
-
-/* ============================
-   Button
-   ============================ */
-
-.register__button--container {
-    margin-top: 10px;
-}
-
-.register__button {
-    color: #FFFFFF;
-    font-size: 0.8rem;
-    font-weight: 700;
-    background-color: #1C1C1C;
-    height: 55px;
     width: 100%;
-    border: transparent;
-    border-radius: 13px;
 }
 
-.loader {
-    height: 50%;
-    aspect-ratio: 1;
-    border-radius: 50%;
-    display: inline-block;
-    border-top: 3px solid #FFF;
-    border-right: 3px solid transparent;
-    box-sizing: border-box;
-    animation: rotation 1s linear infinite;
-  }
-  
-  @keyframes rotation {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
-  } 
-
+.register__row > * {
+    flex: 1; 
+    max-width: 47%; 
+}
 
 /* ============================
    Bottom

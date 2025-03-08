@@ -41,6 +41,6 @@ export default {
 </script>
 
 <style scoped>
-@import "@/assets/styles/CarouselComponent.css";
+@import "@/assets/styles/Layout/CarouselComponent.css";
 /* Importa el archivo de estilos */
 </style>
