@@ -1,9 +1,9 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HelloWorld from "@/views/HomepageView.vue"; // Index page
 import LoginView from "@/views/LoginView.vue";
-import FindBestPrices from "@/components/FindBestPrices.vue";
-import OpinionsComponent from "@/components/OpinionsComponent.vue";
-import ProductsComponent from "@/components/ProductsComponent.vue";
+import FindBestPrices from "@/components/Homepage/FindBestPrices.vue";
+import OpinionsComponent from "@/components/Homepage/OpinionsComponent.vue";
+import ProductsComponent from "@/components/Homepage/ProductsComponent.vue";
 import RegisterComponent from "@/views/RegisterView.vue";
 
 const routes = [

@@ -1,0 +1,47 @@
+:root {
+  --color-bg: #fdf1f2;
+  --color-star: #ffd700; /* Gold color for the star */
+  --easing: cubic-bezier(0.7, 0, 0.3, 1);
+  --duration: 0.4s;
+}
+
+.fav__button {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    color: inherit;
+    cursor: pointer; /* Ensures it still looks clickable */
+    outline: none; /* Removes the default outline on focus */
+    width: 35px;
+  }
+
+.fav__image{
+    fill: transparent;
+    width: 100%;
+    height: auto;
+    transition: all var(0.3s) var(--easing);
+    transform-origin: center;
+}
+.fav__image.followed {
+    fill: #fff;
+}
+
+.fav__image:active{
+    animation: star-bounce var(--duration) var(--easing);
+}
+
+@keyframes star-bounce {
+    40% {
+      transform: scale(0.7);
+    }
+    0%,
+    80%,
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+
+  

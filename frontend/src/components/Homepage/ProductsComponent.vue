@@ -1,25 +1,14 @@
+<script setup>
+import ProductPreview from '@/components/Common/ProductPreview.vue';
+</script>
+
 <template>
     <section id="section1--bestSales">
         <h1 class="cardHolder__title--BestSales">Best Sales</h1>
         <div id="cardHolder" class="BestSales">
-            <div class="cardHolder__card">
-                <div class="cardHolder__card--description">
-                    <h5 class="card__description--price">$9,999.99</h5>
-                    <h5 class="card__description--product">Monitor LG 24"</h5>
-                </div>
-            </div>
-            <div class="cardHolder__card">
-                <div class="cardHolder__card--description">
-                    <h5 class="card__description--price">$9,999.99</h5>
-                    <h5 class="card__description--product">Monitor LG 24"</h5>
-                </div>
-            </div>
-            <div class="cardHolder__card">
-                <div class="cardHolder__card--description">
-                    <h5 class="card__description--price">$9,999.99</h5>
-                    <h5 class="card__description--product">Monitor LG 24"</h5>
-                </div>
-            </div>
+            <ProductPreview symbol="$" price-whole="9999999" price-fraction="99" title="Monitor LG 24"/>
+            <ProductPreview symbol="$" price-whole="9999999" price-fraction="99" title="Monitor LG 24"/>
+            <ProductPreview symbol="$" price-whole="9999999" price-fraction="99" title="Monitor LG 24"/>
         </div>
     </section>
     <section id="section2--YouMayAlsoLike">
