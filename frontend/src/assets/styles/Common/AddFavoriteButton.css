@@ -14,13 +14,14 @@
     color: inherit;
     cursor: pointer; /* Ensures it still looks clickable */
     outline: none; /* Removes the default outline on focus */
-    width: 35px;
+    width: 30px; 
+    height: 30px;
   }
 
 .fav__image{
     fill: transparent;
-    width: 100%;
-    height: auto;
+    width: 100%; 
+    height: 100%;
     transition: all var(0.3s) var(--easing);
     transform-origin: center;
 }

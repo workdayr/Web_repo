@@ -23,19 +23,19 @@
         </div>
         <div class="footer-social">
     <button class="social-button">
-      <img src="@/assets/facebook-icon.png" alt="Facebook">
+      <img src="@/assets/Layout/Footer/facebook-icon.png" alt="Facebook">
     </button>
     <button class="social-button">
-      <img src="@/assets/twitter-icon.png" alt="Twitter">
+      <img src="@/assets/Layout/Footer/twitter-icon.png" alt="Twitter">
     </button>
     <button class="social-button">
-      <img src="@/assets/instagram-icon.png" alt="Instagram">
+      <img src="@/assets/Layout/Footer/instagram-icon.png" alt="Instagram">
     </button>
     <button class="social-button">
-      <img src="@/assets/linkedin-icon.png" alt="LinkedIn">
+      <img src="@/assets/Layout/Footer/linkedin-icon.png" alt="LinkedIn">
     </button>
     <button class="social-button">
-      <img src="@/assets/youtube-icon.png" alt="YouTube">
+      <img src="@/assets/Layout/Footer/youtube-icon.png" alt="YouTube">
     </button>
   </div>
         <div class="footer-bottom">

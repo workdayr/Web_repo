@@ -1,0 +1,43 @@
+.section {
+    margin-bottom: 2rem;
+  }
+
+.section-title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    font-family: 'Inter';
+    margin-bottom: 2rem;
+    color: #FAF8FF;
+}
+@supports (background-clip: text) {
+    .section-title {
+        background: linear-gradient(to right, #FAF8FF, #F3E8FF);
+        -webkit-background-clip: text; /* For WebKit browsers */
+        background-clip: text;
+        color: transparent; 
+    }
+}
+
+
+@media (max-width: 768px) {
+    .section-title {
+        font-size: 2rem;
+        margin-bottom: 1.8rem;
+    }
+}
+
+/* For mobile devices (e.g., screens less than 480px) */
+@media (max-width: 480px) {
+    .section-title {
+        font-size: 1.8rem;
+        margin-bottom: 1.6rem;
+    }
+}
+
+/* For very small mobile devices (e.g., screens less than 320px) */
+@media (max-width: 320px) {
+    .section-title {
+        font-size: 1.6rem;
+        margin-bottom: 1.4rem;
+    }
+}
