@@ -5,6 +5,7 @@ import FindBestPrices from "@/components/FindBestPrices.vue";
 import OpinionsComponent from "@/components/OpinionsComponent.vue";
 import ProductsComponent from "@/components/ProductsComponent.vue";
 import RegisterComponent from "@/views/RegisterView.vue";
+import DashboardView from "./views/DashboardView.vue";
 
 const routes = [
   { path: "/", component: HelloWorld }, // Default page
@@ -13,6 +14,7 @@ const routes = [
   { path: "/opinions", component: OpinionsComponent },
   { path: "/products", component: ProductsComponent },
   { path: "/Register", component: RegisterComponent},
+  {path: "/Dashboard", component: DashboardView},
 ];
 
 const router = createRouter({
