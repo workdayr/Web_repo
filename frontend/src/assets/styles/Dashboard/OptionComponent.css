@@ -1,0 +1,25 @@
+.sideMenu__option {
+    background: transparent;
+    border-radius: 12px;
+    width: 100%;
+}
+
+.sideMenu__option-text {
+    font-size: small;
+    font-weight: 200;
+    padding-left: 12px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    margin: 0px;
+    cursor: pointer;
+}
+
+.sideMenu__option:hover {
+    background: lightgray;
+}
+
+.sideMenu__option.active {
+    background: #F3E8FF;
+    border-left: 3px solid #321647;
+    border-radius: 0px 30px 30px 0px;
+}
