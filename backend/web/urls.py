@@ -16,13 +16,30 @@ Including another URLconf
 """
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from Web_repo.views import UserViewSet  # Importar la vista
+from Web_repo.views import (
+    UserViewSet, UserActivityViewSet, ProductsViewSet, BrandViewSet, 
+    PricesHistoryViewSet, CurrencysViewSet, StoreProductsViewSet, 
+    StoresViewSet, CategoriesViewSet, ProductCategoryViewSet, 
+    ProductImageViewSet, UserHasLikedViewSet
+)
 
+# Crea un enrutador por defecto
 router = DefaultRouter()
-router.register(r'users', UserViewSet)  # Genera las rutas automáticamente
+
+# Registra todos los viewsets en el router
+router.register(r'users', UserViewSet)
+router.register(r'users_activity', UserActivityViewSet)
+router.register(r'products', ProductsViewSet)
+router.register(r'brands', BrandViewSet)
+router.register(r'prices_history', PricesHistoryViewSet)
+router.register(r'currencies', CurrencysViewSet)
+router.register(r'store_products', StoreProductsViewSet)
+router.register(r'stores', StoresViewSet)
+router.register(r'categories', CategoriesViewSet)
+router.register(r'product_categories', ProductCategoryViewSet)
+router.register(r'product_images', ProductImageViewSet)
+router.register(r'user_likes', UserHasLikedViewSet)
 
 urlpatterns = [
-    path('api/', include(router.urls)),  # Esto hará que accedas a /api/users/
+    path('api/', include(router.urls)),  # Accede a las rutas de los viewsets, por ejemplo, /api/users/
 ]
-
-
