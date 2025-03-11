@@ -1,0 +1,62 @@
+.card-header {
+    width: 100%;
+    text-align: center;
+    padding-bottom: 10px;
+    min-height: 40px; /* Asegura espacio suficiente para el texto */
+    display: flex;
+    align-items: center; /* Centra verticalmente el título */
+    justify-content: center; /* Centra horizontalmente */
+    background-color: transparent !important;
+    border-bottom: none !important;
+}
+
+
+.card-header {
+    width: 100%;
+    text-align: center;
+    padding-bottom: 10px;
+    overflow: hidden; /* Evita que el texto sobresalga */
+}
+
+.card-header h3 {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0;
+    padding: 5px 10px; /* Añadir padding para evitar que se corte */
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 90%; /* Evita que el texto sea más grande que la tarjeta */
+    background: transparent; /* Asegurar que no haya fondo que tape el texto */
+    z-index: 2; /* Asegurar que esté sobre otros elementos */
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.card h2 {
+    font-size: 18px;
+    margin: 5px 0;
+}
+
+.percentage {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.positive {
+    color: #4caf50; /* Verde */
+}
+
+.negative {
+    color: #f44336; /* Rojo */
+}
+
+
+.card-header {
+    background-color: transparent !important;
+    border-bottom: none !important;
+}
