@@ -31,22 +31,6 @@
     align-items: left;
 }
 
-.sideMenu__header{
-    display: flex;
-    flex-direction: row;
-    margin-top: 20px;
-
-}
-
-.sideMenu__title{
-    font-size:20px;
-    font-weight: 700;
-    color: #1B0F26;
-}
-.bprcs-logo{
-    width: 30px;
-    height: 35px;
-}
 @media (max-width: 768px) {
     .sideMenu__container {
         position:fixed;
