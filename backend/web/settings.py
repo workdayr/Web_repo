@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'Web_repo',
+    'corsheaders',
     'rest_framework',  # Agregar Django REST Framework
     'web',  # Reemplaza 'web' con el nombre correcto de tu aplicación
 ]
@@ -50,7 +51,11 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8080",  # Permite solicitudes desde tu frontend
 ]
 
 ROOT_URLCONF = 'web.urls'

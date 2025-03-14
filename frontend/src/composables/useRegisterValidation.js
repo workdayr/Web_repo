@@ -1,44 +1,24 @@
-import {computed } from 'vue';
+import { computed } from 'vue';
 
 export function useRegisterValidation(form) {
-  const regex = {
-    fullName: /^[a-zA-Z\s]{3,50}$/,
-    email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-    password: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
-    confirmPassword: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
-    username: /^.{3,}$/,
-    passwordLogin:/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
-  };
-
-  const errorMessage = {
-    fullName: "Name must be 3-50 letters",
-    email: "Invalid email format",
-    password: "Password must be at least 8 characters, including a number",
-    confirmPassword: "Passwords do not match",
-    birthday: "Invalid date",
-    state: "Select at least one",
-    username: "Username is required",
-    passwordLogin: "Password is required",
-  };
-
-  const minDate = new Date();
-  minDate.setFullYear(minDate.getFullYear() - 100);
-  const maxDate = new Date();
-  maxDate.setFullYear(maxDate.getFullYear() - 10);
+  const errorMessage = computed(() => ({
+    fullName: form.value.fullName.length >= 2 ? '' : 'El nombre debe tener al menos 2 caracteres.',
+    email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.value.email) ? '' : 'Correo electrónico inválido.',
+    password: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(form.value.password) 
+      ? '' 
+      : 'La contraseña debe tener al menos 8 caracteres, una letra, un número y un carácter especial.',
+    confirmPassword: form.value.password === form.value.confirmPassword 
+      ? '' 
+      : 'Las contraseñas no coinciden.',
+    birthday: form.value.birthday && new Date().getFullYear() - new Date(form.value.birthday).getFullYear() >= 13
+      ? '' 
+      : 'Debes tener al menos 13 años.',
+    state: form.value.state ? '' : 'Debes seleccionar un estado.',
+  }));
 
   const validFields = computed(() => {
-    return Object.keys(form.value).reduce((acc, key) => {
-      if (key === "confirmPassword") {
-        acc[key] = form.value[key] === form.value.password && regex[key].test(form.value[key] || '');
-      } else if (key === "state") {
-        acc[key] = !!form.value[key];
-      } else if (key === "birthday") {
-        const birthDate = new Date(form.value[key]);
-        acc[key] = birthDate >= minDate && birthDate <= maxDate;
-      } else {
-        acc[key] = regex[key] ? regex[key].test(form.value[key] || '') : true;
-      }
-      return acc;
+    return Object.keys(errorMessage.value).reduce((acc, field) => {
+      return { ...acc, [field]: errorMessage.value[field] === '' };
     }, {});
   });
 

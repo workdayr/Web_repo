@@ -10,7 +10,10 @@
   "dependencies": {
     "bootstrap": "^5.3.3",
     "core-js": "^3.8.3",
+    "crypto-browserify": "^3.12.1",
+    "crypto-js": "^4.2.0",
     "router": "^1.3.8",
+    "sweetalert2": "^11.17.2",
     "vue": "^3.2.13",
     "vue-responsive-components": "^0.2.3",
     "vue-router": "^4.5.0"
