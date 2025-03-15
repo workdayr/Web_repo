@@ -11,8 +11,8 @@
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    box-sizing: border-box;
     padding: 50px;
+
 }
 
 .slide-image {
@@ -76,6 +76,7 @@
     width: 25%;
     height: auto;
     position: absolute;
+    max-height: 75%;
 }
 
 .slide-text {
