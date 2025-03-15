@@ -1,54 +1,146 @@
 <template>
   <section id="Homepage">
-    <!-- Navbar -->
     <NavbarComponent :is-always-compact="false"/>
 
-    <!-- Ajuste para que el carrusel no se superponga con el navbar -->
-    <div style="margin-top: 60px;">
-      <CarouselComponent />
-    </div>
+    <CarouselComponent :slides="carouselSlides"/>
 
-    <FindBestPrices />
-    <div>
-      <ProductsComponent />
-    </div>
-
+  <div class="hompage__content">
+    <FindBestPrices/>
+    <HomepageSection v-for="section in sections" :key="section.id" :title="section.title" :products="section.products"/>
     <OpinionsComponent />
-
-    <FooterComponent />
-
-
-
+    
+  </div>
+  <FooterComponent />
 
   </section>
 </template>
 
-<script>
+<script setup>
 import NavbarComponent from '@/components/Layout/NavbarComponent.vue';
-import CarouselComponent from '@/components/Layout/CarouselComponent.vue'; // Asegurando que coincida el nombre del componente
-import BprcsLogo from '@/assets/Bprcs_logo.png';
-import ProductsComponent from '@/components/Homepage/ProductsComponent.vue';
+import CarouselComponent from '@/components/Layout/CarouselComponent.vue'; 
+import FindBestPrices from '@/components/Homepage/FindBestPrices.vue';
+import HomepageSection from '@/components/Homepage/HomepageSection.vue';
 import FooterComponent from '@/components/Layout/Footer.vue';
 import OpinionsComponent from '@/components/Homepage/OpinionsComponent.vue';
-import FindBestPrices from '@/components/Homepage/FindBestPrices.vue';
-export default {
-  name: 'HelloWorld',
-  components: {
-    NavbarComponent,
-    CarouselComponent, // Antes estaba como "Carrusel", ahora coincide con el import
-    ProductsComponent,
-    FooterComponent,
-    OpinionsComponent,
-    FindBestPrices,
+
+
+
+/*
+  EXAMPLE DATA FETCH RESULT
+*/
+const exampleProducts = [
+{
+    'title': 'example product 1',
+    'symbol': '$',
+    'priceWhole': '9999',
+    'priceFraction': '00',
+    'imageUrl': ''
   },
-  data() {
-    return {
-      BprcsLogo
-    };
-  }
-};
+  {
+    'title': 'aaaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaa',
+    'symbol': '$',
+    'priceWhole': '10',
+    'priceFraction': '00',
+    'imageUrl': ''
+  },
+  {
+    'title': 'example product 1',
+    'symbol': '$',
+    'priceWhole': '9999',
+    'priceFraction': '00',
+    'imageUrl': ''
+  },
+  {
+    'title': '',
+    'symbol': '',
+    'priceWhole': '',
+    'priceFraction': '',
+    'imageUrl': ''
+  },
+  {
+    'title': 'example product 1',
+    'symbol': '$',
+    'priceWhole': '9999',
+    'priceFraction': '00',
+    'imageUrl': ''
+  },
+  {
+    'title': '',
+    'symbol': '',
+    'priceWhole': '',
+    'priceFraction': '',
+    'imageUrl': ''
+  },
+  {
+    'title': 'example product 1',
+    'symbol': '$',
+    'priceWhole': '9999',
+    'priceFraction': '00',
+    'imageUrl': ''
+  },
+  {
+    'title': '',
+    'symbol': '',
+    'priceWhole': '',
+    'priceFraction': '',
+    'imageUrl': ''
+  },
+  {
+    'title': 'example product 1',
+    'symbol': '$',
+    'priceWhole': '9999',
+    'priceFraction': '00',
+    'imageUrl': ''
+  },
+  {
+    'title': '',
+    'symbol': '',
+    'priceWhole': '',
+    'priceFraction': '',
+    'imageUrl': ''
+  },
+  {
+    'title': 'example product 1',
+    'symbol': '$',
+    'priceWhole': '9999',
+    'priceFraction': '00',
+    'imageUrl': ''
+  },
+  {
+    'title': '',
+    'symbol': '',
+    'priceWhole': '',
+    'priceFraction': '',
+    'imageUrl': ''
+  },];
+
+  const carouselSlides = [
+  {
+    "text": "Compare prices across \ndifferent websites",
+    "gradient": "linear-gradient(to bottom, #4D1270, #561960)",
+    "icon": require("@/assets/Carrusel_icons/Slide1.svg"),
+    "textPosition": "center-left",
+    "iconPosition": "center-right"
+  },
+  {
+    "text": "Track product prices \nover time",
+    "gradient": "linear-gradient(to bottom, #562F7F, #835EAB)",
+    "icon": require("@/assets/Carrusel_icons/Slide1.svg"),
+    "textPosition": "center-right",
+    "iconPosition": "center-left"
+  },
+  {
+    "text": "Stay Signed In For Notifications on \nPrice Changes",
+    "gradient": "linear-gradient(to bottom, #4D1270, #feb47b)",
+    "icon": "",//require("@/assets/Carrusel_icons/Slide1.svg"),
+    "textPosition": "center",
+    "iconPosition": "center-right"
+  },
+]
+
+const sections = [{"id":0, "title": "Best Sales", "products": exampleProducts},{"id":1,"title": "You may also like", "products": exampleProducts}]
 </script>
 
-
 <style scoped>
+@import "@/assets/styles/Views/HomepageView.css";
 </style>

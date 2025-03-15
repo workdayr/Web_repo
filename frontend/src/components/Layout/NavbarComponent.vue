@@ -33,14 +33,7 @@ const solidBackground = ref(false);
 
 const isCompactSearchActive = ref(false);
 
-const handleScroll = () => {
-	const scrollY = document.body.scrollTop;
-	solidBackground.value = scrollY>scrollThreshold;
-	navbarHeight.value = Math.max(
-		minHeight,
-		maxHeight - (scrollY / scrollThreshold) * (maxHeight - minHeight)
-	);
-};
+
 const updateWidth = () => {	
 	isMobile.value = window.innerWidth<breakpoint;
 	
@@ -49,13 +42,23 @@ const updateWidth = () => {
 const openSearchbar=(isOpen)=>{
 	isCompactSearchActive.value = window.innerWidth< 500 && isOpen;
 }
+
+const handleScroll = () => {
+	const scrollY = document.documentElement.scrollTop;
+	solidBackground.value = scrollY>scrollThreshold;
+	navbarHeight.value = Math.max(
+		minHeight,
+		maxHeight - (scrollY / scrollThreshold) * (maxHeight - minHeight)
+	);
+};
+
 onMounted(() => {
-	if(!isCompact.value) document.body.addEventListener('scroll', handleScroll);
+	if(!isCompact.value) document.addEventListener('scroll', handleScroll);
 	window.addEventListener("resize", updateWidth);
 });
 
 onUnmounted(() => {
-	if(!isCompact.value)document.body.removeEventListener('scroll', handleScroll);
+	if(!isCompact.value)document.removeEventListener('scroll', handleScroll);
 	window.removeEventListener("resize", updateWidth);
 });
 
