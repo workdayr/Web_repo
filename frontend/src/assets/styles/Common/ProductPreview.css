@@ -135,11 +135,11 @@
 /* For very small mobile devices (e.g., screens less than 320px) */
 @media (max-width: 320px) {
     .product-preview {
-        min-width: 175px; 
+        min-width: 250px; /* Adjust for very small screens */
     }
 
     .product-preview__image {
-        max-width: auto; 
+        max-width: 250px; /* Adjust image size for very small screens */
         max-height: 120px;
     }
 
@@ -148,10 +148,10 @@
     }
 
     .product-preview__price {
-        font-size: 0.8rem;
+        font-size: 0.8rem; /* Further reduce font size for price */
     }
 
     .product-preview__title {
-        font-size: 0.7rem;
+        font-size: 0.7rem; /* Further reduce font size for title */
     }
 }
