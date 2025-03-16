@@ -10,7 +10,7 @@
     <OpinionsComponent />
     
   </div>
-  <FooterComponent />
+  <FooterComponent/>
 
   </section>
 </template>
@@ -20,7 +20,7 @@ import NavbarComponent from '@/components/Layout/NavbarComponent.vue';
 import CarouselComponent from '@/components/Layout/CarouselComponent.vue'; 
 import FindBestPrices from '@/components/Homepage/FindBestPrices.vue';
 import HomepageSection from '@/components/Homepage/HomepageSection.vue';
-import FooterComponent from '@/components/Layout/Footer.vue';
+import FooterComponent from '@/components/Layout/FooterComponent.vue';
 import OpinionsComponent from '@/components/Homepage/OpinionsComponent.vue';
 
 
