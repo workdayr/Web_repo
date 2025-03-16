@@ -4,10 +4,10 @@
 
     <CarouselComponent :slides="carouselSlides"/>
 
-  <div class="hompage__content">
+  <div class="hompage-content">
     <FindBestPrices/>
-    <HomepageSection v-for="section in sections" :key="section.id" :title="section.title" :products="section.products"/>
-    <OpinionsComponent />
+    <HomepageSection v-for="section in sections" class="homepage-section" :key="section.id" :title="section.title" :icon="section.icon" :products="section.products"/>
+    <!-- <OpinionsComponent />-->
     
   </div>
   <FooterComponent/>
@@ -21,7 +21,7 @@ import CarouselComponent from '@/components/Layout/CarouselComponent.vue';
 import FindBestPrices from '@/components/Homepage/FindBestPrices.vue';
 import HomepageSection from '@/components/Homepage/HomepageSection.vue';
 import FooterComponent from '@/components/Layout/FooterComponent.vue';
-import OpinionsComponent from '@/components/Homepage/OpinionsComponent.vue';
+//import OpinionsComponent from '@/components/Homepage/OpinionsComponent.vue';
 
 
 
@@ -138,7 +138,7 @@ const exampleProducts = [
   },
 ]
 
-const sections = [{"id":0, "title": "Best Sales", "products": exampleProducts},{"id":1,"title": "You may also like", "products": exampleProducts}]
+const sections = [{"id":0, "title": "Best Sales", "icon": require("@/assets/Layout/Footer/instagram-icon.png"),"products": exampleProducts},{"id":1,"title": "You may also like", "products": exampleProducts}]
 </script>
 
 <style scoped>
