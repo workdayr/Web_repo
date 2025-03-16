@@ -1,0 +1,268 @@
+[33mcommit 40d44c315ed447de7abb30cbe0f00758e61d6d0c[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mDashbord[m[33m, [m[1;31morigin/Dashbord[m[33m)[m
+Author: workdayr <99066267+workdayr@users.noreply.github.com>
+Date:   Thu Mar 13 23:20:12 2025 -0500
+
+    Regiter functionaliti working
+
+[33mcommit fd381f97694ae63ef834abf2012d54ebdc90721b[m
+Author: workdayr <99066267+workdayr@users.noreply.github.com>
+Date:   Mon Mar 10 19:34:53 2025 -0500
+
+    cardcomponent added
+
+[33mcommit b275a328c515b602ce0c8ee9cf4add7f733ffb6f[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m, [m[1;32mlogin-and-register-functionalities[m[33m)[m
+Merge: e1c2892 3b20fb8
+Author: Alex365-sys <a.arellano.h337@gmail.com>
+Date:   Sat Mar 8 18:47:27 2025 -0600
+
+    Merge pull request #1 from workdayr/Dashboard-branch
+    
+    feat: Dashboard side menu created
+
+[33mcommit 3b20fb8c86f7e82b3692f1e7f738964620d92865[m
+Author: Alejandro Arellano <a.arellano.h337@gmail.com>
+Date:   Sat Mar 8 18:10:57 2025 -0600
+
+    feat: Dashboard side menu created
+
+[33mcommit e1c2892271a6a6ee6b07315b23e9ed487e0ae803[m
+Author: workdayr <99066267+workdayr@users.noreply.github.com>
+Date:   Sat Mar 8 16:05:55 2025 -0600
+
+    Tables  from users, products and likes migrated succesfully
+
+[33mcommit e8a52b5852048cbdaa84794650edd2005a4fa9b1[m
+Author: J-R <josjacrosales@gmail.com>
+Date:   Sat Mar 8 11:02:07 2025 -0600
+
+    chore: remove unnecessary 'web' folder
+
+[33mcommit 1ba8020c91d36250e0362bd53a889dab9b3e925c[m
+Author: J-R <josjacrosales@gmail.com>
+Date:   Sat Mar 8 10:56:00 2025 -0600
+
+    fix: improve responsiveness of register and login pages
+
+[33mcommit 67d3169fbfadf1f23ef52f98859b2914ecbe9a9e[m
+Author: Alejandro Arellano <a.arellano.h337@gmail.com>
+Date:   Sat Mar 8 03:00:54 2025 -0600
+
+    refactor: login reorganization
+
+[33mcommit 3e8b2a5bc3cdddbc334c98a1d896cbdbf5d1b6d3[m
+Author: J-R <josjacrosales@gmail.com>
+Date:   Fri Mar 7 21:15:51 2025 -0600
+
+    refactor: folder and code reorganization
+
+[33mcommit 79ee750e03c9017f807a0251584ecb9503cd95ab[m
+Merge: de53bb0 017ed36
+Author: J-R <josjacrosales@gmail.com>
+Date:   Tue Mar 4 22:41:57 2025 -0600
+
+    Merge branch 'merge-backup'
+
+[33mcommit de53bb0570fec782ab97c1238f7ba645839e0d56[m
+Author: J-R <josjacrosales@gmail.com>
+Date:   Tue Mar 4 17:45:57 2025 -0600
+
+    feat: add user registration
+
+[33mcommit 017ed36e68c212d44b41e7ce910e23b8241bb819[m
+Author: workdayr <99066267+workdayr@users.noreply.github.com>
+Date:   Sun Mar 2 17:55:46 2025 -0600
+
+    Table Users and migration done
+
+[33mcommit ef6a14ef46ce2dcea8a0d3faec76cd2e608574a7[m
+Author: Killua <fridaolague@hotmail.com>
+Date:   Fri Feb 28 13:05:23 2025 -0600
+
+    RegisterComponent2
+
+[33mcommit aec025202fa00eafb08f34b7ae567d5454b5096b[m
+Merge: 189b53c b6b533a
+Author: Killua <fridaolague@hotmail.com>
+Date:   Fri Feb 28 13:03:39 2025 -0600
+
+    Merge branch 'main' of https://github.com/workdayr/Web_repo
+
+[33mcommit 189b53ce460f6ac58d1b399b1e2b8190e0dea102[m
+Author: Killua <fridaolague@hotmail.com>
+Date:   Fri Feb 28 12:31:36 2025 -0600
+
+    RegisterComponent
+
+[33mcommit b6b533ac72b599c14faa4de223e67f16a037772a[m
+Author: workdayr <99066267+workdayr@users.noreply.github.com>
+Date:   Thu Feb 27 18:19:06 2025 -0600
+
+    password change
+
+[33mcommit 878330431155f8aea3d8b86a9357c39cc75f1c43[m
+Author: Alejandro Arellano <a.arellano.h337@gmail.com>
+Date:   Sat Feb 22 20:21:26 2025 -0600
+
+    Log In
+
+[33mcommit e2477992b7d52c3fdf3fea2a091df5097d5f86be[m
+Merge: 5d59923 94bcf66
+Author: Alejandro Arellano <a.arellano.h337@gmail.com>
+Date:   Sat Feb 22 03:30:18 2025 -0600
+
+    Merge branch 'main' of https://github.com/workdayr/Web_repo
+
+[33mcommit 5d5992318249ab9efd1ffa376beaf93c4b4113d1[m
+Author: Alejandro Arellano <a.arellano.h337@gmail.com>
+Date:   Sat Feb 22 03:13:02 2025 -0600
+
+    Login set up
+
+[33mcommit 94bcf66d2b03e3a84864e56123c2337956497b5b[m
+Author: Killua <fridaolague@hotmail.com>
+Date:   Thu Feb 20 15:02:11 2025 -0600
+
+    Changes of login and sign up buttons
+
+[33mcommit 80ca241c3eb916c367e4e94ffdb178fbe82f37bc[m
+Author: workdayr <99066267+workdayr@users.noreply.github.com>
+Date:   Thu Feb 20 14:18:06 2025 -0600
+
+    change button "findbestprices"'s opacity
+
+[33mcommit 71b585aa47f2ee03470cc25cab8606233c5c3ecd[m
+Author: Killua <fridaolague@hotmail.com>
+Date:   Thu Feb 20 14:16:43 2025 -0600
+
+    Botton
+
+[33mcommit 51ba0c01e80b78d641afd57f3fcd1167f16b24e7[m
+Merge: 18fb366 ddf0e66
+Author: Killua <fridaolague@hotmail.com>
+Date:   Thu Feb 20 14:11:52 2025 -0600
+
+    Merge branch 'main' of https://github.com/workdayr/Web_repo
+
+[33mcommit 18fb366ed5fdd521cdbd81cfbfa1a6169f9c88ff[m
+Author: Killua <fridaolague@hotmail.com>
+Date:   Thu Feb 20 14:11:43 2025 -0600
+
+    Cambio de color de boton
+
+[33mcommit ddf0e66c74718c8f5f87a5b186bfa5533f4d62b4[m
+Author: workdayr <99066267+workdayr@users.noreply.github.com>
+Date:   Tue Feb 18 09:00:12 2025 -0600
+
+    responsive components
+
+[33mcommit 954c2af857d207953047e99e2ae052bd1fccf664[m
+Author: Alejandro Arellano <a.arellano.h337@gmail.com>
+Date:   Sun Feb 16 00:11:11 2025 -0600
+
+    Opinions Section 2
+
+[33mcommit 77446353def85a1ab788faf49a4a91a20b89d4ca[m
+Author: Alejandro Arellano <a.arellano.h337@gmail.com>
+Date:   Sat Feb 15 21:07:19 2025 -0600
+
+    Opinions section
+
+[33mcommit ee18ffe2a4e4b39c15f450f96613f476dd50bc7d[m
+Merge: 883c0df 8a2629a
+Author: Alejandro Arellano <a.arellano.h337@gmail.com>
+Date:   Sat Feb 15 18:27:15 2025 -0600
+
+    Products section
+
+[33mcommit 883c0df3b8ee3fc98cc85b59a829f5e22bc61758[m
+Author: Alejandro Arellano <a.arellano.h337@gmail.com>
+Date:   Sat Feb 15 18:21:26 2025 -0600
+
+    Product sections
+
+[33mcommit 8a2629a54a336436185534d279ffdb28c551e1b1[m
+Merge: 55571f8 925a2e6
+Author: workdayr <99066267+workdayr@users.noreply.github.com>
+Date:   Sat Feb 15 18:19:14 2025 -0600
+
+    Merge branch 'main' of https://github.com/workdayr/Web_repo
+
+[33mcommit 55571f8ceb45a7e47f5c010436fa6d9428d8fe22[m
+Author: workdayr <99066267+workdayr@users.noreply.github.com>
+Date:   Sat Feb 15 18:19:10 2025 -0600
+
+    footer and FindBestPrices develop
+
+[33mcommit 925a2e6504aa4cf9c7a065a20e3e8696f273a212[m
+Author: Alejandro Arellano <a.arellano.h337@gmail.com>
+Date:   Sat Feb 15 18:15:12 2025 -0600
+
+    Product section
+
+[33mcommit 6700080656bf761be5e9c5803e2c034eaf23edd5[m
+Author: workdayr <99066267+workdayr@users.noreply.github.com>
+Date:   Sat Feb 15 17:07:48 2025 -0600
+
+    carousel improve
+
+[33mcommit 4f8044c477b86e2d1aee36b0f544f5b22340a602[m
+Author: workdayr <99066267+workdayr@users.noreply.github.com>
+Date:   Fri Feb 14 18:15:27 2025 -0600
+
+    placeHolder replaced by gradient
+
+[33mcommit 4047c2695e39733edeac15ddafd11df16eee3f59[m
+Author: workdayr <99066267+workdayr@users.noreply.github.com>
+Date:   Fri Feb 14 17:22:44 2025 -0600
+
+    fragmentation complete and carrousel works
+
+[33mcommit f440df1a73d6ec3e77eca5bae539b827c18f441f[m
+Author: workdayr <99066267+workdayr@users.noreply.github.com>
+Date:   Fri Feb 14 16:39:42 2025 -0600
+
+    fracmentation
+
+[33mcommit d3a21d568e5607fc6b7cb472a11fb43475096038[m
+Author: workdayr <99066267+workdayr@users.noreply.github.com>
+Date:   Fri Feb 14 16:26:43 2025 -0600
+
+    refactor_front
+
+[33mcommit 1abff5278e83d86daa7304d2c071d5ee4297d194[m
+Author: Alejandro Arellano <a.arellano.h337@gmail.com>
+Date:   Wed Feb 12 20:31:48 2025 -0600
+
+    Navigation Bar
+
+[33mcommit 5527350fc0dd7ea0f962c6cbccfd2bce7a2975c6[m
+Author: workdayr <99066267+workdayr@users.noreply.github.com>
+Date:   Thu Feb 6 19:11:55 2025 -0600
+
+    backend
+
+[33mcommit b7a0ef2ead3867e40d5380635ae641fad17d5018[m
+Author: workdayr <99066267+workdayr@users.noreply.github.com>
+Date:   Thu Feb 6 18:58:06 2025 -0600
+
+    babel
+
+[33mcommit 01fc37dbff15e8a1f7d915f6699e33bd3ae21ad1[m
+Author: workdayr <99066267+workdayr@users.noreply.github.com>
+Date:   Thu Feb 6 18:51:08 2025 -0600
+
+    bable error fixed
+
+[33mcommit 740b41fde01d8df69ad7cac2daa9e54bf0749e1d[m
+Author: workdayr <99066267+workdayr@users.noreply.github.com>
+Date:   Thu Feb 6 16:12:26 2025 -0600
+
+    vue update
+    
+    vue structure has been added
+
+[33mcommit 9711b00c40af4ceb4f2966f2ae1daedefa6ace6a[m
+Author: workdayr <99066267+workdayr@users.noreply.github.com>
+Date:   Thu Feb 6 14:02:13 2025 -0600
+
+    Initial commit
