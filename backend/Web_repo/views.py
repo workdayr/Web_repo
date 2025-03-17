@@ -1,9 +1,11 @@
 from rest_framework import viewsets
 from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework import status
 from django.core.mail import send_mail
 from .models import User, UserActivity, Products, Brand, PricesHistory, Currencys, StoreProducts, Stores, Categories, ProductCategory, ProductImage, UserHasLiked
 from .serializers import UserSerializer, UserActivitySerializer, ProductsSerializer, BrandSerializer, PricesHistorySerializer, CurrencysSerializer, StoreProductsSerializer, StoresSerializer, CategoriesSerializer, ProductCategorySerializer, ProductImageSerializer, UserHasLikedSerializer
+from django.contrib.auth import authenticate, login
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -26,7 +28,6 @@ class UserViewSet(viewsets.ModelViewSet):
             )
             '''
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        print("Error")
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -83,3 +84,20 @@ class ProductImageViewSet(viewsets.ModelViewSet):
 class UserHasLikedViewSet(viewsets.ModelViewSet):
     queryset = UserHasLiked.objects.all()
     serializer_class = UserHasLikedSerializer
+
+class LoginView(APIView):
+    def post(self, request):
+        email = request.data.get("email")
+        password = request.data.get("password")
+
+        print(f"Checking login for email: {email}")  # Debugging
+
+        user = authenticate(request, email=email, password=password)
+        
+        if user is not None:
+            print(f"User found: {user}")  # Debugging
+            token, created = Token.objects.get_or_create(user=user)
+            return Response({"token": token.key}, status=status.HTTP_200_OK)
+        else:
+            print("Authentication failed")  # Debugging
+            return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)

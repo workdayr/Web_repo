@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'Web_repo',
     'corsheaders',
     'rest_framework',  # Agregar Django REST Framework
+    'rest_framework.authtoken', 
     'web',  # Reemplaza 'web' con el nombre correcto de tu aplicación
 ]
 
@@ -130,3 +131,18 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+AUTH_USER_MODEL = 'Web_repo.User' 
+#AUTHENTICATION_BACKENDS = [   'django.contrib.auth.backends.ModelBackend',  # Default backend]
+AUTHENTICATION_BACKENDS = ['web.auth_backends.CustomAuthBackend']
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',  # Use token authentication
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',  # Allow login without authentication
+    ]
+}

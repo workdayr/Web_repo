@@ -20,13 +20,11 @@ const sent = ref(false);
 const { validFields, errorMessage } = useRegisterValidation(form);
 
 // backend URL
-const API_URL = 'http://127.0.0.1:8000/users/';
+const API_URL = 'http://127.0.0.1:8000/api/login/';
 
 // submit form function
 const submitForm = async () => {
-	console.log(form.value);
 	submitted.value = true;
-
 	// Client form validation
 	let isValid = Object.values(validFields.value).every(Boolean);
 	if (!isValid || sent.value) {
@@ -40,16 +38,25 @@ const submitForm = async () => {
 		email: form.value.email,
 		password: hashedPassword, // Se envía la contraseña en SHA-256 con sal
 	};
-
+	console.log(payload);
 	try {
 
 		const response = await axios.post(API_URL, payload);
-		console.log('Registro exitoso:', response.data);
+		console.log(response.data);
 		// add authentification state
 		router.push('/');
 	} catch (error) {
-		console.error('Error al registrar usuario', error);
-		errorMessage.value.general = 'Error al registrar el usuario. Inténtalo de nuevo.';
+		if (error.response) {
+			const errorData = error.response.data;
+			console.error('Error response received:', errorData);
+			return error.response;
+		} else if (error.request) {
+			console.error('No response received:', error.request);
+			return error.request;
+		} else {
+			console.error('Error setting up the request:', error.message);
+			return error;
+		}
 	} finally {
 		sent.value = false; // Rehabilitamos el botón después de la petición
 	}
@@ -61,9 +68,9 @@ const submitForm = async () => {
 		<FormInput id="login__input--email" v-model="form.email" :src="require('@/assets/Form/Email.svg')"
 			:placeholder="'Email'" :is-valid="validFields.email" :submitted="submitted"
 			:error-message="errorMessage.email" />
-		<FormInput id="login__input--password" v-model="form.passwordLogin" :src="require('@/assets/Form/Password.svg')"
-			:placeholder="'Password'" type="password" :is-valid="validFields.passwordLogin" :submitted="submitted"
-			:error-message="errorMessage.passwordLogin" />
+		<FormInput id="login__input--password" v-model="form.password" :src="require('@/assets/Form/Password.svg')"
+			:placeholder="'Password'" type="password" :is-valid="validFields.password" :submitted="submitted"
+			:error-message="errorMessage.password" />
 
 		<div id="login__inputs">
 			<label>

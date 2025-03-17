@@ -1,5 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+import datetime
 
 class Brand(models.Model):
     brand_id = models.AutoField(primary_key=True)
@@ -12,8 +14,7 @@ class Products(models.Model):
     upc = models.CharField(max_length=20, unique=True)
     description = models.CharField(max_length=2500)
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE, related_name="products")
-    current_lowest_price = models.ForeignKey('PricesHistory', on_delete=models.CASCADE, related_name="products", unique=True)
-    
+    current_lowest_price = models.OneToOneField('PricesHistory', on_delete=models.CASCADE)
 
 class PricesHistory(models.Model):
     price_history_id = models.AutoField(primary_key=True)
@@ -64,22 +65,52 @@ class ProductImage(models.Model):
     is_primary = models.BooleanField(default=False)
     product_id = models.ForeignKey(Products, on_delete=models.CASCADE, related_name="product_images")
 
+'''
+    USER MANAGEMENT
+'''
 
-class User(models.Model):
+class UserManager(BaseUserManager):
+    def create_user(self, username, email, password=None, **extra_fields):
+        if not email:
+            raise ValueError('The Email field must be set')
+        email = self.normalize_email(email)
+        user = self.model(username=username, email=email, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, username, email, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+
+        return self.create_user(username, email, password, **extra_fields)
+
+class User(AbstractBaseUser, PermissionsMixin):
     user_id = models.AutoField(primary_key=True)
     username = models.CharField(max_length=50, unique=True, null=False)
     email = models.EmailField(max_length=100, unique=True, null=False)
-    password = models.CharField(max_length=256, null=False, blank=False, default=' ')
+    password = models.CharField(max_length=256, null=False, blank=False)
     first_name = models.CharField(max_length=35, null=False)
     last_name = models.CharField(max_length=35, null=False)
-    state = models.CharField(max_length=20,null=False,default='Unknown')
+    state = models.CharField(max_length=20, null=False, default='Unknown')
     date_of_birth = models.DateField(null=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
+
+    # Inherited from PermissionsMixin
+    is_staff = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+    is_superuser = models.BooleanField(default=False)
+    last_login = models.DateTimeField(auto_now=True, null=True)
+
+    objects = UserManager()
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username']
 
     def __str__(self):
         return self.username
+
 
 
 class UserActivity(models.Model):

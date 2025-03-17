@@ -8,7 +8,7 @@ import { hashPassword } from '@/utils/hashUtils';
 import Swal from 'sweetalert2';
 import { useRouter } from 'vue-router';
 
-const router = useRouter(); 
+const router = useRouter();
 
 const states = ['State A', 'State B', 'State C'];
 
@@ -52,16 +52,6 @@ const submitForm = async () => {
 	};
 
 	try {
-		Swal.fire({
-			title: 'Enviando datos...',
-			text: 'Por favor espera mientras enviamos tus datos.',
-			showConfirmButton: false,
-			allowOutsideClick: false,
-			didOpen: () => {
-				Swal.showLoading();
-			}
-		});
-
 		console.log('Enviando datos al servidor...', payload);
 		const response = await axios.post(API_URL, payload);
 
@@ -76,14 +66,32 @@ const submitForm = async () => {
 
 	} catch (error) {
 		console.error('Error al registrar usuario', error);
-		//errorMessage.value.general = 'Error al registrar el usuario. Inténtalo de nuevo.';
+
+		if (error.response) {
+			const errorData = error.response.data;
+			if (errorData && errorData.email && errorData.email.length > 0) {
+				const emailError = errorData.email[0];
+				console.log('Email error:', emailError);
+				// Display emailError to the user
+			}
+			return error.response;
+		} else if (error.request) {
+			// display error message to user
+			console.error('No response received:', error.request);
+			return error.request;
+		} else {
+			console.error('Error setting up the request:', error.message);
+			return error;
+		}
+		/*
 		Swal.fire({
 			icon: 'error',
 			title: 'Error',
 			text: 'Hubo un error al registrar el usuario. Inténtalo de nuevo.',
 		});
+		*/
 	} finally {
-		sent.value = false; // Rehabilitamos el botón después de la petición
+		sent.value = false; 
 		console.log('Proceso de registro terminado.');
 	}
 };

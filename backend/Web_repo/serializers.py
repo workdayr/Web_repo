@@ -19,6 +19,7 @@ class UserSerializer(serializers.ModelSerializer):
             resolve(domain, 'MX')
         except (IndexError, NXDOMAIN, NoAnswer, DNSException):
             raise serializers.ValidationError("El correo electrónico no es válido o no existe.")
+
         return value
 
     def create(self, validated_data):
