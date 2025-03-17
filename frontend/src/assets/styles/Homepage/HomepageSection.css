@@ -1,0 +1,68 @@
+.section-header{
+    display: flex;
+    height: fit-content; 
+    align-items: baseline;
+    margin-bottom: 2rem;
+    gap: clamp(5px, 5%, 10px);
+}
+
+.section-title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    font-family: 'Inter';
+    color: #FAF8FF;
+    margin: 0;
+}
+
+.section-icon {
+    width: auto;
+    height: 2.5rem;
+}
+
+@supports (background-clip: text) {
+    .section-title {
+        background: linear-gradient(to right, #FAF8FF, #F3E8FF);
+        -webkit-background-clip: text; /* For WebKit browsers */
+        background-clip: text;
+        color: transparent; 
+    }
+}
+
+
+@media (max-width: 768px) {
+    .section-header{
+        margin-bottom: 1.8rem;
+    }
+    .section-title {
+        font-size: 2rem;
+    }
+    .section-icon {
+        height: 2.3rem; 
+    }
+}
+
+/* For mobile devices (e.g., screens less than 480px) */
+@media (max-width: 480px) {
+    .section-header{
+        margin-bottom: 1.6rem;
+    }
+    .section-title {
+        font-size: 1.8rem;
+    }
+    .section-icon {
+        height: 2.1rem;
+    }
+}
+
+/* For very small mobile devices (e.g., screens less than 320px) */
+@media (max-width: 320px) {
+    .section-header{
+        margin-bottom: 1.4rem;
+    }
+    .section-title {
+        font-size: 1.6rem;
+    }   
+    .section-icon {
+        height: 1.9rem; 
+    }
+}

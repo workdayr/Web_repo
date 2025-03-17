@@ -15,6 +15,7 @@ const openSection = (section) => (activeSection.value = section);
 <div class="dashboard__content">
     <component v-if="activeSection" :is="sections[activeSection]" />
 </div>
+
 </template>
 
 <style scoped>

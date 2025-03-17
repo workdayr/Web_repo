@@ -38,7 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'Web_repo',
+    'corsheaders',
     'rest_framework',  # Agregar Django REST Framework
+    'rest_framework.authtoken', 
     'web',  # Reemplaza 'web' con el nombre correcto de tu aplicación
 ]
 
@@ -50,7 +52,11 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8080",  # Permite solicitudes desde tu frontend
 ]
 
 ROOT_URLCONF = 'web.urls'
@@ -125,3 +131,18 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+AUTH_USER_MODEL = 'Web_repo.User' 
+#AUTHENTICATION_BACKENDS = [   'django.contrib.auth.backends.ModelBackend',  # Default backend]
+AUTHENTICATION_BACKENDS = ['web.auth_backends.CustomAuthBackend']
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',  # Use token authentication
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',  # Allow login without authentication
+    ]
+}

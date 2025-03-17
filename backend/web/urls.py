@@ -20,7 +20,7 @@ from Web_repo.views import (
     UserViewSet, UserActivityViewSet, ProductsViewSet, BrandViewSet, 
     PricesHistoryViewSet, CurrencysViewSet, StoreProductsViewSet, 
     StoresViewSet, CategoriesViewSet, ProductCategoryViewSet, 
-    ProductImageViewSet, UserHasLikedViewSet
+    ProductImageViewSet, UserHasLikedViewSet, LoginView
 )
 
 # Crea un enrutador por defecto
@@ -42,4 +42,5 @@ router.register(r'user_likes', UserHasLikedViewSet)
 
 urlpatterns = [
     path('api/', include(router.urls)),  # Accede a las rutas de los viewsets, por ejemplo, /api/users/
+    path("api/login/", LoginView.as_view(), name="login"),
 ]
