@@ -1,57 +1,66 @@
-.Homepage__navBar {
-    height: 60px;
+
+.navBar__container {
+    --nav-height: 40px;
+    --nav-font-size: max(12px, calc(0.17*var(--nav-height)));
+
+    height: var(--nav-height);
     display: flex;
-    align-items: center; /* Centra los elementos verticalmente */
-    justify-content: space-between; /* Espaciado uniforme */
+    position: fixed;
+    align-items: center; 
+    justify-content: space-between;
     top: 0;
     left: 0;
     width: 100%;
-    z-index: 1000;
-    padding: 0 40px; /* Añade margen interno a los lados */
+    z-index: 10;
+    color: #FFF;
+    font-family: 'Inter';
+    font-weight: 400;
+    padding: 0 10%;
+    font-size: var(--nav-font-size);
+    transition: background-color 0.5s ease;
   }
-  
-  .navBar__BprcsLogo {
-    display: flex;
-    align-items: center;
-  }
-  
-  .navBar__BprcsLogo img {
-    width: 120px;
-    height: auto;
+  .navBar__solid-background{
+    background-color: rgba(0, 0, 0, 0.6);
   }
   
   .navBar__searchBar {
-    border-radius: 20px;
-    border: 1px solid #FFF;
-    width: 400px;
-    height: 30px;
-    padding: 15px;
-  }
-  
-  .navBar__menu {
     display: flex;
-    align-items: center;
-    gap: 20px; /* Espaciado entre elementos */
+    align-items: center; 
+    border-radius: 20px;
+    width: 30%;
+    max-width: 500px;
+    height: 60%;
+    max-height: 35px;
+  }
+
+  .navBar__searchBar .searchbar{
+    background-color: #FFF;
+    color:#0D0E36;
+    font-size: var(--nav-font-size);
   }
   
-  .navBar__li--FQA,
-  .navBar__li--Explore {
-    font-size: 13px;
-    color: #FFF;
+  .navBar__--FQA,
+  .navBar__--Explore{
+    cursor: pointer;
   }
   
   .navBar__buttons {
     display: flex;
     gap: 15px; /* Espaciado entre los botones */
   }
+  .navBar__buttons{
+    height: 100%;
+    align-items: center; 
+  }
   
   .navBar__buttons--SignUp,
   .navBar__buttons--Login {
-    font-size: 11px;
-    width: 90px;
-    padding: 8px;
+    min-width: 90px;
+    width: auto;
+    height: 60%;
     border-radius: 30px;
     text-align: center;
+    max-height: 35px;
   }
   .navBar__buttons--Login:hover{
     background-color:#562F7F ;
@@ -73,4 +82,52 @@
     color: #0D0E36;
     border: none;
   }
+
+  .navBar__logo .logo__title{
+    color: #fff;
   
+  }
+.logo__container{
+  --logo-height: calc(0.7*var(--nav-height));
+  }
+  
+  @media (max-width: 992px) {  
+    .navBar__searchBar {
+      margin-left: auto; /* Push it to the right */
+      margin-right: 5%;
+      width: 50%;
+    }
+  }
+
+  @media (max-width: 688px) {  
+     
+  .navBar__buttons--SignUp,
+  .navBar__buttons--Login {
+    min-width: 60px;
+  }
+  .navBar__container{
+    --nav-font-size: max(12px, calc(0.15*var(--nav-height)));
+
+  }
+  }
+
+  @media (max-width: 500px) {  
+    .navBar__search-active .navBar__searchBar {
+      width: 85%;
+      margin-right: auto;
+    }
+    .navBar__buttons {
+      gap: 10px;
+    }
+    .navBar__buttons--SignUp,
+    .navBar__buttons--Login {
+      min-width: 60px;
+    }
+    .navBar__container{
+      max-height: 50px;
+      padding: 0 5%;
+    }
+    .logo__container{
+      --logo-height: calc(0.6*var(--nav-height));
+      }
+    }

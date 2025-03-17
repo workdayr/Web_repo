@@ -1,0 +1,24 @@
+.logo__container {
+    --logo-height: 40px;
+    display: flex;
+    flex-direction: row;
+    align-items: center; 
+    cursor: pointer;
+    width: auto;
+    height: var(--logo-height);
+  }
+  
+  .bprcs-logo {
+    width: auto;
+    height: 100%; 
+  }
+  
+  .logo__title {
+    font-size: calc(0.6 * var(--logo-height)); 
+    font-family: 'Inter';
+    font-weight: 600;
+    color: #1B0F26;
+    margin: 0;
+    margin-left: 10%; 
+    white-space: nowrap;
+  }

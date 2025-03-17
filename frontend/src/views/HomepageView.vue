@@ -1,89 +1,146 @@
 <template>
   <section id="Homepage">
-    <!-- Navbar -->
-    <Navbar />
+    <NavbarComponent :is-always-compact="false"/>
 
-    <!-- Ajuste para que el carrusel no se superponga con el navbar -->
-    <div style="margin-top: 60px;">
-      <CarouselComponent />
-    </div>
+    <CarouselComponent :slides="carouselSlides"/>
 
-    <FindBestPrices />
-    <div>
-      <ProductsComponent />
-    </div>
-
-    <OpinionsComponent />
-
-    <FooterComponent />
-
-
-
+  <div class="hompage-content">
+    <FindBestPrices/>
+    <HomepageSection v-for="section in sections" class="homepage-section" :key="section.id" :title="section.title" :icon="section.icon" :products="section.products"/>
+    <!-- <OpinionsComponent />-->
+    
+  </div>
+  <FooterComponent/>
 
   </section>
 </template>
 
-<script>
-import Navbar from '@/components/Layout/Navbar.vue';
-import CarouselComponent from '@/components/Layout/CarouselComponent.vue'; // Asegurando que coincida el nombre del componente
-import BprcsLogo from '@/assets/Bprcs_logo.png';
-import ProductsComponent from '@/components/ProductsComponent.vue';
-import FooterComponent from '@/components/Layout/Footer.vue';
-import OpinionsComponent from '@/components//OpinionsComponent.vue';
-import FindBestPrices from '@/components/FindBestPrices.vue';
-export default {
-  name: 'HelloWorld',
-  components: {
-    Navbar,
-    CarouselComponent, // Antes estaba como "Carrusel", ahora coincide con el import
-    ProductsComponent,
-    FooterComponent,
-    OpinionsComponent,
-    FindBestPrices,
+<script setup>
+import NavbarComponent from '@/components/Layout/NavbarComponent.vue';
+import CarouselComponent from '@/components/Layout/CarouselComponent.vue'; 
+import FindBestPrices from '@/components/Homepage/FindBestPrices.vue';
+import HomepageSection from '@/components/Homepage/HomepageSection.vue';
+import FooterComponent from '@/components/Layout/FooterComponent.vue';
+//import OpinionsComponent from '@/components/Homepage/OpinionsComponent.vue';
+
+
+
+/*
+  EXAMPLE DATA FETCH RESULT
+*/
+const exampleProducts = [
+{
+    'title': 'example product 1',
+    'symbol': '$',
+    'priceWhole': '9999',
+    'priceFraction': '00',
+    'imageUrl': ''
   },
-  data() {
-    return {
-      BprcsLogo
-    };
-  }
-};
+  {
+    'title': 'aaaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaa',
+    'symbol': '$',
+    'priceWhole': '10',
+    'priceFraction': '00',
+    'imageUrl': ''
+  },
+  {
+    'title': 'example product 1',
+    'symbol': '$',
+    'priceWhole': '9999',
+    'priceFraction': '00',
+    'imageUrl': ''
+  },
+  {
+    'title': '',
+    'symbol': '',
+    'priceWhole': '',
+    'priceFraction': '',
+    'imageUrl': ''
+  },
+  {
+    'title': 'example product 1',
+    'symbol': '$',
+    'priceWhole': '9999',
+    'priceFraction': '00',
+    'imageUrl': ''
+  },
+  {
+    'title': '',
+    'symbol': '',
+    'priceWhole': '',
+    'priceFraction': '',
+    'imageUrl': ''
+  },
+  {
+    'title': 'example product 1',
+    'symbol': '$',
+    'priceWhole': '9999',
+    'priceFraction': '00',
+    'imageUrl': ''
+  },
+  {
+    'title': '',
+    'symbol': '',
+    'priceWhole': '',
+    'priceFraction': '',
+    'imageUrl': ''
+  },
+  {
+    'title': 'example product 1',
+    'symbol': '$',
+    'priceWhole': '9999',
+    'priceFraction': '00',
+    'imageUrl': ''
+  },
+  {
+    'title': '',
+    'symbol': '',
+    'priceWhole': '',
+    'priceFraction': '',
+    'imageUrl': ''
+  },
+  {
+    'title': 'example product 1',
+    'symbol': '$',
+    'priceWhole': '9999',
+    'priceFraction': '00',
+    'imageUrl': ''
+  },
+  {
+    'title': '',
+    'symbol': '',
+    'priceWhole': '',
+    'priceFraction': '',
+    'imageUrl': ''
+  },];
+
+  const carouselSlides = [
+  {
+    "text": "Compare prices across \ndifferent websites",
+    "gradient": "linear-gradient(to bottom, #4D1270, #561960)",
+    "icon": require("@/assets/Carrusel_icons/Slide1.svg"),
+    "textPosition": "center-left",
+    "iconPosition": "center-right"
+  },
+  {
+    "text": "Track product prices \nover time",
+    "gradient": "linear-gradient(to bottom, #562F7F, #835EAB)",
+    "icon": require("@/assets/Carrusel_icons/Slide1.svg"),
+    "textPosition": "center-right",
+    "iconPosition": "center-left"
+  },
+  {
+    "text": "Stay Signed In For Notifications on \nPrice Changes",
+    "gradient": "linear-gradient(to bottom, #4D1270, #feb47b)",
+    "icon": "",//require("@/assets/Carrusel_icons/Slide1.svg"),
+    "textPosition": "center",
+    "iconPosition": "center-right"
+  },
+]
+
+const sections = [{"id":0, "title": "Best Sales", "icon": require("@/assets/Layout/Footer/instagram-icon.png"),"products": exampleProducts},{"id":1,"title": "You may also like", "products": exampleProducts}]
 </script>
 
 <style scoped>
-/* Estilos para la Navbar */
-@import "@/assets/styles/Layout/NavbarComponent.css";
-/* Asegura que se carguen los estilos */
-
-/* Corrección para navbar: fixed y ajuste de fondo */
-.Homepage__navBar {
-  height: 60px;
-  display: flex;
-  top: 0;
-  width: 100%;
-  position: absolute;
-  background-color: rgba(0, 0, 0, 0.2);
-  /* Fondo para mayor visibilidad */
-  z-index: 1000;
-  /* Se mantiene sobre el carrusel */
-}
-
-/* Corrección del buscador */
-.navBar__searchBar {
-  border-radius: 20px;
-  border: 1px solid #FFFF;
-  width: 422px;
-  height: 30px;
-  margin: 12px;
-  margin-left: 100px;
-}
-
-/* Ajuste del logo */
-.navBar__BprcsLogo img {
-  display: inline-block;
-  width: 120px;
-  height: auto;
-  max-width: 100%;
-  padding-top: 12px;
-  margin-left: 60px;
-}
+@import "@/assets/styles/Views/HomepageView.css";
 </style>

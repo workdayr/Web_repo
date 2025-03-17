@@ -1,6 +1,7 @@
 <script setup>
 import OptionComponent from '@/components/UI/OptionComponent.vue';
 import SearchbarComponent from '@/components/UI/SearchbarComponent.vue';
+import LogoComponent from '@/components/UI/LogoComponent.vue';
 import { ref } from 'vue';
 
 const isOpen = ref(false);
@@ -16,14 +17,10 @@ const toggleMenu = () => {
     <aside class="sidebar">
       <button class="menu-toggle" @click="toggleMenu">☰</button>
       <div :class="['overlay', { active: isOpen }]"></div>
-
       <div :class="['sideMenu__container', { active: isOpen }]">
-        <div class="sideMenu__header">
-          <img class="bprcs-logo" src="@/assets/svg/Logo.svg" alt="Logo">
-          <h1 class="sideMenu__title">Bprcs</h1>
-        </div>
+        <LogoComponent :render-title="true"/>
         <div class="separation-line"></div>
-        <SearchbarComponent text="Search for..." />
+        <SearchbarComponent text="Search for..." class="sideMenu-searchbar" />
         <div class="sideMenu__options-container">
           <OptionComponent name="User Analytics" />
           <OptionComponent name="Products" />
@@ -37,8 +34,6 @@ const toggleMenu = () => {
     <!-- Main Content -->
     <main class="content">
       <h1 class="dashboard-title">User Analytics</h1>
-
-     
     </main>
   </div>
 </template>
