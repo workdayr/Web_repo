@@ -76,7 +76,7 @@ const submitForm = async () => {
 
 	} catch (error) {
 		console.error('Error al registrar usuario', error);
-		errorMessage.value.general = 'Error al registrar el usuario. Inténtalo de nuevo.';
+		//errorMessage.value.general = 'Error al registrar el usuario. Inténtalo de nuevo.';
 		Swal.fire({
 			icon: 'error',
 			title: 'Error',
