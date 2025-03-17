@@ -1,5 +1,6 @@
 <template>
     <div class="chart-container">
+        <h5 class="chart-title">{{ chartHeader }}</h5>
       <component :is="chartComponent" :data="chartData" :options="chartOptions" />
     </div>
   </template>
@@ -25,6 +26,7 @@
   
   // Definir las props
   const props = defineProps({
+    chartHeader: String,
     chartType: String, // Tipo de gráfico ('line', 'bar', 'pie', etc.)
     chartData: Object, // Datos del backend
     chartOptions: Object // Opciones de configuración
@@ -42,5 +44,12 @@
     width: 100%;
     height: 300px;
   }
+
+  .chart-title{
+    font-size: large;
+    color: black;
+  }
+
+
   </style>
   

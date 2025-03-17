@@ -3,6 +3,7 @@ import {ref, defineAsyncComponent} from 'vue';
 import SidemenuComponent from '@/components/Dashboard/SidemenuComponent.vue';
 const sections =  {
   "User Analytics": defineAsyncComponent(() => import('@/components/Dashboard/Sections/UseranalyticsSection.vue')),
+  "Products": defineAsyncComponent(()=> import('@/components/Dashboard/Sections/ProductsSection.vue')),
 
 }
 const activeSection = ref(null);

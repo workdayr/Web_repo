@@ -13,13 +13,14 @@ const fetchChartData = async () => {
         charts.value = [
             {
                 id: 1,
+                header: "Total Users",
                 type: "line",
                 data: {
                     labels: data.months,
                     datasets: [
                         {
-                            label: "Active Users",
-                            data: data.activeUsers,
+                            label: "Users",
+                            data: data.totalUsers,
                             borderColor: "#007bff",
                             backgroundColor: "rgba(0, 123, 255, 0.2)"
                         }
@@ -29,13 +30,14 @@ const fetchChartData = async () => {
             },
             {
                 id: 2,
+                header: "Total views",
                 type: "bar",
                 data: {
                     labels: data.months,
                     datasets: [
                         {
-                            label: "New Signups",
-                            data: data.newUsers,
+                            label: "Views",
+                            data: data.totalViews,
                             backgroundColor: "#28a745"
                         }
                     ]
@@ -75,16 +77,18 @@ onMounted(fetchChartData);
             <StatscardComponent header="Recent Pageviews" amount="30K" />
             <StatscardComponent header="Recent Pageviews" amount="30K" />
         </div>
-        <div class="Section__Graphs">
-            <h6 class="Section__Graphs--header">Total Users</h6>
+        <div class="Section__content--graphs">
+        <div class="Section__content--graph1">
             <div class="row">
                 <div class="col-md-6" v-for="chart in charts" :key="chart.id">
-                    <GraphTemplate :chartType="chart.type" :chartData="chart.data" :chartOptions="chart.options" />
+                    <GraphTemplate :chartHeader="chart.header" :chartType="chart.type" :chartData="chart.data" :chartOptions="chart.options" />
                 </div>
             </div>
         </div>
     </div>
+    </div>
 </template>
+
 <style scoped>
 @import "@/assets/styles/Dashboard/Sections/UseranalyticsSection.css";
 </style>
