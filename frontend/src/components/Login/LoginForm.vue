@@ -1,83 +1,81 @@
 <script setup>
 import { ref } from 'vue';
 import axios from 'axios';
-import AppInput from '@/components/Form/FormInput.vue';
-import AppSubmitButton from '@/components/Form/FormSubmitButton.vue';
+import FormInput from '@/components/Form/FormInput.vue';
+import FormSubmitButton from '@/components/Form/FormSubmitButton.vue';
 import { useRegisterValidation } from '@/composables/useRegisterValidation';
-import { hashPassword } from '@/utils/hashUtils'; // Asegúrate de crear esta función
+import { hashPassword } from '@/utils/hashUtils';
+import { useRouter } from 'vue-router';
+
+const router = useRouter(); 
 
 const form = ref({
-  fullName: '',
-  email: '',
-  password: '',
-  confirmPassword: '',
-  birthday: ''
+	email: '',
+	password: ''
 });
 
 const submitted = ref(false);
 const sent = ref(false);
-const errorMessage = ref({});
 
-// Importar validaciones
-const { validFields } = useRegisterValidation(form);
+const { validFields, errorMessage } = useRegisterValidation(form);
 
-// URL del backend (ajústala según corresponda)
+// backend URL
 const API_URL = 'http://127.0.0.1:8000/users/';
 
-// Función para manejar el envío del formulario
+// submit form function
 const submitForm = async () => {
-  submitted.value = true;
-  
-  // Validamos los campos
-  let isValid = Object.values(validFields.value).every(Boolean);
-  if (!isValid) {
-    return;
-  }
+	console.log(form.value);
+	submitted.value = true;
 
-  // Hashear la contraseña antes de enviarla
-  const hashedPassword = await hashPassword(form.value.password);
+	// Client form validation
+	let isValid = Object.values(validFields.value).every(Boolean);
+	if (!isValid || sent.value) {
+		return;
+	}
+	sent.value = true;
 
-  const payload = {
-    username: form.value.email, // Se usa el email como username
-    first_name: form.value.fullName.split(' ')[0], // Extraer primer nombre
-    last_name: form.value.fullName.split(' ').slice(1).join(' ') || "", // Extraer el apellido si existe
-    email: form.value.email,
-    password: hashedPassword, // Se envía la contraseña en SHA-256 con sal
-    date_of_birth: form.value.birthday
-  };
+	const hashedPassword = hashPassword(form.value.password);
 
-  try {
-    sent.value = true; // Bloqueamos el botón mientras se procesa la petición
-    const response = await axios.post(API_URL, payload);
-    console.log('Registro exitoso:', response.data);
-    // Aquí podrías redirigir al usuario a otra página, por ejemplo:
-    //router.push('/');
-  } catch (error) {
-    console.error('Error al registrar usuario', error);
-    errorMessage.value.general = 'Error al registrar el usuario. Inténtalo de nuevo.';
-  } finally {
-    sent.value = false; // Rehabilitamos el botón después de la petición
-  }
+	const payload = {
+		email: form.value.email,
+		password: hashedPassword, // Se envía la contraseña en SHA-256 con sal
+	};
+
+	try {
+
+		const response = await axios.post(API_URL, payload);
+		console.log('Registro exitoso:', response.data);
+		// add authentification state
+		router.push('/');
+	} catch (error) {
+		console.error('Error al registrar usuario', error);
+		errorMessage.value.general = 'Error al registrar el usuario. Inténtalo de nuevo.';
+	} finally {
+		sent.value = false; // Rehabilitamos el botón después de la petición
+	}
 };
 </script>
 
-
 <template>
-	<form class="register__form" @submit.prevent="submitForm">
-		<AppInput v-model="form.fullName" :src="require('@/assets/Form/FullName.svg')" placeholder="Full Name" :is-valid="validFields['fullName']" :submitted="submitted" :error-message="errorMessage['fullName']"/>
-		<AppInput v-model="form.email" :src="require('@/assets/Form/Email.svg')" placeholder="Email" type="email" :is-valid="validFields['email']" :submitted="submitted" :error-message="errorMessage['email']"/>
-		<AppInput v-model="form.password" :src="require('@/assets/Form/Password.svg')" placeholder="Password" type="password" :is-valid="validFields['password']" :submitted="submitted" :error-message="errorMessage['password']"/>
-		<AppInput v-model="form.confirmPassword" :src="require('@/assets/Form/Password.svg')" placeholder="Confirm Password" type="password" :is-valid="validFields['confirmPassword']" :submitted="submitted" :error-message="errorMessage['confirmPassword']"/>
-		
-		<div class="form__group">
-			<AppInput v-model="form.birthday" :src="require('@/assets/Form/Birthday.svg')" placeholder="Birthday" type="date" :is-valid="validFields['birthday']" :submitted="submitted" :error-message="errorMessage['birthday']"/>
+	<form class="login__form" @submit.prevent="submitForm">
+		<FormInput id="login__input--email" v-model="form.email" :src="require('@/assets/Form/Email.svg')"
+			:placeholder="'Email'" :is-valid="validFields.email" :submitted="submitted"
+			:error-message="errorMessage.email" />
+		<FormInput id="login__input--password" v-model="form.passwordLogin" :src="require('@/assets/Form/Password.svg')"
+			:placeholder="'Password'" type="password" :is-valid="validFields.passwordLogin" :submitted="submitted"
+			:error-message="errorMessage.passwordLogin" />
+
+		<div id="login__inputs">
+			<label>
+				<input id="login__input--rememberMe" type="checkbox" v-model="form.rememberMe">
+				<span class="input__rememberMe--label">Remember me</span>
+			</label>
+			<a class="login__link--forgotPw" @click="$router.push('/')">Forgot password?</a>
 		</div>
-		
-		<AppSubmitButton :sent="sent"/>
+
+		<FormSubmitButton text="NEXT" :sent="sent" />
 	</form>
 </template>
-
-
-<style lang="css">
-@import "@/assets/styles/Register/RegisterForm.css";
+<style scoped>
+@import "@/assets/styles/Login/LoginForm.css"
 </style>
