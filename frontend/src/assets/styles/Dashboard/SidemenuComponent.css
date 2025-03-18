@@ -22,6 +22,9 @@
     height: 8px;
     z-index: 2;
 }
+.sideMenu__searchbar{
+    height: 40px;
+}
 .sideMenu__options-container{
     margin-top: 20%;
     display: flex;
