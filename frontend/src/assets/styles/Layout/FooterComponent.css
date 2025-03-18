@@ -15,6 +15,10 @@ footer {
 	font-size: 0.9rem;
 }
 
+.footer-logo {
+	height: 100px;
+}
+
 .footer-header{
 	display: inline-block; 
 	font-size: 1rem;
@@ -90,7 +94,9 @@ footer {
 		grid-template-rows: repeat(3, 1fr);
 		font-size: clamp(10px, 1.3vw, 18px);
 	}
-	
+	.footer-logo {
+		height: 70%;
+	}
 	.footer-header{
 		font-size: clamp(12px, 1.5vw, 22px);
 	}

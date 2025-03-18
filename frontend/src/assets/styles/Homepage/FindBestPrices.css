@@ -1,9 +1,8 @@
 .cta-container {
-  margin-top: 100px;
+  margin: 100px 0;
   color: white;
-  padding: 60px 20px;
-  margin-bottom: 100px;
-
+  padding: 60px;
+  font-family: 'Inter';
 }
 
 .cta-container__welcomeText {
@@ -66,4 +65,55 @@
   background-color:#562F7F;
   color: white;
   opacity: 0.9;
+}
+
+
+@media (max-width: 688px) {  
+  .cta-button {
+    font-size: 1rem;
+    width: 130px;
+    padding: 7px 15px;
+  }
+  .cta-container__welcomeText {
+    font-size: 1.8rem;
+  }
+  .welcomeText__description {
+    font-size: 1.15rem;
+
+  }
+}
+
+@media (max-width: 500px) {
+  .cta-container {
+    margin: 60px 0;
+    padding: 50px;
+  }
+  .cta-button {
+    font-size: 0.8rem;
+    width: 100px;
+    padding: 5px 10px;
+  }
+  .cta-container__welcomeText {
+    font-size: 1.5rem;
+  }
+  .welcomeText__description {
+    font-size: 0.95rem;
+  }
+}
+@media (max-width: 320px) { 
+  .cta-container {
+    margin: 50px 0;
+    padding: 40px;
+  }
+  .cta-button {
+    font-size: 0.7rem;
+    width: 90px;
+    padding: 5px 10px;
+  }
+  .cta-container__welcomeText {
+    font-size: 1.2rem;
+  }
+  .welcomeText__description {
+    font-size: 0.8rem;
+  }
 }
