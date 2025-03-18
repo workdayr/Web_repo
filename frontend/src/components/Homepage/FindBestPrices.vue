@@ -34,6 +34,6 @@ export default {
 </script>
 
 <style scoped>
-@import "@/assets/styles/FindBestPrices.css";
+@import "@/assets/styles/Homepage/FindBestPrices.css";
 
 </style>
