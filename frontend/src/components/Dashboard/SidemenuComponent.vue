@@ -1,0 +1,33 @@
+<script setup>
+import OptionComponent from '@/components/Dashboard/OptionComponent.vue';
+import SearchbarComponent from '@/components/UI/SearchbarComponent.vue';
+import { ref, defineEmits } from 'vue';
+
+const emit = defineEmits(['select-section']);
+const isOpen = ref(false);
+const toggleMenu = () => (isOpen.value = !isOpen.value);
+
+const sections = ["User Analytics", "Products", "Notification & Alert Statistics", "Pricing", "Settings"];
+
+</script>
+<template>
+  <button class="menu-toggle" @click="toggleMenu">☰</button>
+  <div :class="['overlay', { active: isOpen }]"></div>
+
+  <div :class="['sideMenu__container', { active: isOpen }]">
+    <div class="sideMenu__header">
+      <img class="bprcs-logo" src="@/assets/svg/Logo.svg" alt="Logo">
+      <h1 class="sideMenu__title">Bprcs</h1>
+    </div>
+    <div class="separation-line">.</div>
+    <SearchbarComponent text="Search for..." />
+    <div class="sideMenu__options-container">
+      <OptionComponent v-for="section in sections" :key="section" :name="section"
+        @click="emit('select-section', section)" />
+    </div>
+  </div>
+</template>
+
+<style scoped>
+@import "@/assets/styles/Dashboard/SidemenuComponent.css";
+</style>

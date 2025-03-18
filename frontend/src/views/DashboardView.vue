@@ -1,41 +1,21 @@
 <script setup>
-import OptionComponent from '@/components/UI/OptionComponent.vue';
-import SearchbarComponent from '@/components/UI/SearchbarComponent.vue';
-import LogoComponent from '@/components/UI/LogoComponent.vue';
-import { ref } from 'vue';
+import {ref, defineAsyncComponent} from 'vue';
+import SidemenuComponent from '@/components/Dashboard/SidemenuComponent.vue';
+const sections =  {
+  "User Analytics": defineAsyncComponent(() => import('@/components/Dashboard/Sections/UseranalyticsSection.vue')),
+  "Products": defineAsyncComponent(()=> import('@/components/Dashboard/Sections/ProductsSection.vue')),
 
-const isOpen = ref(false);
+}
+const activeSection = ref(null);
+const openSection = (section) => (activeSection.value = section);
 
-const toggleMenu = () => {
-  isOpen.value = !isOpen.value;
-};
 </script>
-
 <template>
-  <div class="dashboard">
-    <!-- Sidebar -->
-    <aside class="sidebar">
-      <button class="menu-toggle" @click="toggleMenu">☰</button>
-      <div :class="['overlay', { active: isOpen }]"></div>
-      <div :class="['sideMenu__container', { active: isOpen }]">
-        <LogoComponent :render-title="true"/>
-        <div class="separation-line"></div>
-        <SearchbarComponent text="Search for..." class="sideMenu-searchbar" />
-        <div class="sideMenu__options-container">
-          <OptionComponent name="User Analytics" />
-          <OptionComponent name="Products" />
-          <OptionComponent name="Notification & Alert Statistics" />
-          <OptionComponent name="Pricing" />
-          <OptionComponent name="Settings" />
-        </div>
-      </div>
-    </aside>
+<SidemenuComponent @select-section="openSection"/>
+<div class="dashboard__content">
+    <component v-if="activeSection" :is="sections[activeSection]" />
+</div>
 
-    <!-- Main Content -->
-    <main class="content">
-      <h1 class="dashboard-title">User Analytics</h1>
-    </main>
-  </div>
 </template>
 
 <style scoped>
