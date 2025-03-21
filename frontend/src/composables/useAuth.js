@@ -18,6 +18,7 @@ export function useAuth() {
 
     const register = async (userData) => {
         try {
+            console.log("from register", userData);
             //const hashedPassword = hashPassword(userData.password);
             //userData.password = hashedPassword;
             const response = await authAPI.register(userData);

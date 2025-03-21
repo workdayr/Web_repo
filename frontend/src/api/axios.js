@@ -1,5 +1,5 @@
 import axios from "axios";
-import router from './router';
+//import { router } from 'vue-router';
 import { useAuth } from "@/composables/useAuth";
 import { authAPI } from "@/api/auth";
 
@@ -40,7 +40,7 @@ api.interceptors.response.use(
 
                     // If refresh token request fails, logout the user
                     useAuth().logout();
-                    router.push('/login');
+                    //router.push('/login');
                 }
             } 
         } else {

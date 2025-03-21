@@ -58,6 +58,7 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8080",  # Permite solicitudes desde tu frontend
 ]
+CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'web.urls'
 

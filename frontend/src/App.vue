@@ -4,12 +4,12 @@
 
 <script setup>
 import { onMounted } from 'vue';
-import { useAuthStore } from '@/store/useAuthStore';
+import { useAuth } from './composables/useAuth';
 
-const authStore = useAuthStore();
 
 onMounted(() => {
-    authStore.restoreSession(); // Restore user session when app loads
+     // Restore user session when app loads
+      useAuth().restoreSession();
 });
 </script>
 

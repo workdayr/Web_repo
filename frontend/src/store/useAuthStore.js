@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 
 export const useAuthStore = defineStore('auth', () => {
   const user = ref(null);
@@ -11,7 +11,6 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   function logout() {
-    token.value = null;
     user.value = null;
     isAuthenticated.value = false;
   }

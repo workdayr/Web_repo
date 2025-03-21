@@ -87,17 +87,15 @@ class UserHasLikedViewSet(viewsets.ModelViewSet):
 
 class LoginView(APIView):
     def post(self, request):
-        email = request.data.get("email")
+        username = request.data.get("username")
         password = request.data.get("password")
 
-        print(f"Checking login for email: {email}")  # Debugging
+        # Check if user exists
+        if not User.objects.filter(username=username).exists():
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
 
-        user = authenticate(request, email=email, password=password)
+        user = authenticate(username=username, password=password)
+        if user:
+            return Response({"message": "Login successful", "user": user.username})
         
-        if user is not None:
-            print(f"User found: {user}")  # Debugging
-            token, created = Token.objects.get_or_create(user=user)
-            return Response({"token": token.key}, status=status.HTTP_200_OK)
-        else:
-            print("Authentication failed")  # Debugging
-            return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
+        return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
