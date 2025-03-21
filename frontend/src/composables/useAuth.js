@@ -4,10 +4,11 @@ import { useAuthStore } from '@/store/useAuthStore';
 export function useAuth() {
     const authStore = useAuthStore();
 
-    const login = async (email, password) => {
+    const login = async (credentials) => {
         try {
-            const response = await authAPI.login(email, password);
-            authStore.login(response.data.user);
+            const response = await authAPI.login(credentials);
+            console.log(response.data.user);
+            authStore.login(response.data);
 
             return response.data;
         } catch (error) {
@@ -18,11 +19,11 @@ export function useAuth() {
 
     const register = async (userData) => {
         try {
-            console.log("from register", userData);
             //const hashedPassword = hashPassword(userData.password);
             //userData.password = hashedPassword;
             const response = await authAPI.register(userData);
-            await login(userData.email, userData.password);
+            const credentials = {email: userData.email, password: userData.password};
+            await login(credentials);
 
             return response.data;
         } catch (error) {
@@ -46,7 +47,7 @@ export function useAuth() {
         try {
             const response = await authAPI.tokenRefresh();
 
-            authStore.login(response.data.user);
+            //authStore.login(response.data.user);
             
             return response.data;
         } catch (error) {
