@@ -30,70 +30,49 @@ const API_URL = 'http://127.0.0.1:8000/api/users/';
 
 // submit form function
 const submitForm = async () => {
-	submitted.value = true;
+    submitted.value = true;
 
-	// Client form validation
-	let isValid = Object.values(validFields.value).every(Boolean);
-	if (!isValid || sent.value) {
-		return;
-	}
-	sent.value = true;
+    let isValid = Object.values(validFields.value).every(Boolean);
+    if (!isValid || sent.value) return;
 
-	const hashedPassword = hashPassword(form.value.password);
+    sent.value = true;
+    const hashedPassword = hashPassword(form.value.password);
 
-	const payload = {
-		username: form.value.email, // Se usa el email como username
-		first_name: form.value.fullName.split(' ')[0], // Extraer primer nombre
-		last_name: form.value.fullName.split(' ').slice(1).join(' ') || "", // Extraer el apellido si existe
-		email: form.value.email,
-		password: hashedPassword, // Se envía la contraseña en SHA-256 con sal
-		date_of_birth: form.value.birthday,
-		state: form.value.state // Enviar el estado
-	};
+    const payload = {
+        username: form.value.email,
+        email: form.value.email,
+        password: hashedPassword,
+        date_of_birth: form.value.birthday,
+        state: form.value.state
+    };
 
-	try {
-		console.log('Enviando datos al servidor...', payload);
-		const response = await axios.post(API_URL, payload);
+    try {
+        const response = await axios.post(API_URL, payload);
 
-		console.log('Registro exitoso:', response.data);
-		Swal.fire({
-			icon: 'success',
-			title: '¡Registro exitoso!',
-			text: 'Te has registrado correctamente.',
-		});
-		// add authentification state
-		router.push('/');
+        Swal.fire({
+            icon: 'success',
+            title: '¡Registro exitoso!',
+            text: 'Te has registrado correctamente. Revisa tu correo para más información.',
+        });
 
-	} catch (error) {
-		console.error('Error al registrar usuario', error);
-
-		if (error.response) {
-			const errorData = error.response.data;
-			if (errorData && errorData.email && errorData.email.length > 0) {
-				const emailError = errorData.email[0];
-				console.log('Email error:', emailError);
-				// Display emailError to the user
-			}
-			return error.response;
-		} else if (error.request) {
-			// display error message to user
-			console.error('No response received:', error.request);
-			return error.request;
-		} else {
-			console.error('Error setting up the request:', error.message);
-			return error;
-		}
-		/*
-		Swal.fire({
-			icon: 'error',
-			title: 'Error',
-			text: 'Hubo un error al registrar el usuario. Inténtalo de nuevo.',
-		});
-		*/
-	} finally {
-		sent.value = false; 
-		console.log('Proceso de registro terminado.');
-	}
+        router.push('/');  // Redirige al home tras registro exitoso
+    } catch (error) {
+        if (error.response && error.response.data.email) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error en el registro',
+                text: 'El correo electrónico no es válido o no existe.',
+            });
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error desconocido',
+                text: 'Ocurrió un error al registrar el usuario. Inténtalo de nuevo.',
+            });
+        }
+    } finally {
+        sent.value = false;
+    }
 };
 </script>
 
