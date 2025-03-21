@@ -1,12 +1,10 @@
 <script setup>
 import { ref } from 'vue';
-import axios from 'axios';
 import AppInput from '@/components/Form/FormInput.vue';
 import AppSubmitButton from '@/components/Form/FormSubmitButton.vue';
 import { useRegisterValidation } from '@/composables/useRegisterValidation';
-import { hashPassword } from '@/utils/hashUtils';
-import Swal from 'sweetalert2';
 import { useRouter } from 'vue-router';
+import { useAuth } from "@/composables/useAuth";
 
 const router = useRouter();
 
@@ -24,55 +22,55 @@ const form = ref({
 const submitted = ref(false);
 const sent = ref(false);
 const { validFields, errorMessage } = useRegisterValidation(form);
-
-// backend URL
-const API_URL = 'http://127.0.0.1:8000/api/users/';
-
-// submit form function
+const { register } = useAuth(); 
+// submit form function	
 const submitForm = async () => {
     submitted.value = true;
 
-    let isValid = Object.values(validFields.value).every(Boolean);
-    if (!isValid || sent.value) return;
+	// Client form validation
+	let isValid = Object.values(validFields.value).every(Boolean);
+	if (!isValid || sent.value) {
+		return;
+	}
+	
+	const payload = {
+		username: form.value.email,
+		first_name: form.value.fullName.split(' ')[0], 
+		last_name: form.value.fullName.split(' ').slice(1).join(' ') || "", 
+		email: form.value.email,
+		password: form.value.password, 
+		date_of_birth: form.value.birthday,
+		state: form.value.state 
+	};
 
-    sent.value = true;
-    const hashedPassword = hashPassword(form.value.password);
+	try {
+		sent.value = true;
+		await register(payload);
+		// add user success message
+		router.push('/');
 
-    const payload = {
-        username: form.value.email,
-        email: form.value.email,
-        password: hashedPassword,
-        date_of_birth: form.value.birthday,
-        state: form.value.state
-    };
+	} catch (error) {
+		console.error('Error al registrar usuario', error);
 
-    try {
-        const response = await axios.post(API_URL, payload);
+		if (error.response) {
+			const errorData = error.response.data;
+			if (errorData && errorData.email && errorData.email.length > 0) {
+				const emailError = errorData.email[0];
+				console.log('Email error:', emailError);
+				// add user incorrect email message
+			}
+			return error.response;
+		} else if (error.request) {
+			console.error('No response received:', error.request);
+			return error.request;
+		} else {
+			console.error('Error setting up the request:', error.message);
+			return error;
+		}
 
-        Swal.fire({
-            icon: 'success',
-            title: '¡Registro exitoso!',
-            text: 'Te has registrado correctamente. Revisa tu correo para más información.',
-        });
-
-        router.push('/');  // Redirige al home tras registro exitoso
-    } catch (error) {
-        if (error.response && error.response.data.email) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Error en el registro',
-                text: 'El correo electrónico no es válido o no existe.',
-            });
-        } else {
-            Swal.fire({
-                icon: 'error',
-                title: 'Error desconocido',
-                text: 'Ocurrió un error al registrar el usuario. Inténtalo de nuevo.',
-            });
-        }
-    } finally {
-        sent.value = false;
-    }
+	} finally {
+		sent.value = false; // Reset sent state
+	}
 };
 </script>
 

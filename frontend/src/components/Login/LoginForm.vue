@@ -1,11 +1,10 @@
 <script setup>
 import { ref } from 'vue';
-import axios from 'axios';
 import FormInput from '@/components/Form/FormInput.vue';
 import FormSubmitButton from '@/components/Form/FormSubmitButton.vue';
 import { useRegisterValidation } from '@/composables/useRegisterValidation';
-import { hashPassword } from '@/utils/hashUtils';
 import { useRouter } from 'vue-router';
+import { useAuth } from "@/composables/useAuth";
 
 const router = useRouter(); 
 
@@ -18,9 +17,7 @@ const submitted = ref(false);
 const sent = ref(false);
 
 const { validFields, errorMessage } = useRegisterValidation(form);
-
-// backend URL
-const API_URL = 'http://127.0.0.1:8000/api/login/';
+const { login } = useAuth(); 
 
 // submit form function
 const submitForm = async () => {
@@ -32,18 +29,13 @@ const submitForm = async () => {
 	}
 	sent.value = true;
 
-	const hashedPassword = hashPassword(form.value.password);
-
 	const payload = {
 		email: form.value.email,
-		password: hashedPassword, // Se envía la contraseña en SHA-256 con sal
+		password: form.value.password, // Se envía la contraseña en SHA-256 con sal
 	};
-	console.log(payload);
-	try {
 
-		const response = await axios.post(API_URL, payload);
-		console.log(response.data);
-		// add authentification state
+	try {
+		await login(payload);
 		router.push('/');
 	} catch (error) {
 		if (error.response) {
