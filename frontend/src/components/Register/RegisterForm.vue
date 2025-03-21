@@ -25,7 +25,7 @@ const { validFields, errorMessage } = useRegisterValidation(form);
 const { register } = useAuth(); 
 // submit form function	
 const submitForm = async () => {
-	submitted.value = true;
+    submitted.value = true;
 
 	// Client form validation
 	let isValid = Object.values(validFields.value).every(Boolean);
