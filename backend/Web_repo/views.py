@@ -5,7 +5,9 @@ from rest_framework import status
 from django.core.mail import send_mail
 from .models import User, UserActivity, Products, Brand, PricesHistory, Currencys, StoreProducts, Stores, Categories, ProductCategory, ProductImage, UserHasLiked
 from .serializers import UserSerializer, UserActivitySerializer, ProductsSerializer, BrandSerializer, PricesHistorySerializer, CurrencysSerializer, StoreProductsSerializer, StoresSerializer, CategoriesSerializer, ProductCategorySerializer, ProductImageSerializer, UserHasLikedSerializer
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate
+
+import logging
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -89,15 +91,25 @@ class LoginView(APIView):
     def post(self, request):
         email = request.data.get("email")
         password = request.data.get("password")
+        logging.debug(f"Email: {email}, Password: {password}")  # Debugging
+        if not email or not password:
+            return Response({"error": f"Email and password are required"}, status=status.HTTP_400_BAD_REQUEST)
 
-        print(f"Checking login for email: {email}")  # Debugging
+        if not User.objects.filter(email=email).exists():
+            return Response({"error": f"User not found: {email}"}, status=status.HTTP_404_NOT_FOUND)
 
         user = authenticate(request, email=email, password=password)
-        
-        if user is not None:
-            print(f"User found: {user}")  # Debugging
-            token, created = Token.objects.get_or_create(user=user)
-            return Response({"token": token.key}, status=status.HTTP_200_OK)
-        else:
-            print("Authentication failed")  # Debugging
-            return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
+        if user:
+            user_data = {
+                "username": user.username,
+                "email": user.email,
+                "first_name": user.first_name,
+                "last_name": user.last_name,
+            }
+            return Response({"message": "Login successful", "user": user_data}, status=status.HTTP_200_OK)
+
+        return Response({"error": "Invalid credentials from authenticate function"}, status=status.HTTP_401_UNAUTHORIZED)
+
+class TokenRefreshView(APIView):
+    def post(self, request):
+        return Response({"message": "Token refreshed"})

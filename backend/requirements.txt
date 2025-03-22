@@ -1,0 +1,5 @@
+Django
+djangorestframework
+validate_email_address
+dnspython
+django-cors-headers

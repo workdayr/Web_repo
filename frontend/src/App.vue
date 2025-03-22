@@ -2,13 +2,15 @@
   <router-view></router-view> <!-- Loads the current route -->
 </template>
 
-<script>
+<script setup>
+import { onMounted } from 'vue';
+import { useAuth } from './composables/useAuth';
 
 
-export default {
-  components: {
-  },
-};
+onMounted(() => {
+     // Restore user session when app loads
+      useAuth().restoreSession();
+});
 </script>
 
 <style>
@@ -17,6 +19,4 @@ body {
   font-family: 'Poppins', sans-serif;
   background: linear-gradient(to right, #1B0F26, #0F0715);
 }
-
-
 </style>

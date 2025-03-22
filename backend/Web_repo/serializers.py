@@ -1,11 +1,15 @@
 from rest_framework import serializers
-from .models import User, UserActivity, Products, Brand, PricesHistory, Currencys, StoreProducts, Stores, Categories, ProductCategory, ProductImage, UserHasLiked
+from .models import User
 from django.contrib.auth.hashers import make_password
+from django.core.mail import send_mail
 from dns.resolver import resolve, NXDOMAIN, NoAnswer
 from dns.exception import DNSException
+from django.conf import settings
+from django.template.loader import render_to_string
+from .models import User, UserActivity, Products, Brand, PricesHistory, Currencys, StoreProducts, Stores, Categories, ProductCategory, ProductImage, UserHasLiked
 
 class UserSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True)  # Para ocultar la contraseña en la respuesta
+    password = serializers.CharField(write_only=True)  # Ocultar contraseña en la respuesta
 
     class Meta:
         model = User
@@ -16,16 +20,38 @@ class UserSerializer(serializers.ModelSerializer):
         """Valida que el email tenga un dominio válido y pueda recibir correos usando dnspython."""
         try:
             domain = value.split('@')[1]
-            resolve(domain, 'MX')
+            resolve(domain, 'MX')  # Verifica registros MX del dominio
         except (IndexError, NXDOMAIN, NoAnswer, DNSException):
             raise serializers.ValidationError("El correo electrónico no es válido o no existe.")
-
         return value
 
     def create(self, validated_data):
-        """Hashea la contraseña antes de guardar el usuario"""
+        # Asegúrate de que 'validated_data' esté bien definido
         validated_data['password'] = make_password(validated_data['password'])
-        return super().create(validated_data)
+        user = super().create(validated_data)
+
+        # Renderizar la plantilla HTML con el nombre completo del usuario
+        html_message = render_to_string(
+            'email/welcome_email.html',
+            {
+                'user': user,  # Aquí se pasa todo el objeto usuario
+                'user_fullname': user.username,  # Nombre completo
+                'website_url': 'https:google.com'  
+            }
+        )
+
+        # Envío del correo de bienvenida en formato HTML
+        send_mail(
+            subject="¡Bienvenido a nuestra plataforma!",
+            message="",  # Este campo puede quedar vacío cuando se envía html_message
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[user.username],
+            fail_silently=False,
+            html_message=html_message
+        )
+
+        return user
+
 
 
 
