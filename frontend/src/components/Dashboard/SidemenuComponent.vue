@@ -16,7 +16,7 @@ const sections = ["User Analytics", "Products", "Notification & Alert Statistics
 
   <div :class="['sideMenu__container', { active: isOpen }]">
     <div class="sideMenu__header">
-      <img class="bprcs-logo" src="@/assets/svg/Logo.svg" alt="Logo">
+      <img class="bprcs-logo" src="@/assets/Common/Logo.svg" alt="Logo">
       <h1 class="sideMenu__title">Bprcs</h1>
     </div>
     <div class="separation-line">.</div>
