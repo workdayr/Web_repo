@@ -93,7 +93,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=35, null=False)
     last_name = models.CharField(max_length=35, null=False)
     state = models.CharField(max_length=20, null=False, default='Unknown')
-    date_of_birth = models.DateField(null=False)
+    date_of_birth = models.DateField(null= True, blank=True, default="2000-01-01")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
