@@ -1,6 +1,6 @@
 .sideMenu__container{
     display: flex;
-    position:absolute;
+    position:fixed;
     flex-direction: column;
     background: #FFF;
     padding: 25px;

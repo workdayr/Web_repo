@@ -3,89 +3,60 @@ import { ref, onMounted } from "vue";
 import HeaderComponent from "../HeaderComponent.vue";
 import StatscardComponent from "../StatscardComponent.vue";
 import GraphTemplate from "@/components/UI/GraphTemplate.vue";
+import { fetchChartData } from "@/api/userChartService";
+
 const charts = ref([]);
+const stats = ref({});
 
-const fetchChartData = async () => {
-    try {
-        const response = await fetch("https://backend-api/path");
-        const data = await response.json();
-
-        charts.value = [
-            {
-                id: 1,
-                header: "Total Users",
-                type: "line",
-                data: {
-                    labels: data.months,
-                    datasets: [
-                        {
-                            label: "Users",
-                            data: data.totalUsers,
-                            borderColor: "#007bff",
-                            backgroundColor: "rgba(0, 123, 255, 0.2)"
-                        }
-                    ]
-                },
-                options: { responsive: true }
-            },
-            {
-                id: 2,
-                header: "Total views",
-                type: "bar",
-                data: {
-                    labels: data.months,
-                    datasets: [
-                        {
-                            label: "Views",
-                            data: data.totalViews,
-                            backgroundColor: "#28a745"
-                        }
-                    ]
-                },
-                options: { responsive: true }
-            },
-            {
-                id: 3,
-                type: "bar",
-                data: {
-                    labels: data.months,
-                    datasets: [
-                        {
-                            label: "New Signups",
-                            data: data.newUsers,
-                            backgroundColor: "#28a745"
-                        }
-                    ]
-                },
-                options: { responsive: true }
-            }
-        ];
-    } catch (error) {
-        console.error("Error fetching chart data:", error);
-    }
+const loadData = async () => {
+    const { charts: chartData, stats: statsData } = await fetchChartData();
+    charts.value = chartData;
+    stats.value = statsData;
 };
 
-onMounted(fetchChartData);
+onMounted(loadData);
 </script>
 
 <template>
     <div class="Section__content">
+
         <HeaderComponent text="User Analytics" />
+
         <div class="Section__StatCards">
-            <StatscardComponent header="Recent Pageviews" amount="30K" />
-            <StatscardComponent header="Recent Pageviews" amount="30K" />
-            <StatscardComponent header="Recent Pageviews" amount="30K" />
-            <StatscardComponent header="Recent Pageviews" amount="30K" />
+            <StatscardComponent header="Recent Pageviews"
+                :amount="stats.totalPageviews ? stats.totalPageviews.toLocaleString() : '0'" />
+            <StatscardComponent header="New Signups"
+                :amount="stats.totalNewSignups ? stats.totalNewSignups.toLocaleString() : '0'" />
+            <StatscardComponent header="Unregistered users"
+                :amount="stats.totalUnregisteredUsers ? stats.totalUnregisteredUsers.toLocaleString() : '0'" />
+            <StatscardComponent header="Registered users"
+                :amount="stats.totalRegisteredUsers ? stats.totalRegisteredUsers.toLocaleString() : '0'" />
         </div>
-        <div class="Section__content--graphs">
-        <div class="Section__content--graph1">
-            <div class="row">
-                <div class="col-md-6" v-for="chart in charts" :key="chart.id">
-                    <GraphTemplate :chartHeader="chart.header" :chartType="chart.type" :chartData="chart.data" :chartOptions="chart.options" />
+
+        <div class="Section__content--graphs1">
+            <div class="Section__content--graph1">
+                <div v-if="charts.length > 0" class="graph-large">
+                    <GraphTemplate :chartHeader="charts[0].header" :chartType="charts[0].type"
+                        :chartData="charts[0].data" :chartOptions="charts[0].options"
+                        :chartSubtitle="charts[0].subtitle" :customStyles="{width: '100%', height: '100%' }" />
+                </div>
+            </div>
+
+            <div class="Section__content--graph2">
+                <div v-for="(chart) in charts.slice(1,3)" :key="chart.id" class="graphs-small">
+                    <GraphTemplate :chartHeader="chart.header" :chartType="chart.type" :chartData="chart.data"
+                        :chartOptions="chart.options" :chartSubtitle="chart.subtitle" />
                 </div>
             </div>
         </div>
-    </div>
+
+        <div class="Section__content--graph3">
+                <div v-for="(chart) in charts.slice(3)" :key="chart.id" class="graph-long">
+                    <GraphTemplate :chartHeader="chart.header" :chartType="chart.type" :chartData="chart.data"
+                        :chartOptions="chart.options" :chartSubtitle="chart.subtitle" />
+                </div>
+            </div>
+        
     </div>
 </template>
 
