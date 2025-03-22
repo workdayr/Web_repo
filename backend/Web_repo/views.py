@@ -2,7 +2,6 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
-from django.core.mail import send_mail
 from .models import User, UserActivity, Products, Brand, PricesHistory, Currencys, StoreProducts, Stores, Categories, ProductCategory, ProductImage, UserHasLiked
 from .serializers import UserSerializer, UserActivitySerializer, ProductsSerializer, BrandSerializer, PricesHistorySerializer, CurrencysSerializer, StoreProductsSerializer, StoresSerializer, CategoriesSerializer, ProductCategorySerializer, ProductImageSerializer, UserHasLikedSerializer
 from django.contrib.auth import authenticate
@@ -15,20 +14,10 @@ class UserViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         """Sobreescribe create para enviar un correo de bienvenida al nuevo usuario."""
+        logging.debug(f"Request data: {request.data}")  # Debugging
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
-            user = serializer.save()
-
-            # Enviar correo de bienvenida
-            '''
-            send_mail(
-                subject="¡Bienvenido a nuestra plataforma!",
-                message=f"Hola {user.username}, gracias por registrarte en nuestra plataforma.",
-                from_email="tu_correo@gmail.com",  # Reemplázalo con tu correo
-                recipient_list=[user.email],
-                fail_silently=False,
-            )
-            '''
+            serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

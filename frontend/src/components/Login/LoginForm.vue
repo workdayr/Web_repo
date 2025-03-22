@@ -31,7 +31,7 @@ const submitForm = async () => {
 
 	const payload = {
 		email: form.value.email,
-		password: form.value.password, // Se envía la contraseña en SHA-256 con sal
+		password: form.value.password,
 	};
 
 	try {

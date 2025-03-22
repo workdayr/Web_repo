@@ -1,16 +1,12 @@
 from django.contrib.auth.backends import ModelBackend
 from django.contrib.auth import get_user_model
 
-import logging
-
 User = get_user_model()
 
 class CustomAuthBackend(ModelBackend):
     def authenticate(self, request, email=None, password=None, **kwargs):
-        logging.debug("CustomAuthBackend.authenticate() called "+str(email))  # Debugging
         try:
             user = User.objects.get(email=email)
-            print(f"User found: {user}")  # Debugging     
             if user.check_password(password):
                 return user
         except User.DoesNotExist:
