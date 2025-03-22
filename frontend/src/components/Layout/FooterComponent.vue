@@ -1,7 +1,7 @@
 <template>
 	<footer>
 		<div class="footer-content">
-			<LogoComponent />
+			<LogoComponent class="footer-logo"/>
 			<div class="footer-navigation">
 				<span class="footer-header">Navigate</span>
 				<ul>

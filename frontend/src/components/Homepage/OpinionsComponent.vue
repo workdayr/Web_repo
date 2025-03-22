@@ -65,5 +65,5 @@ export default {
 </script>
 
 <style scoped>
-@import "@/assets/styles/OpinionsComponent.css";
+@import "@/assets/styles/Homepage/OpinionsComponent.css";
 </style>

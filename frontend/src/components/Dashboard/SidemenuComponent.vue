@@ -1,6 +1,7 @@
 <script setup>
 import OptionComponent from '@/components/Dashboard/OptionComponent.vue';
 import SearchbarComponent from '@/components/UI/SearchbarComponent.vue';
+import LogoComponent from '../UI/LogoComponent.vue';
 import { ref, defineEmits } from 'vue';
 
 const emit = defineEmits(['select-section']);
@@ -15,18 +16,15 @@ const sections = ["User Analytics", "Products", "Notification & Alert Statistics
   <div :class="['overlay', { active: isOpen }]"></div>
 
   <div :class="['sideMenu__container', { active: isOpen }]">
-    <div class="sideMenu__header">
-      <img class="bprcs-logo" src="@/assets/Common/Logo.svg" alt="Logo">
-      <h1 class="sideMenu__title">Bprcs</h1>
-    </div>
+    <LogoComponent class="sideMenu__logo" :render-title="true"/>
     <div class="separation-line">.</div>
-    <SearchbarComponent text="Search for..." />
+    <SearchbarComponent text="Search for..." class="sideMenu__searchbar" />
     <div class="sideMenu__options-container">
       <OptionComponent v-for="section in sections" :key="section" :name="section"
         @click="emit('select-section', section)" />
     </div>
   </div>
-</template>
+</template> 
 
 <style scoped>
 @import "@/assets/styles/Dashboard/SidemenuComponent.css";
