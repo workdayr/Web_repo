@@ -91,7 +91,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=100, unique=True, null=False)
     password = models.CharField(max_length=256, null=False, blank=False)
     first_name = models.CharField(max_length=35, null=False)
-    last_name = models.CharField(max_length=35, null=False)
+    last_name = models.CharField(max_length=35,  null=True, blank=True)
     state = models.CharField(max_length=20, null=False, default='Unknown')
     date_of_birth = models.DateField(null= True, blank=True, default="2000-01-01")
     created_at = models.DateTimeField(auto_now_add=True)

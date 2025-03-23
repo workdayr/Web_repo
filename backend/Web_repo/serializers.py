@@ -17,7 +17,7 @@ class UserSerializer(serializers.ModelSerializer):
             'user_id', 'username', 'email', 'password', 'first_name', 'last_name', 
             'date_of_birth', 'state'
         ]
-        extra_kwargs = {'password': {'write_only': True}}
+        extra_kwargs = {'password': {'write_only': True}, 'last_name': {'required': False},}
 
     def validate_email(self, value):
         """Valida que el email tenga un dominio válido y pueda recibir correos usando dnspython."""
