@@ -1,5 +1,5 @@
 Django
 djangorestframework
-validate_email_address
+djangorestframework-simplejwt
 dnspython
 django-cors-headers

@@ -5,4 +5,5 @@ export const authAPI = {
   register: (userData) => api.post("/users/", userData),
   logout: () => api.post("/logout"),
   tokenRefresh: () => api.post("/token-refresh/"),
+  restoreSession: () => api.post("/restore-session/"),
 };  
