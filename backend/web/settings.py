@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',  # Agregar Django REST Framework
     'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
     'web',  # Reemplaza 'web' con el nombre correcto de tu aplicación
 ]
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

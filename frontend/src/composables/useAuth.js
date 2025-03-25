@@ -7,9 +7,9 @@ export function useAuth() {
     const login = async (credentials) => {
         try {
             const response = await authAPI.login(credentials);
-            console.log(response.data.user);
-            authStore.login(response.data);
-
+        
+            authStore.login(response.data.user);
+        
             return response.data;
         } catch (error) {
             console.error("Login error:", error);
@@ -52,7 +52,7 @@ export function useAuth() {
         
             return response.data;
         } catch (error) {
-            console.error("Restore session error:", error);
+            console.error("Unable to restore session:", error.message);
             return null;
         }
     };

@@ -6,7 +6,6 @@
 import { onMounted } from 'vue';
 import { useAuth } from './composables/useAuth';
 
-
 onMounted(() => {
      // Restore user session when app loads
       useAuth().restoreSession();

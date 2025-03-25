@@ -96,7 +96,6 @@ class LoginView(APIView):
         user = authenticate(request, email=email, password=password)
         if user:
             user_data = {
-                "username": user.username,
                 "email": user.email,
                 "first_name": user.first_name,
                 "last_name": user.last_name,
@@ -121,7 +120,7 @@ class LoginView(APIView):
                 httponly=settings.SIMPLE_JWT['REFRESH_COOKIE_HTTP_ONLY'],
                 samesite=settings.SIMPLE_JWT['REFRESH_COOKIE_SAMESITE']
             )
-            logging.debug(f"Response cookies: {response.cookies}")
+            logging.debug(f"From login Response cookies: {response.cookies}")
             
             return response
 
@@ -133,6 +132,7 @@ class RestoreSessionView(APIView):
         refresh_token = request.COOKIES.get(settings.SIMPLE_JWT.get('REFRESH_COOKIE', 'refresh_token'))
         logging.debug(f"Refresh token: {refresh_token}")
         if not refresh_token:
+            
             return Response({"error": "No refresh token found"}, status=status.HTTP_400_BAD_REQUEST)
         try:
             refresh = RefreshToken(refresh_token)
@@ -140,12 +140,12 @@ class RestoreSessionView(APIView):
             new_refresh_token = str(refresh)  # Get the new refresh token
 
             response = Response({"message": "Session restored"}, status=status.HTTP_200_OK)
-
+            refresh.blacklist()
             # Set the new access token as an HTTP-only cookie
             response.set_cookie(
                 key=settings.SIMPLE_JWT.get('AUTH_COOKIE', 'access_token'),
                 value=access_token,
-                max_age = settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'],
+                max_age = 1,
                 secure = settings.SIMPLE_JWT['AUTH_COOKIE_SECURE'],
                 httponly = settings.SIMPLE_JWT['AUTH_COOKIE_HTTP_ONLY'],
                 samesite = settings.SIMPLE_JWT['AUTH_COOKIE_SAMESITE']
@@ -166,7 +166,6 @@ class RestoreSessionView(APIView):
                 user_id = refresh["user_id"]  # Extract user ID from token payload
                 user = User.objects.get(user_id=user_id)
                 user_data = {
-                    "username": user.username,
                     "email": user.email,
                     "first_name": user.first_name,
                     "last_name": user.last_name,
@@ -195,12 +194,30 @@ class LogoutView(APIView):
             except TokenError:
                 response = Response({"error": "Invalid token"}, status=status.HTTP_400_BAD_REQUEST)
             except Exception as e:
+                logging.debug(e)
                 return Response({"error": "Error during logout, please try again."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         # Delete cookies
-        response.delete_cookie(settings.SIMPLE_JWT.get('AUTH_COOKIE', 'access_token'))
-        response.delete_cookie(settings.SIMPLE_JWT.get('REFRESH_COOKIE', 'refresh_token'))
+        response.set_cookie(
+                key=settings.SIMPLE_JWT.get('AUTH_COOKIE', 'access_token'),
+                value='',
+                max_age = 0,
+                secure = settings.SIMPLE_JWT['AUTH_COOKIE_SECURE'],
+                httponly = settings.SIMPLE_JWT['AUTH_COOKIE_HTTP_ONLY'],
+                samesite = settings.SIMPLE_JWT['AUTH_COOKIE_SAMESITE']
+            )
 
+        # Set the new refresh token as an HTTP-only cookie
+        response.set_cookie(
+            key=settings.SIMPLE_JWT['REFRESH_COOKIE'],
+            value='',
+            max_age=0,
+            secure=settings.SIMPLE_JWT['REFRESH_COOKIE_SECURE'],
+            httponly=settings.SIMPLE_JWT['REFRESH_COOKIE_HTTP_ONLY'],
+            samesite=settings.SIMPLE_JWT['REFRESH_COOKIE_SAMESITE']
+        )
+
+        logging.debug(response)
         return response
 
 

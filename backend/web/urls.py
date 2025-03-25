@@ -39,7 +39,9 @@ router.register(r'user_likes', UserHasLikedViewSet)
 urlpatterns = [
     path('api/', include(router.urls)),  # Accede a las rutas de los viewsets, por ejemplo, /api/users/
     path("api/login/", LoginView.as_view(), name="login"),
+    path("api/logout/", LogoutView.as_view(), name="logout"),
     path("api/token-refresh/", TokenRefreshView.as_view(), name="token-refresh"),
     path("api/restore-session/", RestoreSessionView.as_view(), name="restore-session"),
     path("api/user_analytics/", UserAnalyticsView.as_view(), name="user_analytics"),
+    
 ]
