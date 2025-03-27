@@ -155,3 +155,34 @@ class UserAnalyticsView(APIView):
         }
 
         return Response(data)
+    
+
+class NotificationAnalyticsView(APIView):
+    #authentication_classes = [TokenAuthentication]
+    #permission_classes = [IsAuthenticated]
+
+    def get(self, request, format = None):
+        alert_data = {
+            "on_time":[250,300,320,310,200,400,123],
+            "days":["Mon", "Tue", "Wed",
+                      "Thu", "Fri", "Sat", "Sun"]
+        }
+        total_on_time = sum(alert_data["on_time"])
+
+        redirect_data = {
+            "platforms": ["Amazon", "Mercado Libre", "AliExpress"],
+            "redirect_count": [250, 180, 150,],
+        }
+        total_redirects = sum(redirect_data["redirect_count"])
+        
+        data = {
+            "days": alert_data["days"],
+            "onTimeAlerts": alert_data["on_time"],
+            "totalOnTime": total_on_time,
+            "platforms": redirect_data["platforms"],
+            "redirectCounts":redirect_data["redirect_count"],
+            "totalRedirects": total_redirects,
+        }
+
+
+        return Response(data)

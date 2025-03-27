@@ -6,7 +6,7 @@ from dns.resolver import resolve, NXDOMAIN, NoAnswer
 from dns.exception import DNSException
 from django.conf import settings
 from django.template.loader import render_to_string
-from .models import User, UserActivity, Products, Brand, PricesHistory, Currencys, StoreProducts, Stores, Categories, ProductCategory, ProductImage, UserHasLiked
+from .models import User, UserActivity, Products, Brand, PricesHistory, Currencys, StoreProducts, Stores, Categories, ProductCategory, ProductImage, UserHasLiked, NotificationLog,RedirectAnalytics
 
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)  # Ocultar contraseña en la respuesta
@@ -56,8 +56,6 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
 
-
-
 class UserActivitySerializer(serializers.ModelSerializer):
     class Meta:
         model = UserActivity
@@ -72,6 +70,15 @@ class ProductsSerializer(serializers.ModelSerializer):
         model = Products
         fields = '__all__'
 
+class NotificationLogSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = NotificationLog
+        fields = '__all__'
+        
+class RedirectAnalyticsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RedirectAnalytics
+        fields = '__all__'
 
 class BrandSerializer(serializers.ModelSerializer):
     class Meta:

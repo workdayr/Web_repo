@@ -105,8 +105,6 @@ export const fetchChartData = async () => {
           options: { 
             responsive: true, 
             maintainAspectRatio: false,
-            width: 100,
-            height: 50,
           },
         },
       ],

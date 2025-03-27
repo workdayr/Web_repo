@@ -29,7 +29,11 @@ defineProps({
 
                 <h2 class="products-being-tracked__header">23,648<br><span>Total products being tracked</span></h2>
                 <GraphTemplate v-if="charts.length > 0" :chartType="charts[0].type" :chartData="charts[0].data"
-                    :chartOptions="charts[0].options" :customStyles="{ width: '55%', height: '80%' }" />
+                    :chartOptions="charts[0].options" :customStyles="{
+                            width: '100%',
+                            height: '180px',
+                            maxHeight: '200px'
+                        }" />
 
             </div>
             <div class="products__most-followed-products">
@@ -79,7 +83,11 @@ defineProps({
                 <div v-for="(chart) in charts.slice(1, 2)" :key="chart.id" class="graphs-small">
                     <GraphTemplate :chartHeader="chart.header" :chartType="chart.type" :chartData="chart.data"
                         :chartOptions="chart.options" :chartSubtitle="chart.subtitle"
-                        :customStyles="{ width: '100%', height: '100%' }" />
+                        :customStyles="{
+                            width: '100%',
+                            height: '400px',
+                            maxHeight: '500px'
+                        }" />
                 </div>
 
             </div>

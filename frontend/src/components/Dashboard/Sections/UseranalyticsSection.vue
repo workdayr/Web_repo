@@ -38,25 +38,38 @@ onMounted(loadData);
                 <div v-if="charts.length > 0" class="graph-large">
                     <GraphTemplate :chartHeader="charts[0].header" :chartType="charts[0].type"
                         :chartData="charts[0].data" :chartOptions="charts[0].options"
-                        :chartSubtitle="charts[0].subtitle" :customStyles="{width: '100%', height: '100%' }" />
+                        :chartSubtitle="charts[0].subtitle" :customStyles="{
+                            width: '100%',
+                            height: '400px',
+                            maxHeight: '500px'
+                        }" />
                 </div>
             </div>
 
             <div class="Section__content--graph2">
-                <div v-for="(chart) in charts.slice(1,3)" :key="chart.id" class="graphs-small">
+                <div v-for="(chart) in charts.slice(1, 3)" :key="chart.id" class="graphs-small">
                     <GraphTemplate :chartHeader="chart.header" :chartType="chart.type" :chartData="chart.data"
-                        :chartOptions="chart.options" :chartSubtitle="chart.subtitle" />
+                        :chartOptions="chart.options" :chartSubtitle="chart.subtitle" :customStyles="{
+                            width: '100%',
+                            height: '180px',
+                            maxHeight: '200px'
+                        }"/>
                 </div>
             </div>
         </div>
 
         <div class="Section__content--graph3">
-                <div v-for="(chart) in charts.slice(3)" :key="chart.id" class="graph-long">
-                    <GraphTemplate :chartHeader="chart.header" :chartType="chart.type" :chartData="chart.data"
-                        :chartOptions="chart.options" :chartSubtitle="chart.subtitle" />
-                </div>
+            <div v-for="(chart) in charts.slice(3)" :key="chart.id" class="graph-long">
+                <GraphTemplate :chartHeader="chart.header" :chartType="chart.type" :chartData="chart.data"
+                    :chartOptions="chart.options" :chartSubtitle="chart.subtitle"
+                    :customStyles="{
+                            width: '100%',
+                            height: '180px',
+                            maxHeight: '200px'
+                        }" />
             </div>
-        
+        </div>
+
     </div>
 </template>
 

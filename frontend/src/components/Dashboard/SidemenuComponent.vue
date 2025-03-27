@@ -8,7 +8,7 @@ const emit = defineEmits(['select-section']);
 const isOpen = ref(false);
 const toggleMenu = () => (isOpen.value = !isOpen.value);
 
-const sections = ["User Analytics", "Products", "Notification & Alert Statistics", "Pricing", "Settings"];
+const sections = ["User Analytics", "Products", "Notifications", "Pricing", "Settings"];
 
 </script>
 <template>

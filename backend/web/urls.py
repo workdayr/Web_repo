@@ -24,7 +24,7 @@ router = DefaultRouter()
 # Registra todos los viewsets en el router
 router.register(r'users', UserViewSet)
 router.register(r'users_activity', UserActivityViewSet)
-router.register(r'products', ProductsViewSet)
+router.register(r'products', ProductsViewSet, basename= 'product')
 router.register(r'brands', BrandViewSet)
 router.register(r'prices_history', PricesHistoryViewSet)
 router.register(r'currencies', CurrencysViewSet)
@@ -35,9 +35,11 @@ router.register(r'product_categories', ProductCategoryViewSet)
 router.register(r'product_images', ProductImageViewSet)
 router.register(r'user_likes', UserHasLikedViewSet)
 
+
 urlpatterns = [
     path('api/', include(router.urls)),  # Accede a las rutas de los viewsets, por ejemplo, /api/users/
     path("api/login/", LoginView.as_view(), name="login"),
     path("api/token-refresh/", TokenRefreshView.as_view(), name="token-refresh"),
     path("api/user_analytics/", UserAnalyticsView.as_view(), name="user_analytics"),
+    path('api/notification_analytics/' , NotificationAnalyticsView.as_view(), name = 'notification_analytics'),
 ]
