@@ -62,23 +62,14 @@ class UserActivitySerializer(serializers.ModelSerializer):
         model = UserActivity
         fields = '__all__'
 
-<<<<<<< HEAD
-
-
-class ProductsSerializer(serializers.ModelSerializer):
-    brand = serializers.PrimaryKeyRelatedField(queryset=Brand.objects.all())
-    current_lowest_price = serializers.PrimaryKeyRelatedField(queryset=PricesHistory.objects.all())
-=======
 class ProductImageSerializer(serializers.ModelSerializer):
     
     product_id = serializers.PrimaryKeyRelatedField(queryset=Products.objects.all())
->>>>>>> feature/client-auth
     
     class Meta:
         model = ProductImage
         fields = '__all__'
 
-<<<<<<< HEAD
 class NotificationLogSerializer(serializers.ModelSerializer):
     class Meta:
         model = NotificationLog
@@ -89,8 +80,6 @@ class RedirectAnalyticsSerializer(serializers.ModelSerializer):
         model = RedirectAnalytics
         fields = '__all__'
 
-=======
->>>>>>> feature/client-auth
 class BrandSerializer(serializers.ModelSerializer):
     class Meta:
         model = Brand
@@ -189,12 +178,26 @@ class UserFavoritesSerializer(serializers.ModelSerializer):
         model = UserFavorites
         fields = '__all__'
 
-<<<<<<< HEAD
 class UserRecordSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserRecord
         fields = '__all__'
+    def __init__(self, *args, **kwargs):
+        # Get extra_fields from kwargs or use defaults
+        extra_fields = kwargs.pop('extra_fields', ['primary_image_URL', 'brand_name', 'current_lowest_price'])
+        
+        super().__init__(*args, **kwargs)
+        
+        # Initialize product serializer safely
+        self.fields['product'] = serializers.SerializerMethodField()
+        self._extra_fields = extra_fields
 
+    def get_product(self, obj):
+        logging.debug(self._extra_fields)
+        return ProductsSerializer(
+            obj.product_id,
+            context={'extra_fields': self._extra_fields}
+        ).data
 
 class ProductSerializer(serializers.ModelSerializer):
     product_id = serializers.SerializerMethodField()
@@ -214,24 +217,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
     def get_formatted_price(self, obj):
         return f"${obj.price:,.2f}"
-=======
-    def __init__(self, *args, **kwargs):
-        # Get extra_fields from kwargs or use defaults
-        extra_fields = kwargs.pop('extra_fields', ['primary_image_URL', 'brand_name', 'current_lowest_price'])
-        
-        super().__init__(*args, **kwargs)
-        
-        # Initialize product serializer safely
-        self.fields['product'] = serializers.SerializerMethodField()
-        self._extra_fields = extra_fields
-
-    def get_product(self, obj):
-        logging.debug(self._extra_fields)
-        return ProductsSerializer(
-            obj.product_id,
-            context={'extra_fields': self._extra_fields}
-        ).data
+   
 
 
     
->>>>>>> feature/client-auth

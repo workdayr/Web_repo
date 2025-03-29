@@ -75,7 +75,7 @@ class RestoreSessionView(APIView):
             new_refresh_token = str(refresh)  # Get the new refresh token
 
             response = Response({"message": "Session restored"}, status=status.HTTP_200_OK)
-
+            
             # Set the new access token as an HTTP-only cookie
             response.set_cookie(
                 key=settings.SIMPLE_JWT.get('AUTH_COOKIE', 'access_token'),
@@ -129,7 +129,6 @@ class LogoutView(APIView):
             except TokenError:
                 response = Response({"error": "Invalid token"}, status=status.HTTP_400_BAD_REQUEST)
             except Exception as e:
-                logging.debug(e)
                 return Response({"error": "Error during logout, please try again."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         # Delete cookies
@@ -161,31 +160,36 @@ class RefreshTokenView(APIView):
 
         if not refresh_token:
             return Response({"error": "Refresh token missing"}, status=status.HTTP_400_BAD_REQUEST)
-        refresh = RefreshToken(refresh_token)
-        access_token = str(refresh.access_token)
-        new_refresh_token = str(refresh)
-        response = Response({"message":"Token refreshed"})
-        # Set the new access token as an HTTP-only cookie
-        response.set_cookie(
-            key=settings.SIMPLE_JWT.get('AUTH_COOKIE', 'access_token'),
-            value=access_token,
-            max_age = settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'],
-            secure = settings.SIMPLE_JWT['AUTH_COOKIE_SECURE'],
-            httponly = settings.SIMPLE_JWT['AUTH_COOKIE_HTTP_ONLY'],
-            samesite = settings.SIMPLE_JWT['AUTH_COOKIE_SAMESITE']
-        )
+        try:
+            refresh = RefreshToken(refresh_token)
+            access_token = str(refresh.access_token)
+            new_refresh_token = str(refresh)
+            response = Response({"message":"Token refreshed"})
+            # Set the new access token as an HTTP-only cookie
+            response.set_cookie(
+                key=settings.SIMPLE_JWT.get('AUTH_COOKIE', 'access_token'),
+                value=access_token,
+                max_age = settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'],
+                secure = settings.SIMPLE_JWT['AUTH_COOKIE_SECURE'],
+                httponly = settings.SIMPLE_JWT['AUTH_COOKIE_HTTP_ONLY'],
+                samesite = settings.SIMPLE_JWT['AUTH_COOKIE_SAMESITE']
+            )
 
-        # Set the new refresh token as an HTTP-only cookie
-        response.set_cookie(
-            key=settings.SIMPLE_JWT['REFRESH_COOKIE'],
-            value=new_refresh_token,
-            max_age=settings.SIMPLE_JWT['REFRESH_TOKEN_LIFETIME'],
-            secure=settings.SIMPLE_JWT['REFRESH_COOKIE_SECURE'],
-            httponly=settings.SIMPLE_JWT['REFRESH_COOKIE_HTTP_ONLY'],
-            samesite=settings.SIMPLE_JWT['REFRESH_COOKIE_SAMESITE']
-        )
-        
-        return response
+            # Set the new refresh token as an HTTP-only cookie
+            response.set_cookie(
+                key=settings.SIMPLE_JWT['REFRESH_COOKIE'],
+                value=new_refresh_token,
+                max_age=settings.SIMPLE_JWT['REFRESH_TOKEN_LIFETIME'],
+                secure=settings.SIMPLE_JWT['REFRESH_COOKIE_SECURE'],
+                httponly=settings.SIMPLE_JWT['REFRESH_COOKIE_HTTP_ONLY'],
+                samesite=settings.SIMPLE_JWT['REFRESH_COOKIE_SAMESITE']
+            )
+            
+            return response
+        except TokenError as e:
+                # The refresh token is invalid or expired
+                return Response({"error": str(e)}, status=status.HTTP_401_UNAUTHORIZED)
+
     
 
 class UserAnalyticsView(APIView):
