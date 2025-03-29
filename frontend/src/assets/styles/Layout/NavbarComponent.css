@@ -44,14 +44,20 @@
     cursor: pointer;
   }
   
+  .navBar__buttons--container{
+    height: 100%;
+    width: fit-content;
+  }
   .navBar__buttons {
     display: flex;
-    gap: 15px; /* Espaciado entre los botones */
-  }
-  .navBar__buttons{
+    gap: 15px;
     height: 100%;
     align-items: center; 
   }
+  .navBar__buttons.logged{
+    gap: 50px
+  }
+
   
   .navBar__buttons--SignUp,
   .navBar__buttons--Login {
@@ -109,6 +115,9 @@
     --nav-font-size: max(12px, calc(0.15*var(--nav-height)));
 
   }
+  .navBar__buttons.logged{
+    gap: 30px
+  }
   }
 
   @media (max-width: 500px) {  
@@ -118,6 +127,9 @@
     }
     .navBar__buttons {
       gap: 10px;
+    }
+    .navBar__buttons.logged{
+      gap: 20px
     }
     .navBar__buttons--SignUp,
     .navBar__buttons--Login {

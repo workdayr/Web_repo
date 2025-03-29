@@ -1,0 +1,57 @@
+.pricedrop__container-icon{
+    width: auto;
+    height: 100%;
+}
+
+.pricedrop__icon.drop{
+    transform: rotate(180deg); 
+}
+
+.pricedrop__icon.drop path{
+    fill: #009E60;
+}
+
+.pricedrop__container__text{
+    font-family: 'Inter';
+    position: absolute;
+    max-width: 330px;
+    width: max-content;
+    background-color: rgba(0, 0, 0, 0.7);
+    font-weight: 200;
+    transform: translate(-50%,50%);
+    border-radius: 10px;
+    z-index: 10;
+    color: #fff;
+    overflow-wrap: break-word;
+    padding: 1%;
+    font-size: 1rem;
+}
+
+.pricedrop__highlight-text{
+    font-weight: 500;
+}
+
+@media (max-width: 520px) {
+    
+    .pricedrop__container__text{
+        font-size: 0.8rem;
+        transform: translate(-60%,50%);
+        
+    }
+}
+@media (max-width: 380px) {
+    
+    .pricedrop__container__text{
+        transform: translate(-90%,50%);
+        
+    }
+}
+@media (max-width: 320px) {
+    
+    .pricedrop__container__text{
+        font-size: 0.7rem;
+        max-width: 300px;
+        transform: translate(-90%,50%);
+        
+    }
+}

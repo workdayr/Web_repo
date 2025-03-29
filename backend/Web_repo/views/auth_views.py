@@ -1,92 +1,22 @@
-from rest_framework import viewsets
-from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework import status
-
-from django.shortcuts import get_object_or_404
-import random
-from .models import User, UserActivity, Products, Brand, PricesHistory, Currencys, StoreProducts, Stores, Categories, ProductCategory, ProductImage, UserHasLiked, UserRecord, Product
-from .serializers import UserSerializer, UserActivitySerializer, ProductsSerializer, BrandSerializer, PricesHistorySerializer, CurrencysSerializer, StoreProductsSerializer, StoresSerializer, CategoriesSerializer, ProductCategorySerializer, ProductImageSerializer, UserHasLikedSerializer, UserRecordSerializer, ProductSerializer
-
 from django.contrib.auth import authenticate
-
-import logging
+from rest_framework.response import Response
+from rest_framework import status
+from Web_repo.models import User
 # authentication
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError
-from datetime import datetime, timedelta
 from django.conf import settings
+
+
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
+from datetime import datetime, timedelta
+from Web_repo.serializers import *
+import random
 
-
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-
-    def create(self, request, *args, **kwargs):
-        """Sobreescribe create para enviar un correo de bienvenida al nuevo usuario."""
-        serializer = self.get_serializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class UserActivityViewSet(viewsets.ModelViewSet):
-    queryset = UserActivity.objects.all()
-    serializer_class = UserActivitySerializer
-
-
-class ProductsViewSet(viewsets.ModelViewSet):
-    queryset = Products.objects.all()
-    serializer_class = ProductsSerializer
-
-
-class BrandViewSet(viewsets.ModelViewSet):
-    queryset = Brand.objects.all()
-    serializer_class = BrandSerializer
-
-
-class PricesHistoryViewSet(viewsets.ModelViewSet):
-    queryset = PricesHistory.objects.all()
-    serializer_class = PricesHistorySerializer
-
-
-class CurrencysViewSet(viewsets.ModelViewSet):
-    queryset = Currencys.objects.all()
-    serializer_class = CurrencysSerializer
-
-
-class StoreProductsViewSet(viewsets.ModelViewSet):
-    queryset = StoreProducts.objects.all()
-    serializer_class = StoreProductsSerializer
-
-
-class StoresViewSet(viewsets.ModelViewSet):
-    queryset = Stores.objects.all()
-    serializer_class = StoresSerializer
-
-
-class CategoriesViewSet(viewsets.ModelViewSet):
-    queryset = Categories.objects.all()
-    serializer_class = CategoriesSerializer
-
-
-class ProductCategoryViewSet(viewsets.ModelViewSet):
-    queryset = ProductCategory.objects.all()
-    serializer_class = ProductCategorySerializer
-
-
-class ProductImageViewSet(viewsets.ModelViewSet):
-    queryset = ProductImage.objects.all()
-    serializer_class = ProductImageSerializer
-
-
-class UserHasLikedViewSet(viewsets.ModelViewSet):
-    queryset = UserHasLiked.objects.all()
-    serializer_class = UserHasLikedSerializer
+import logging
 
 class LoginView(APIView):   
     def post(self, request):
@@ -101,7 +31,6 @@ class LoginView(APIView):
         user = authenticate(request, email=email, password=password)
         if user:
             user_data = {
-                "username": user.username,
                 "email": user.email,
                 "first_name": user.first_name,
                 "last_name": user.last_name,
@@ -126,7 +55,7 @@ class LoginView(APIView):
                 httponly=settings.SIMPLE_JWT['REFRESH_COOKIE_HTTP_ONLY'],
                 samesite=settings.SIMPLE_JWT['REFRESH_COOKIE_SAMESITE']
             )
-            logging.debug(f"Response cookies: {response.cookies}")
+            logging.debug(f"From login Response cookies: {response.cookies}")
             
             return response
 
@@ -138,6 +67,7 @@ class RestoreSessionView(APIView):
         refresh_token = request.COOKIES.get(settings.SIMPLE_JWT.get('REFRESH_COOKIE', 'refresh_token'))
         logging.debug(f"Refresh token: {refresh_token}")
         if not refresh_token:
+            
             return Response({"error": "No refresh token found"}, status=status.HTTP_400_BAD_REQUEST)
         try:
             refresh = RefreshToken(refresh_token)
@@ -171,7 +101,6 @@ class RestoreSessionView(APIView):
                 user_id = refresh["user_id"]  # Extract user ID from token payload
                 user = User.objects.get(user_id=user_id)
                 user_data = {
-                    "username": user.username,
                     "email": user.email,
                     "first_name": user.first_name,
                     "last_name": user.last_name,
@@ -200,19 +129,68 @@ class LogoutView(APIView):
             except TokenError:
                 response = Response({"error": "Invalid token"}, status=status.HTTP_400_BAD_REQUEST)
             except Exception as e:
+                logging.debug(e)
                 return Response({"error": "Error during logout, please try again."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         # Delete cookies
-        response.delete_cookie(settings.SIMPLE_JWT.get('AUTH_COOKIE', 'access_token'))
-        response.delete_cookie(settings.SIMPLE_JWT.get('REFRESH_COOKIE', 'refresh_token'))
+        response.set_cookie(
+                key=settings.SIMPLE_JWT.get('AUTH_COOKIE', 'access_token'),
+                value='',
+                max_age = 0,
+                secure = settings.SIMPLE_JWT['AUTH_COOKIE_SECURE'],
+                httponly = settings.SIMPLE_JWT['AUTH_COOKIE_HTTP_ONLY'],
+                samesite = settings.SIMPLE_JWT['AUTH_COOKIE_SAMESITE']
+            )
 
+        # Set the new refresh token as an HTTP-only cookie
+        response.set_cookie(
+            key=settings.SIMPLE_JWT['REFRESH_COOKIE'],
+            value='',
+            max_age=0,
+            secure=settings.SIMPLE_JWT['REFRESH_COOKIE_SECURE'],
+            httponly=settings.SIMPLE_JWT['REFRESH_COOKIE_HTTP_ONLY'],
+            samesite=settings.SIMPLE_JWT['REFRESH_COOKIE_SAMESITE']
+        )
+
+        logging.debug(response)
         return response
 
+class RefreshTokenView(APIView):
+    def post(self, request):
+        refresh_token = request.COOKIES.get(settings.SIMPLE_JWT.get("AUTH_COOKIE_REFRESH", "refresh_token"))
+
+        if not refresh_token:
+            return Response({"error": "Refresh token missing"}, status=status.HTTP_400_BAD_REQUEST)
+        refresh = RefreshToken(refresh_token)
+        access_token = str(refresh.access_token)
+        new_refresh_token = str(refresh)
+        response = Response({"message":"Token refreshed"})
+        # Set the new access token as an HTTP-only cookie
+        response.set_cookie(
+            key=settings.SIMPLE_JWT.get('AUTH_COOKIE', 'access_token'),
+            value=access_token,
+            max_age = settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'],
+            secure = settings.SIMPLE_JWT['AUTH_COOKIE_SECURE'],
+            httponly = settings.SIMPLE_JWT['AUTH_COOKIE_HTTP_ONLY'],
+            samesite = settings.SIMPLE_JWT['AUTH_COOKIE_SAMESITE']
+        )
+
+        # Set the new refresh token as an HTTP-only cookie
+        response.set_cookie(
+            key=settings.SIMPLE_JWT['REFRESH_COOKIE'],
+            value=new_refresh_token,
+            max_age=settings.SIMPLE_JWT['REFRESH_TOKEN_LIFETIME'],
+            secure=settings.SIMPLE_JWT['REFRESH_COOKIE_SECURE'],
+            httponly=settings.SIMPLE_JWT['REFRESH_COOKIE_HTTP_ONLY'],
+            samesite=settings.SIMPLE_JWT['REFRESH_COOKIE_SAMESITE']
+        )
+        
+        return response
+    
 
 class UserAnalyticsView(APIView):
     #authentication_classes = [TokenAuthentication]
     #permission_classes = [IsAuthenticated] 
-
     def get(self, request, format=None):
         months_list = [
             "January", "February", "March", "April",
@@ -345,3 +323,4 @@ class ProductView(APIView):
                 stores=random.sample(random.random(stores)),
                 price=random.uniform(10, 1000)
             )
+        

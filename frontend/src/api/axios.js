@@ -1,10 +1,10 @@
 import axios from "axios";
-//import { router } from 'vue-router';
+import router from "@/router"; 
 import { useAuth } from "@/composables/useAuth";
-import { authAPI } from "@/api/auth";
+import { authAPI } from "@/api/authService";
 
 const api = axios.create({
-    baseURL: "http://127.0.0.1:8000/api", 
+    baseURL: "http://127.0.0.1:8000/api",
     headers: {
         "Content-Type": "application/json",
     },
@@ -39,10 +39,15 @@ api.interceptors.response.use(
                     console.error('Refresh token failed:', refreshError);
 
                     // If refresh token request fails, logout the user
-                    useAuth().logout();
-                    //router.push('/login');
+                    try {
+                        await useAuth().logout();
+                    } catch (logoutError) {
+                        console.error('Logout error:', logoutError);
+                    } finally {
+                        router.push('/login');
+                    }
                 }
-            } 
+            }
         } else {
             console.error('Network or server error:', error);
         }
