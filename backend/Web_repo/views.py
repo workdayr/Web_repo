@@ -2,9 +2,12 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
-from rest_framework.decorators import api_view
-from .models import User, UserActivity, Products, Brand, PricesHistory, Currencys, StoreProducts, Stores, Categories, ProductCategory, ProductImage, UserHasLiked
-from .serializers import UserSerializer, UserActivitySerializer, ProductsSerializer, BrandSerializer, PricesHistorySerializer, CurrencysSerializer, StoreProductsSerializer, StoresSerializer, CategoriesSerializer, ProductCategorySerializer, ProductImageSerializer, UserHasLikedSerializer
+
+from django.shortcuts import get_object_or_404
+import random
+from .models import User, UserActivity, Products, Brand, PricesHistory, Currencys, StoreProducts, Stores, Categories, ProductCategory, ProductImage, UserHasLiked, UserRecord, Product
+from .serializers import UserSerializer, UserActivitySerializer, ProductsSerializer, BrandSerializer, PricesHistorySerializer, CurrencysSerializer, StoreProductsSerializer, StoresSerializer, CategoriesSerializer, ProductCategorySerializer, ProductImageSerializer, UserHasLikedSerializer, UserRecordSerializer, ProductSerializer
+
 from django.contrib.auth import authenticate
 
 import logging
@@ -14,6 +17,8 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError
 from datetime import datetime, timedelta
 from django.conf import settings
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -209,28 +214,25 @@ class UserAnalyticsView(APIView):
     #permission_classes = [IsAuthenticated] 
 
     def get(self, request, format=None):
-        current_month = datetime.now().strftime("%B")
         months_list = [
             "January", "February", "March", "April",
             "May", "June", "July", "August",
             "September", "October", "November", "December"
         ]
 
-        current_month_index = months_list.index(current_month)
-        recent_months = months_list[max(0, current_month_index -3) : current_month_index +1]
 
         total_users = [190, 300, 500]
-        registered_users = [150, 250, 420] 
-        unregistered_users = [40, 50, 80]
-        total_views = [200, 400, 600, 800]
-        new_users = [60, 90, 120]
+        registered_users = [0, 5,40,70 ,150, 160, 170, 200, 250, 300, 310, 320] 
+        unregistered_users = [25,35, 23, 27,150, 170,130,300,310,200, 130,140 ]
+        total_views = [200, 400, 600, 800,100,50,150,320,534,460,756,900]
+        new_users = [60, 90, 120,100,50,150,320,534,460,756,900, 200]
 
         total_user_count = sum(total_users)
         total_registered_users = sum(registered_users)
         total_unregistered_users = sum(unregistered_users)
         total_new_signups = sum(new_users)
 
-        months_count = months_count = min(len(recent_months), len(total_users))
+        months_count = months_count = min(len(months_list), len(months_list))
         total_users = total_users[-months_count:]
         registered_users = registered_users[-months_count:]
         unregistered_users = unregistered_users[-months_count:]
@@ -238,7 +240,7 @@ class UserAnalyticsView(APIView):
         new_users = new_users[-months_count:]
 
         data = {
-            "months": recent_months,
+            "months": months_list,
             "totalUsers": total_users,
             "registeredUsers": registered_users,
             "unregisteredUsers": unregistered_users,
@@ -251,3 +253,95 @@ class UserAnalyticsView(APIView):
         }
 
         return Response(data)
+    
+
+class NotificationAnalyticsView(APIView):
+    #authentication_classes = [TokenAuthentication]
+    #permission_classes = [IsAuthenticated]
+
+    def get(self, request, format = None):
+        alert_data = {
+            "on_time":[250,300,320,310,200,400,123],
+            "days":["Mon", "Tue", "Wed",
+                      "Thu", "Fri", "Sat", "Sun"]
+        }
+        total_on_time = sum(alert_data["on_time"])
+
+        redirect_data = {
+            "platforms": ["Amazon", "Mercado Libre", "AliExpress"],
+            "redirect_count": [250, 180, 150,],
+        }
+        total_redirects = sum(redirect_data["redirect_count"])
+        
+        data = {
+            "days": alert_data["days"],
+            "onTimeAlerts": alert_data["on_time"],
+            "totalOnTime": total_on_time,
+            "platforms": redirect_data["platforms"],
+            "redirectCounts":redirect_data["redirect_count"],
+            "totalRedirects": total_redirects,
+        }
+
+
+        return Response(data)
+    
+
+class UserRecordView(APIView):
+    def get(self, request, format=None):
+        users = UserRecord.objects.all().order_by('-created_at')
+        serializer = UserRecordSerializer(users, many = True)
+
+        return Response(serializer.data)
+    
+
+    def delete(self, request, pk, format=None):
+        print(f"Attempting to delete user with ID: {pk}")  # Debug print
+        try:
+            user = UserRecord.objects.get(pk=pk)
+            print(f"Found user: {user.name}")  # Debug print
+            user.delete()
+            print("User deleted successfully")  # Debug print
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except UserRecord.DoesNotExist:
+            print(f"User with ID {pk} not found")  # Debug print
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            print(f"Error deleting user: {str(e)}")  # Debug print
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+
+class ProductView(APIView):
+    def get(self, request, format=None):
+        # Generate simulated data if no products exist
+        if not Product.objects.exists():
+            self.generate_sample_products()
+            
+        products = Product.objects.all().order_by('-date')
+        serializer = ProductSerializer(products, many=True)
+        return Response(serializer.data)
+    
+    def delete(self, request, pk, format=None):
+        try:
+            product = Product.objects.get(pk=pk)
+            product.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Product.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response(
+                {'error': str(e)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+    def generate_sample_products(self):
+        stores = ['Amazon', 'Mercado Libre', 'AliExpress']
+        statuses = ['ongoing', 'ends_soon', 'ended']
+        
+        for i in range(1, 21):
+            Product.objects.create(
+                name=f"Product {i}",
+                date=datetime.now() - timedelta(days=random.randint(0, 30)),
+                status=random.choice(statuses),
+                stores=random.sample(random.random(stores)),
+                price=random.uniform(10, 1000)
+            )

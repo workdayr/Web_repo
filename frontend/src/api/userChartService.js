@@ -40,18 +40,41 @@ export const fetchChartData = async () => {
                 label: "Registered users",
                 data: data.registeredUsers,
                 borderColor: "#321647",
-                backgroundColor: "rgba(0, 123, 255, 0.2)",
+                fill: {
+                  target: 'origin',  // Changed from 'true' to this object
+                  above: 'rgba(170, 138, 243, 0.3)'
+                },
+                tension: 0.4,
+                borderWidth: 2
               },
               {
                 label: "Unregistered users",
                 data: data.unregisteredUsers,
                 borderColor: "#00C2FF",
                 backgroundColor: "rgba(0, 123, 255, 0.2)",
+                fill: {
+                  target: 'origin',
+                  above: 'rgba(0, 123, 255, 0.14)'
+                },
+                tension: 0.4,
+                borderWidth: 2
               },
             ],
           },
-          options: { responsive: true, maintainAspectRatio: false
-           },
+          options: { 
+            responsive: true, 
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'top'
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          },
         },
         {
           id: 2,
@@ -64,7 +87,11 @@ export const fetchChartData = async () => {
               {
                 label: "Views",
                 data: data.totalViews,
-                backgroundColor: "#28a745",
+                backgroundColor: [
+                  '#321647', 
+                  '#57C3FF', 
+                ],
+                barThickness: 5,
               },
             ],
           },
@@ -74,14 +101,14 @@ export const fetchChartData = async () => {
           id: 3,
           header: "New Signups",
           subtitle: `${totalSignupsCount.toLocaleString()} signups`,
-          type: "bar",
+          type: "line",
           data: {
             labels: data.months,
             datasets: [
               {
                 label: "Signups",
                 data: data.newUsers,
-                backgroundColor: "#ffc107",
+                borderColor: '#321647',
               },
             ],
           },
@@ -98,15 +125,19 @@ export const fetchChartData = async () => {
               {
                 label: "Signups",
                 data: data.newUsers,
-                backgroundColor: "#ffc107",
+                borderColor:'#00C2FF',
+                fill: {
+                  target: 'origin',
+                  above: 'rgba(171, 212, 255, 0.14)'
+                },
+                tension: 0,
+                borderWidth: 2
               },
             ],
           },
           options: { 
             responsive: true, 
             maintainAspectRatio: false,
-            width: 100,
-            height: 50,
           },
         },
       ],
