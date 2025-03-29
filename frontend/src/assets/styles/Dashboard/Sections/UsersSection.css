@@ -1,0 +1,45 @@
+.users__header-container{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 30px;
+}
+.users__header-buttons--container{
+    display: flex;
+    flex-direction: row;
+    width: auto;
+    margin-left: 2.5%;
+}
+
+.header__buttons--search-user{
+    margin-right: 11%;
+}
+
+.header__buttons--search-user,.header__buttons--add-user {
+    background: #FFF;
+    font-size: xx-small;
+    color: #321647;
+    width: 110px;
+    height: 30px;
+    border-radius: 30px;
+    border: solid 1px transparent;
+}
+
+.users__statcards-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    height: 75px;
+    gap:15px;
+    margin-bottom: 60px;
+}
+
+.users__all-users--container{
+    background: #FFF;
+    border-radius: 20px;
+    width: 100%;
+    height: 800px;
+    padding: 2.5%;
+}
+
+

@@ -63,6 +63,7 @@ const containerStyles = computed(() => ({
   width: props.customStyles?.width || "100%",
   height: props.customStyles?.height || "500px", // Default height if none provided
   maxHeight: props.customStyles?.maxHeight || "500px",
+  marginBottom: props.customStyles?.marginBottom || "12px"
 }));
 </script>
 

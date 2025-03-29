@@ -4,6 +4,8 @@ import HeaderComponent from "../HeaderComponent.vue";
 import StatscardComponent from "../StatscardComponent.vue";
 import GraphTemplate from "@/components/UI/GraphTemplate.vue";
 import { fetchChartData } from "@/api/userChartService";
+import { Chart, registerables } from "chart.js";
+Chart.register(...registerables)
 
 const charts = ref([]);
 const stats = ref({});
@@ -15,6 +17,8 @@ const loadData = async () => {
 };
 
 onMounted(loadData);
+
+
 </script>
 
 <template>
@@ -52,7 +56,8 @@ onMounted(loadData);
                         :chartOptions="chart.options" :chartSubtitle="chart.subtitle" :customStyles="{
                             width: '100%',
                             height: '180px',
-                            maxHeight: '200px'
+                            maxHeight: '200px',
+                            marginBottom: '30px'
                         }"/>
                 </div>
             </div>

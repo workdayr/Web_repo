@@ -6,7 +6,7 @@ from dns.resolver import resolve, NXDOMAIN, NoAnswer
 from dns.exception import DNSException
 from django.conf import settings
 from django.template.loader import render_to_string
-from .models import User, UserActivity, Products, Brand, PricesHistory, Currencys, StoreProducts, Stores, Categories, ProductCategory, ProductImage, UserHasLiked, NotificationLog,RedirectAnalytics
+from .models import User, UserActivity, Products, Brand, PricesHistory, Currencys, StoreProducts, Stores, Categories, ProductCategory, ProductImage, UserHasLiked, NotificationLog,RedirectAnalytics, UserRecord, Product
 
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)  # Ocultar contraseña en la respuesta
@@ -60,6 +60,7 @@ class UserActivitySerializer(serializers.ModelSerializer):
     class Meta:
         model = UserActivity
         fields = '__all__'
+
 
 
 class ProductsSerializer(serializers.ModelSerializer):
@@ -146,3 +147,28 @@ class UserHasLikedSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserHasLiked
         fields = '__all__'
+
+class UserRecordSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserRecord
+        fields = '__all__'
+
+
+class ProductSerializer(serializers.ModelSerializer):
+    product_id = serializers.SerializerMethodField()
+    formatted_date = serializers.SerializerMethodField()
+    formatted_price = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Product
+        fields = ['product_id', 'name', 'formatted_date', 
+                'status', 'stores', 'formatted_price']
+
+    def get_product_id(self, obj):
+        return f"#{obj.id:04d}"
+
+    def get_formatted_date(self, obj):
+        return obj.date.strftime("%b %d, %Y")
+
+    def get_formatted_price(self, obj):
+        return f"${obj.price:,.2f}"
