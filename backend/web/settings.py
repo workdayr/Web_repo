@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -40,7 +41,7 @@ INSTALLED_APPS = [
     'Web_repo',
     'corsheaders',
     'rest_framework',  # Agregar Django REST Framework
-    'rest_framework.authtoken', 
+    'rest_framework_simplejwt',
     'web',  # Reemplaza 'web' con el nombre correcto de tu aplicación
 ]
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -69,8 +70,6 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:8080",
 ]
 CORS_ALLOW_CREDENTIALS = True
-
-
 
 ROOT_URLCONF = 'web.urls'
 
@@ -147,21 +146,51 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 AUTH_USER_MODEL = 'Web_repo.User' 
-#AUTHENTICATION_BACKENDS = [   'django.contrib.auth.backends.ModelBackend',  # Default backend]
 AUTHENTICATION_BACKENDS = ['web.auth_backends.CustomAuthBackend']
 
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',  # Use token authentication
-    ],
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny',  # Allow login without authentication
-    ],
-    'DEFAULT_PERMISSION_CLASSES': [
-        #'rest_framework.permissions.IsAuthenticated',
-    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
 }
+
+# Cookie Settings
+SESSION_COOKIE_SECURE = False  # Should match the protocol (False for HTTP, True for HTTPS)
+SESSION_COOKIE_SAMESITE = "None"  # Change from "Lax" to "None"
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 7  # 7 days
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False  
+
+CSRF_COOKIE_SECURE = True  # Should match the protocol
+CSRF_COOKIE_SAMESITE = "None"  # Ensure compatibility with cross-origin requests
+
+# JWT Token Settings
+SIMPLE_JWT = {
+    'AUTH_COOKIE': 'access_token',  # Cookie name for the access token. Enables cookies if value is set.
+    'AUTH_COOKIE_DOMAIN': None,      # Domain for the access token cookie. None for standard domain cookie.
+    'AUTH_COOKIE_SECURE': True,      # Whether the access token cookie should be secure (HTTPS only).
+    'AUTH_COOKIE_HTTP_ONLY': True,  # HTTP-only flag for the access token cookie (not accessible by JavaScript).
+    'AUTH_COOKIE_PATH': '/',        # Path for the access token cookie.
+    'AUTH_COOKIE_SAMESITE': 'None',  # SameSite attribute for the access token cookie ('Lax', 'Strict', 'None').
+
+    'REFRESH_COOKIE': 'refresh_token',  # Cookie name for the refresh token. Enables cookies if value is set.
+    'REFRESH_COOKIE_DOMAIN': None,       # Domain for the refresh token cookie. None for standard domain cookie.
+    'REFRESH_COOKIE_SECURE': True,       # Whether the refresh token cookie should be secure (HTTPS only).
+    'REFRESH_COOKIE_HTTP_ONLY': True,   # HTTP-only flag for the refresh token cookie (not accessible by JavaScript).
+    'REFRESH_COOKIE_PATH': '/',         # Path for the refresh token cookie.
+    'REFRESH_COOKIE_SAMESITE': 'None',   # SameSite attribute for the refresh token cookie ('Lax', 'Strict', 'None').
+
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),  # Time before access token expires
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),  # Time before refresh token expires
+
+    'ROTATE_REFRESH_TOKENS': True,
+
+    'USER_ID_FIELD': 'user_id',
+}
+
+# Ensure Django Sends Secure Cookies for Refresh Token
+SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
+
 
 LOGGING = {
     "version": 1,
@@ -176,3 +205,5 @@ LOGGING = {
         "level": "DEBUG",
     },
 }
+
+

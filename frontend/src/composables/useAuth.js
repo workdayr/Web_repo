@@ -45,10 +45,11 @@ export function useAuth() {
 
     const restoreSession = async () => {
         try {
-            const response = await authAPI.tokenRefresh();
-
-            //authStore.login(response.data.user);
             
+            const response = await authAPI.restoreSession();
+            
+            authStore.login(response.data.user);
+        
             return response.data;
         } catch (error) {
             console.error("Restore session error:", error);

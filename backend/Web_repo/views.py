@@ -2,18 +2,24 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
+
 from django.shortcuts import get_object_or_404
 import random
 from .models import User, UserActivity, Products, Brand, PricesHistory, Currencys, StoreProducts, Stores, Categories, ProductCategory, ProductImage, UserHasLiked, UserRecord, Product
 from .serializers import UserSerializer, UserActivitySerializer, ProductsSerializer, BrandSerializer, PricesHistorySerializer, CurrencysSerializer, StoreProductsSerializer, StoresSerializer, CategoriesSerializer, ProductCategorySerializer, ProductImageSerializer, UserHasLikedSerializer, UserRecordSerializer, ProductSerializer
+
 from django.contrib.auth import authenticate
 
 import logging
+# authentication
 from django.contrib.auth import authenticate
-
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.exceptions import TokenError
+from datetime import datetime, timedelta
+from django.conf import settings
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-from datetime import datetime, timedelta
+
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -21,7 +27,6 @@ class UserViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         """Sobreescribe create para enviar un correo de bienvenida al nuevo usuario."""
-        logging.debug(f"Request data: {request.data}")  # Debugging
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -83,11 +88,10 @@ class UserHasLikedViewSet(viewsets.ModelViewSet):
     queryset = UserHasLiked.objects.all()
     serializer_class = UserHasLikedSerializer
 
-class LoginView(APIView):
+class LoginView(APIView):   
     def post(self, request):
         email = request.data.get("email")
         password = request.data.get("password")
-        logging.debug(f"Email: {email}, Password: {password}")  # Debugging
         if not email or not password:
             return Response({"error": f"Email and password are required"}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -102,13 +106,108 @@ class LoginView(APIView):
                 "first_name": user.first_name,
                 "last_name": user.last_name,
             }
-            return Response({"message": "Login successful", "user": user_data}, status=status.HTTP_200_OK)
+            
+            response = Response({"message": "Login successful", "user": user_data}, status=status.HTTP_200_OK)
+
+            refresh = RefreshToken.for_user(user)
+            response.set_cookie(
+                key = settings.SIMPLE_JWT['AUTH_COOKIE'], 
+                value = str(refresh.access_token),
+                max_age = settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'],
+                secure = settings.SIMPLE_JWT['AUTH_COOKIE_SECURE'],
+                httponly = settings.SIMPLE_JWT['AUTH_COOKIE_HTTP_ONLY'],
+                samesite = settings.SIMPLE_JWT['AUTH_COOKIE_SAMESITE']
+            )
+            response.set_cookie(
+                key=settings.SIMPLE_JWT['REFRESH_COOKIE'],
+                value= str(refresh),  
+                max_age=settings.SIMPLE_JWT['REFRESH_TOKEN_LIFETIME'],
+                secure=settings.SIMPLE_JWT['REFRESH_COOKIE_SECURE'],
+                httponly=settings.SIMPLE_JWT['REFRESH_COOKIE_HTTP_ONLY'],
+                samesite=settings.SIMPLE_JWT['REFRESH_COOKIE_SAMESITE']
+            )
+            logging.debug(f"Response cookies: {response.cookies}")
+            
+            return response
 
         return Response({"error": "Invalid credentials from authenticate function"}, status=status.HTTP_401_UNAUTHORIZED)
 
-class TokenRefreshView(APIView):
+
+class RestoreSessionView(APIView):
     def post(self, request):
-        return Response({"message": "Token refreshed"})
+        refresh_token = request.COOKIES.get(settings.SIMPLE_JWT.get('REFRESH_COOKIE', 'refresh_token'))
+        logging.debug(f"Refresh token: {refresh_token}")
+        if not refresh_token:
+            return Response({"error": "No refresh token found"}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            refresh = RefreshToken(refresh_token)
+            access_token = str(refresh.access_token)
+            new_refresh_token = str(refresh)  # Get the new refresh token
+
+            response = Response({"message": "Session restored"}, status=status.HTTP_200_OK)
+
+            # Set the new access token as an HTTP-only cookie
+            response.set_cookie(
+                key=settings.SIMPLE_JWT.get('AUTH_COOKIE', 'access_token'),
+                value=access_token,
+                max_age = settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'],
+                secure = settings.SIMPLE_JWT['AUTH_COOKIE_SECURE'],
+                httponly = settings.SIMPLE_JWT['AUTH_COOKIE_HTTP_ONLY'],
+                samesite = settings.SIMPLE_JWT['AUTH_COOKIE_SAMESITE']
+            )
+
+            # Set the new refresh token as an HTTP-only cookie
+            response.set_cookie(
+                key=settings.SIMPLE_JWT['REFRESH_COOKIE'],
+                value=new_refresh_token,
+                max_age=settings.SIMPLE_JWT['REFRESH_TOKEN_LIFETIME'],
+                secure=settings.SIMPLE_JWT['REFRESH_COOKIE_SECURE'],
+                httponly=settings.SIMPLE_JWT['REFRESH_COOKIE_HTTP_ONLY'],
+                samesite=settings.SIMPLE_JWT['REFRESH_COOKIE_SAMESITE']
+            )
+
+            # Getting user data
+            try:
+                user_id = refresh["user_id"]  # Extract user ID from token payload
+                user = User.objects.get(user_id=user_id)
+                user_data = {
+                    "username": user.username,
+                    "email": user.email,
+                    "first_name": user.first_name,
+                    "last_name": user.last_name,
+                }
+                response.data["user"] = user_data
+                
+            except Exception:
+                return Response({"error": "Can't restore user data"}, status=status.HTTP_401_UNAUTHORIZED)
+
+            return response
+
+        except TokenError as e:
+            # The refresh token is invalid or expired
+            return Response({"error": str(e)}, status=status.HTTP_401_UNAUTHORIZED)
+
+class LogoutView(APIView):
+    def post(self, request): 
+        response = Response({"message": "Logged out"}, status=status.HTTP_200_OK)
+
+        # Get the refresh token from the cookies
+        refresh_token = request.COOKIES.get(settings.SIMPLE_JWT.get('REFRESH_COOKIE', 'refresh_token'))
+        if refresh_token:
+            try:
+                token = RefreshToken(refresh_token)
+                token.blacklist()
+            except TokenError:
+                response = Response({"error": "Invalid token"}, status=status.HTTP_400_BAD_REQUEST)
+            except Exception as e:
+                return Response({"error": "Error during logout, please try again."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        # Delete cookies
+        response.delete_cookie(settings.SIMPLE_JWT.get('AUTH_COOKIE', 'access_token'))
+        response.delete_cookie(settings.SIMPLE_JWT.get('REFRESH_COOKIE', 'refresh_token'))
+
+        return response
+
 
 class UserAnalyticsView(APIView):
     #authentication_classes = [TokenAuthentication]
