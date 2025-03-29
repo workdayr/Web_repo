@@ -6,7 +6,9 @@ from dns.resolver import resolve, NXDOMAIN, NoAnswer
 from dns.exception import DNSException
 from django.conf import settings
 from django.template.loader import render_to_string
-from .models import User, UserActivity, Products, Brand, PricesHistory, Currencys, StoreProducts, Stores, Categories, ProductCategory, ProductImage, UserHasLiked
+from .models import User, UserActivity, Products, Brand, PricesHistory, Currencys, StoreProducts, Stores, Categories, ProductCategory, ProductImage, UserFavorites
+
+import logging
 
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)  # Ocultar contraseña en la respuesta
@@ -63,20 +65,55 @@ class UserActivitySerializer(serializers.ModelSerializer):
         model = UserActivity
         fields = '__all__'
 
-
-class ProductsSerializer(serializers.ModelSerializer):
-    brand = serializers.PrimaryKeyRelatedField(queryset=Brand.objects.all())
-    current_lowest_price = serializers.PrimaryKeyRelatedField(queryset=PricesHistory.objects.all())
+class ProductImageSerializer(serializers.ModelSerializer):
+    
+    product_id = serializers.PrimaryKeyRelatedField(queryset=Products.objects.all())
     
     class Meta:
-        model = Products
+        model = ProductImage
         fields = '__all__'
-
 
 class BrandSerializer(serializers.ModelSerializer):
     class Meta:
         model = Brand
         fields = '__all__'
+
+class ProductsSerializer(serializers.ModelSerializer):
+    brand = serializers.PrimaryKeyRelatedField(queryset=Brand.objects.all())
+    current_lowest_price = serializers.PrimaryKeyRelatedField(queryset=PricesHistory.objects.all(), allow_null=True)
+
+    class Meta:
+        model = Products
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        self._context = kwargs.get('context', {})
+        
+        # Get extra_fields from kwargs or context
+        self.extra_fields = kwargs.pop('extra_fields', []) or self._context.get('extra_fields', [])
+        logging.debug(f'ProductsSerializer extra_fields: {self.extra_fields}')
+        
+        super().__init__(*args, **kwargs)
+        
+        if self.extra_fields:
+            if 'primary_image_URL' in self.extra_fields:
+                self.fields['primary_image_URL'] = serializers.SerializerMethodField()
+
+            if 'images_URL' in self.extra_fields:
+                logging.debug('Getting the images')
+                self.fields['images_URL'] = ProductImageSerializer(many=True, source='product_images', read_only=True)
+
+            if 'brand_name' in self.extra_fields:
+                self.fields['brand_name'] = serializers.CharField(source='brand.name', read_only=True, default=None)
+
+            if 'current_lowest_price' in self.extra_fields:
+                self.fields['current_lowest_price'] = PricesHistorySerializer(read_only=True)
+        
+    def get_primary_image_URL(self, obj):
+        primary_image = obj.product_images.filter(is_primary=True).first() 
+        return primary_image.image_url if primary_image else None
+
+
 
 
 class PricesHistorySerializer(serializers.ModelSerializer):
@@ -124,18 +161,32 @@ class ProductCategorySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class ProductImageSerializer(serializers.ModelSerializer):
-    product_id = serializers.PrimaryKeyRelatedField(queryset=Products.objects.all())
-    
-    class Meta:
-        model = ProductImage
-        fields = '__all__'
 
 
-class UserHasLikedSerializer(serializers.ModelSerializer):
-    user_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
-    product_id = serializers.PrimaryKeyRelatedField(queryset=Products.objects.all())
+
+class UserFavoritesSerializer(serializers.ModelSerializer):
+    user_id = serializers.PrimaryKeyRelatedField(read_only=True)
     
     class Meta:
-        model = UserHasLiked
+        model = UserFavorites
         fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        # Get extra_fields from kwargs or use defaults
+        extra_fields = kwargs.pop('extra_fields', ['primary_image_URL', 'brand_name', 'current_lowest_price'])
+        
+        super().__init__(*args, **kwargs)
+        
+        # Initialize product serializer safely
+        self.fields['product'] = serializers.SerializerMethodField()
+        self._extra_fields = extra_fields
+
+    def get_product(self, obj):
+        logging.debug(self._extra_fields)
+        return ProductsSerializer(
+            obj.product_id,
+            context={'extra_fields': self._extra_fields}
+        ).data
+
+
+    

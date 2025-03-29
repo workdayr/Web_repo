@@ -1,7 +1,7 @@
 import axios from "axios";
 import router from "@/router"; 
 import { useAuth } from "@/composables/useAuth";
-import { authAPI } from "@/api/auth";
+import { authAPI } from "@/api/authService";
 
 const api = axios.create({
     baseURL: "http://127.0.0.1:8000/api",

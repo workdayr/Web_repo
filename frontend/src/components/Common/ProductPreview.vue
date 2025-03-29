@@ -1,17 +1,23 @@
 <script setup>
-import { defineProps, ref } from 'vue';
+import { defineProps} from 'vue';
 import AddFavoriteButton from '@/components/Common/AddFavoriteButton.vue';
-
-defineProps({
+import { useFavoritesStore } from '@/store/useFavoritesStore';
+const props = defineProps({
     product: {
         type: Object,
         required: true
     }
 });
-const followed = ref(false);
+
+
+const favoritesStore = useFavoritesStore();
+
 const handleFollowChange = (newValue) => {
-    followed.value = newValue;
-    // useFollowProduct(product.id, newValue);
+    if(newValue){
+        favoritesStore.addFavorite(props.product.product_id);
+    }else{
+        favoritesStore.removeFavoriteByProductId(props.product.product_id);
+    }
 };
 
 
@@ -30,7 +36,7 @@ const handleFollowChange = (newValue) => {
                 </div>
                 <h2 class="product-preview__title">{{ product.title }}</h2>
             </div>
-            <AddFavoriteButton :isFollowed="followed" class="product-preview__favorite-button"
+            <AddFavoriteButton :isFollowed="favoritesStore.isProductFollowed(props.product.product_id)" class="product-preview__favorite-button"
                 @update:isFollowed="handleFollowChange" />
         </div>
     </div>

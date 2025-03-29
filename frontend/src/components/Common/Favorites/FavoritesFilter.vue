@@ -3,48 +3,74 @@
         <div class="filter-menu__container">
             <div class="filter-group">
                 <label>
-
-                    <input type="checkbox" id="price-drop-only"> Price Drop Only
+                    <input type="checkbox" id="price-drop-only" v-model="filters.priceDropOnly"> Price Drop Only
                 </label>
             </div>
 
             <div class="filter-group">
                 <label>Notification Status</label>
                 <label>
-                    <input type="checkbox" id="notification-all"> <span class="check-all-indicator"></span> All
+                    <input type="checkbox" id="notification-all" :checked="isNotificationAll"
+                        @change="toggleAllNotifications"> <span class="check-all-indicator"></span> All
                 </label>
                 <label class="nested-option">
-                    <input type="checkbox" name="notification-status" value="on" id="notification-on"> Enabled
+                    <input type="checkbox" name="notification-status" value="on" id="notification-on"
+                        v-model="filters.notificationStatus"> Enabled
                 </label>
                 <label class="nested-option">
-                    <input type="checkbox" name="notification-status" value="off" id="notification-off"> Disabled
+                    <input type="checkbox" name="notification-status" value="off" id="notification-off"
+                        v-model="filters.notificationStatus"> Disabled
                 </label>
             </div>
 
             <div class="filter-group">
-                <label for="price-drop-sort">Price Drop:</label>
-                <select id="price-drop-sort">
-                    <option value="">-- Select --</option>
-                    <option value="low-to-high">Low to High</option>
-                    <option value="high-to-low">High to Low</option>
-                </select>
-            </div>
-
-            <div class="filter-group">
-                <label for="date-followed-sort">Date Followed:</label>
-                <select id="date-followed-sort">
-                    <option value="newest-first">Newest First</option>
-                    <option value="oldest-first">Oldest First</option>
+                <label for="sort-by">Sort By:</label>
+                <select id="price-drop-sort" v-model="filters.sortBy">
+                    <option value="liked_at-asc">Last Followed</option>
+                    <option value="liked_at-desc">First Followed</option>
+                    <option value="dropPrice-desc">Highest Drop Price</option>
+                    <option value="dropPrice-asc">Lowest Drop Price</option>
                 </select>
             </div>
         </div>
     </div>
-
 </template>
 
 <script setup>
+import { computed, toRefs, watch } from 'vue';
+import { useFavoritesStore } from '@/store/useFavoritesStore';
+
+const favoritesStore = useFavoritesStore();
+
+const { filters } = toRefs(favoritesStore);
+
+
+const isNotificationAll = computed(() => {
+    return (filters.value.notificationStatus || []).length === 2;
+});
+
+
+const toggleAllNotifications = (event) => {
+    if (event.target.checked) {
+        filters.notificationStatus = ['on', 'off'];
+    } else {
+        filters.notificationStatus = [];
+    }
+};
+
+// Optional: Watch for changes in the filters object
+watch(
+    () => filters.value,
+    () => {
+        favoritesStore.applyFilters();
+    },
+    { deep: true }
+);
+
+
 
 </script>
+
 <style scoped>
 @import "@/assets/styles/Common/Favorites/FavoritesFilter.css";
 </style>

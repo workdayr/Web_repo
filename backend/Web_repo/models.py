@@ -14,7 +14,8 @@ class Products(models.Model):
     upc = models.CharField(max_length=20, unique=True)
     description = models.CharField(max_length=2500)
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE, related_name="products")
-    current_lowest_price = models.OneToOneField('PricesHistory', on_delete=models.CASCADE)
+    current_lowest_price = models.ForeignKey('PricesHistory', on_delete=models.SET_NULL, null=True, blank=True)
+    
 
 class PricesHistory(models.Model):
     price_history_id = models.AutoField(primary_key=True)
@@ -124,8 +125,14 @@ class UserActivity(models.Model):
         return f"{self.user.username} - {self.last_login if self.last_login else 'Nunca ha iniciado sesión'}"
 
 
-class UserHasLiked(models.Model):
-    user_has_liked_id = models.AutoField(primary_key=True)
+class UserFavorites(models.Model):
+    user_favorites_id = models.AutoField(primary_key=True)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name="likes")
     product_id = models.ForeignKey(Products, on_delete=models.CASCADE, related_name="likes")
     liked_at = models.DateTimeField(auto_now_add=True)
+    active_notifications = models.BooleanField(default=False)
+    price_threshold = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    percentage_threshold = models.IntegerField(default=10)
+
+    class Meta:
+        unique_together = ('user_id', 'product_id')

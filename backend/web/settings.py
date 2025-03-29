@@ -152,7 +152,7 @@ AUTHENTICATION_BACKENDS = ['web.auth_backends.CustomAuthBackend']
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        "Web_repo.authentication.CookieJWTAuthentication",
     ),
 }
 
