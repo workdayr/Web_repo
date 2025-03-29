@@ -15,6 +15,7 @@ class Products(models.Model):
     description = models.CharField(max_length=2500)
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE, related_name="products")
     current_lowest_price = models.ForeignKey('PricesHistory', on_delete=models.SET_NULL, null=True, blank=True)
+    last_price_change = models.FloatField(null=True, blank=True) 
     
 
 class PricesHistory(models.Model):
@@ -23,10 +24,6 @@ class PricesHistory(models.Model):
     change_date = models.DateTimeField(auto_now=True)
     currency_id = models.ForeignKey('Currencys', on_delete=models.CASCADE, related_name="prices")
     store_product_id = models.ForeignKey('StoreProducts', on_delete=models.CASCADE, related_name="prices")
-
-    
-    def __str__(self):
-        return self.name
 
 
 class Currencys(models.Model):

@@ -8,6 +8,7 @@ from django.conf import settings
 from django.template.loader import render_to_string
 from .models import *
 import logging
+from django.db import transaction
 
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)  # Ocultar contraseña en la respuesta
@@ -130,7 +131,37 @@ class PricesHistorySerializer(serializers.ModelSerializer):
     class Meta:
         model = PricesHistory
         fields = '__all__'
+    
+    def create(self, validated_data):
+        """
+        Override the create method to implement price change logic.
+        """
+        store_product = validated_data['store_product_id']
+        new_price = validated_data['price']
 
+        product = Products.objects.select_related(
+            'current_lowest_price__store_product_id'
+        ).get(pk=store_product.product_id.pk)
+
+        current_lowest_price = product.current_lowest_price
+
+        with transaction.atomic():
+            # 2. Create the PriceHistory instance using the serializer's save()
+            price_history = self.Meta.model(**validated_data)
+            price_history.save()
+
+            # 3. Get the product and update it
+            should_update = False
+            if current_lowest_price is None or new_price <= current_lowest_price.price or \
+               current_lowest_price.store_product_id.store_id == store_product.store_id:
+                product.last_price_change = (new_price - current_lowest_price.price) if current_lowest_price else 0
+                product.current_lowest_price = price_history
+                should_update = True
+
+            if should_update:
+              product.save(update_fields=['last_price_change', 'current_lowest_price'])
+
+        return price_history
 
 class CurrencysSerializer(serializers.ModelSerializer):
     class Meta:
