@@ -56,7 +56,10 @@ class UserSerializer(serializers.ModelSerializer):
         )
 
         return user
-
+class ImagesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Images
+        fields = '__all__'
 
 class UserActivitySerializer(serializers.ModelSerializer):
     class Meta:

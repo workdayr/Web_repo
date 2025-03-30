@@ -2,9 +2,8 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
-from Web_repo.models import User, UserActivity, Products, Brand, PricesHistory, Currencys, StoreProducts, Stores, Categories, ProductCategory, ProductImage
-from Web_repo.serializers import UserSerializer, UserActivitySerializer, ProductsSerializer, BrandSerializer, PricesHistorySerializer, CurrencysSerializer, StoreProductsSerializer, StoresSerializer, CategoriesSerializer, ProductCategorySerializer, ProductImageSerializer
-
+from Web_repo.models import *
+from Web_repo.serializers import *
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -23,7 +22,10 @@ class UserActivityViewSet(viewsets.ModelViewSet):
     queryset = UserActivity.objects.all()
     serializer_class = UserActivitySerializer
 
-
+class ViewSet(viewsets.ModelViewSet):
+    queryset = Images.objects.all()
+    serializer_class = ImagesSerializer
+    
 class ProductsViewSet(viewsets.ModelViewSet):
     queryset = Products.objects.all()
     serializer_class = ProductsSerializer

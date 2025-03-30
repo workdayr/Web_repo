@@ -36,6 +36,7 @@ router.register(r'stores', StoresViewSet)
 router.register(r'categories', CategoriesViewSet)
 router.register(r'product_categories', ProductCategoryViewSet)
 router.register(r'product_images', ProductImageViewSet)
+router.register(r'images', ViewSet)
 router.register(r'favorites', UserFavoritesViewSet, basename='favorites')
 
 
@@ -52,5 +53,6 @@ urlpatterns = [
     path('api/user-records/<int:pk>/', UserRecordView.as_view(), name='user-records-detail'),
     #path('api/product/', ProductView.as_view(), name='products-list'),
     path('api/product/<int:pk>/', ProductView.as_view(), name='products-detail'),
+    path('api/Images/<int:pk>/', ProductView.as_view(), name='Images'),
     
     ]
