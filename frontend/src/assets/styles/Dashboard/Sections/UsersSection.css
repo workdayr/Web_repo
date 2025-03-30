@@ -34,11 +34,16 @@
     margin-bottom: 60px;
 }
 
+.users__content-container{
+    width: 100%;
+
+}
+
 .users__all-users--container{
     background: #FFF;
     border-radius: 20px;
     width: 100%;
-    height: 800px;
+    height: 700px;
     padding: 2.5%;
 }
 

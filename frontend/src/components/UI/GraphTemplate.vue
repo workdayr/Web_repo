@@ -79,6 +79,9 @@ const containerStyles = computed(() => ({
   text-align: left;
   margin-bottom: 8px;
   color: #321647;
+  @media (max-width: 768px){
+    font-size: small;
+  }
 }
 
 .chart-subtitle {
@@ -86,6 +89,9 @@ const containerStyles = computed(() => ({
   font-weight: 500;
   color: #6c757d;
   margin-bottom: 12px;
+  @media (max-width: 768px){
+    font-size: small;
+  }
 }
 
 .chart-error {
