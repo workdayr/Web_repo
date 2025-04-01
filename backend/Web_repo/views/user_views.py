@@ -6,6 +6,8 @@ from Web_repo.serializers import UserFavoritesSerializer
 from Web_repo.authentication import CookieJWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.decorators import action
+from rest_framework import status
 
 import logging
 
@@ -36,9 +38,6 @@ class UserFavoritesViewSet(viewsets.ModelViewSet):
         return queryset.order_by(ordering)
     
     def perform_create(self, serializer):
-        logging.debug('from perform_create')
-        logging.debug(self.request.user)
-        logging.debug(self.request.user.user_id)
         serializer.save(user_id=self.request.user)
 
     def list(self, request, *args, **kwargs):
@@ -51,3 +50,19 @@ class UserFavoritesViewSet(viewsets.ModelViewSet):
         
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
+    
+    @action(detail=False, methods=['delete'], url_path='remove-by-product')
+    def remove_by_product(self, request):
+        """Delete a favorite by product_id instead of the primary key"""
+        product_id = request.query_params.get('product_id')
+
+        if not product_id:
+            return Response({'error': 'product_id is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+        favorite = UserFavorites.objects.filter(user_id=request.user.user_id, product_id=product_id).first()
+
+        if not favorite:
+            return Response({'error': 'Favorite not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        favorite.delete()
+        return Response({'message': 'Favorite removed successfully'}, status=status.HTTP_204_NO_CONTENT)

@@ -29,91 +29,61 @@ import FooterComponent from '@/components/Layout/FooterComponent.vue';
   EXAMPLE DATA FETCH RESULT
 */
 const exampleProducts = [
-{
-    "product_id": 1,
-    "brand": 1,
-    "current_lowest_price": null,
-    "name": "product1",
-    "upc": "1",
-    "description": "some description"
-  },
-  {
-    'title': 'aaaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaa',
-    'symbol': '$',
-    'priceWhole': '10',
-    'priceFraction': '00',
-    'imageUrl': ''
-  },
-  {
-    'title': 'example product 1',
-    'symbol': '$',
-    'priceWhole': '9999',
-    'priceFraction': '00',
-    'imageUrl': ''
-  },
-  {
-    'title': '',
-    'symbol': '',
-    'priceWhole': '',
-    'priceFraction': '',
-    'imageUrl': ''
-  },
-  {
-    'title': 'example product 1',
-    'symbol': '$',
-    'priceWhole': '9999',
-    'priceFraction': '00',
-    'imageUrl': ''
-  },
-  {
-    'title': '',
-    'symbol': '',
-    'priceWhole': '',
-    'priceFraction': '',
-    'imageUrl': ''
-  },
-  {
-    'title': 'example product 1',
-    'symbol': '$',
-    'priceWhole': '9999',
-    'priceFraction': '00',
-    'imageUrl': ''
-  },
-  {
-    'title': '',
-    'symbol': '',
-    'priceWhole': '',
-    'priceFraction': '',
-    'imageUrl': ''
-  },
-  {
-    'title': 'example product 1',
-    'symbol': '$',
-    'priceWhole': '9999',
-    'priceFraction': '00',
-    'imageUrl': ''
-  },
-  {
-    'title': '',
-    'symbol': '',
-    'priceWhole': '',
-    'priceFraction': '',
-    'imageUrl': ''
-  },
-  {
-    'title': 'example product 1',
-    'symbol': '$',
-    'priceWhole': '9999',
-    'priceFraction': '00',
-    'imageUrl': ''
-  },
-  {
-    'title': '',
-    'symbol': '',
-    'priceWhole': '',
-    'priceFraction': '',
-    'imageUrl': ''
-  },];
+
+    {
+        "product_id": 1,
+        "brand": 1,
+        "current_lowest_price": null,
+        "name": "Some Brand",
+        "upc": "2",
+        "description": "some description",
+        "last_price_change": null
+    },
+    {
+        "product_id": 3,
+        "brand": 1,
+        "current_lowest_price": null,
+        "name": "Some Brand",
+        "upc": "3",
+        "description": "some description",
+        "last_price_change": null
+    },
+    {
+        "product_id": 4,
+        "brand": 1,
+        "current_lowest_price": null,
+        "name": "Some Brand",
+        "upc": "4",
+        "description": "some description",
+        "last_price_change": null
+    },
+    {
+        "product_id": 5,
+        "brand": 1,
+        "current_lowest_price": null,
+        "name": "Some Brand",
+        "upc": "5",
+        "description": "some description",
+        "last_price_change": null
+    },
+    {
+        "product_id": 6,
+        "brand": 1,
+        "current_lowest_price": null,
+        "name": "Some Brand",
+        "upc": "6",
+        "description": "some description",
+        "last_price_change": null
+    },
+    {
+        "product_id": 7,
+        "brand": 1,
+        "current_lowest_price": null,
+        "name": "Some Brand",
+        "upc": "7",
+        "description": "some description",
+        "last_price_change": null
+    }];
 
   const carouselSlides = [
   {
