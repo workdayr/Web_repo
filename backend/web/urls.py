@@ -16,8 +16,10 @@ Including another URLconf
 """
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from Web_repo.views import *
-from rest_framework_simplejwt.views import TokenRefreshView
+from Web_repo.views.views import *
+from Web_repo.views.auth_views import *
+from Web_repo.views.user_views import *
+from Web_repo.views.product_views import *
 
 # Crea un enrutador por defecto
 router = DefaultRouter()
@@ -25,7 +27,7 @@ router = DefaultRouter()
 # Registra todos los viewsets en el router
 router.register(r'users', UserViewSet)
 router.register(r'users_activity', UserActivityViewSet)
-router.register(r'products', ProductsViewSet)
+router.register(r'products', ProductsViewSet, basename='products')
 router.register(r'brands', BrandViewSet)
 router.register(r'prices_history', PricesHistoryViewSet)
 router.register(r'currencies', CurrencysViewSet)
@@ -34,12 +36,21 @@ router.register(r'stores', StoresViewSet)
 router.register(r'categories', CategoriesViewSet)
 router.register(r'product_categories', ProductCategoryViewSet)
 router.register(r'product_images', ProductImageViewSet)
-router.register(r'user_likes', UserHasLikedViewSet)
+router.register(r'favorites', UserFavoritesViewSet, basename='favorites')
+
 
 urlpatterns = [
     path('api/', include(router.urls)),  # Accede a las rutas de los viewsets, por ejemplo, /api/users/
     path("api/login/", LoginView.as_view(), name="login"),
-    path("api/token-refresh/", TokenRefreshView.as_view(), name="token-refresh"),
+    path("api/logout/", LogoutView.as_view(), name="logout"),
+    path("api/token-refresh/", RefreshTokenView.as_view(), name="token-refresh"),
     path("api/restore-session/", RestoreSessionView.as_view(), name="restore-session"),
+    
     path("api/user_analytics/", UserAnalyticsView.as_view(), name="user_analytics"),
-]
+    path('api/notification_analytics/' , NotificationAnalyticsView.as_view(), name = 'notification_analytics'),
+    path('api/user-records/', UserRecordView.as_view(), name = 'user-records'),
+    path('api/user-records/<int:pk>/', UserRecordView.as_view(), name='user-records-detail'),
+    #path('api/product/', ProductView.as_view(), name='products-list'),
+    path('api/product/<int:pk>/', ProductView.as_view(), name='products-detail'),
+    
+    ]

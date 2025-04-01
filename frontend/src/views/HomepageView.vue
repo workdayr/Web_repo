@@ -30,11 +30,12 @@ import FooterComponent from '@/components/Layout/FooterComponent.vue';
 */
 const exampleProducts = [
 {
-    'title': 'example product 1',
-    'symbol': '$',
-    'priceWhole': '9999',
-    'priceFraction': '00',
-    'imageUrl': ''
+    "product_id": 1,
+    "brand": 1,
+    "current_lowest_price": null,
+    "name": "product1",
+    "upc": "1",
+    "description": "some description"
   },
   {
     'title': 'aaaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaa',

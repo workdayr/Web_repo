@@ -2,11 +2,11 @@
 import HeaderComponent from '../HeaderComponent.vue';
 import GraphTemplate from '@/components/UI/GraphTemplate.vue';
 import { fetchProductsChartData } from '@/api/productsChartService';
-import { ref, onMounted, defineProps } from 'vue';
+import { ref, onMounted, defineProps, onUnmounted } from 'vue';
 
 
 const charts = ref([]);
-
+const screenWidth = ref(window.innerWidth);
 const loadData = async () => {
     const { charts: chartData } = await fetchProductsChartData();
     charts.value = chartData;
@@ -16,6 +16,18 @@ onMounted(loadData);
 defineProps({
     src: String,
 })
+
+const updateScreenWidth = () => {
+  screenWidth.value = window.innerWidth;
+};
+
+onMounted(() => {
+  window.addEventListener('resize', updateScreenWidth);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('resize', updateScreenWidth);
+});
 </script>
 
 <template>
@@ -29,7 +41,11 @@ defineProps({
 
                 <h2 class="products-being-tracked__header">23,648<br><span>Total products being tracked</span></h2>
                 <GraphTemplate v-if="charts.length > 0" :chartType="charts[0].type" :chartData="charts[0].data"
-                    :chartOptions="charts[0].options" :customStyles="{ width: '55%', height: '80%' }" />
+                    :chartOptions="charts[0].options" :customStyles="{
+                            width: '100%',
+                            height: '150px',
+                            maxHeight: '200px'
+                        }" />
 
             </div>
             <div class="products__most-followed-products">
@@ -76,10 +92,21 @@ defineProps({
 
         <section class="products__section2">
             <div class="products__top-stores-discounts">
-                <div v-for="(chart) in charts.slice(1, 2)" :key="chart.id" class="graphs-small">
-                    <GraphTemplate :chartHeader="chart.header" :chartType="chart.type" :chartData="chart.data"
-                        :chartOptions="chart.options" :chartSubtitle="chart.subtitle"
-                        :customStyles="{ width: '100%', height: '100%' }" />
+                <div v-if="screenWidth >=766" class="graphs-small">
+                    <GraphTemplate v-if="charts.length > 0" :chartType="charts[1].type" :chartData="charts[1].data"
+                    :chartOptions="charts[1].options" :chartHeader="charts[1].header" :customStyles="{
+                            width: '100%',
+                            height: '350px',
+                            maxHeight: '400px'
+                        }" />
+                </div>
+                <div v-if="screenWidth < 766" class="graphs-small">
+                    <GraphTemplate v-if="charts.length > 0" :chartType="charts[1].type" :chartData="charts[1].data"
+                    :chartOptions="charts[1].options" :chartHeader="charts[1].header" :chartSubtitle="charts[1].subtitle" :customStyles="{
+                            width: '100%',
+                            height: '350px',
+                            maxHeight: '500px'
+                        }" />
                 </div>
 
             </div>

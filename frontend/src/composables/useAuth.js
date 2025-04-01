@@ -1,4 +1,4 @@
-import { authAPI } from '@/api/auth';
+import { authAPI } from '@/api/authService';
 import { useAuthStore } from '@/store/useAuthStore';
 
 export function useAuth() {
@@ -6,10 +6,14 @@ export function useAuth() {
 
     const login = async (credentials) => {
         try {
-            const response = await authAPI.login(credentials);
-            console.log(response.data.user);
-            authStore.login(response.data);
+            if (authStore.isAuthenticated) {
+                await logout();
+            }
 
+            const response = await authAPI.login(credentials);
+        
+            authStore.login(response.data.user);
+        
             return response.data;
         } catch (error) {
             console.error("Login error:", error);
@@ -19,8 +23,6 @@ export function useAuth() {
 
     const register = async (userData) => {
         try {
-            //const hashedPassword = hashPassword(userData.password);
-            //userData.password = hashedPassword;
             const response = await authAPI.register(userData);
             const credentials = {email: userData.email, password: userData.password};
             await login(credentials);
@@ -36,7 +38,7 @@ export function useAuth() {
         try {
             await authAPI.logout();
             authStore.logout();
-
+            window.location.reload();
         } catch (error) {
             console.error("Logout error:", error);
             throw error;
@@ -52,7 +54,7 @@ export function useAuth() {
         
             return response.data;
         } catch (error) {
-            console.error("Restore session error:", error);
+            console.error("Unable to restore session:", error.message);
             return null;
         }
     };

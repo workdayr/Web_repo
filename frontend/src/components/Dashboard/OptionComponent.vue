@@ -1,15 +1,11 @@
 <script setup>
-import { ref, defineProps} from 'vue';
+import { defineProps} from 'vue';
 import router from '@/router';
 defineProps({
   name: String,
+  isSelected: Boolean,
 });
 
-const isSelected = ref(false);
-
-const toggleSelection = () => {
-  isSelected.value = !isSelected.value;
-};
 const redirect = () => {
     router.push('/Dashboard');
 };
@@ -20,7 +16,7 @@ const redirect = () => {
   <div 
     class="sideMenu__option"
     :class="{ active: isSelected }"
-    @click="toggleSelection(); redirect();"
+    @click="redirect();"
     
   >
     <p class="sideMenu__option-text">{{ name }}</p>

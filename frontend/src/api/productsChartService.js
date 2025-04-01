@@ -71,19 +71,19 @@ export const fetchProductsChartData = async () => {
                                 label: "Amazon",
                                 data: data.totalViews,
                                 backgroundColor: "#CB3CFF",
-                                barThickness: 12
+                                barThickness: 6
                             },
                             {
                                 label: "Mercado Libre",
                                 data: data.totalViews,
                                 backgroundColor: "#ffc107",
-                                barThickness: 12
+                                barThickness: 6
                             },
                             {
                                 label: "Apple Store",
                                 data: data.totalViews,
                                 backgroundColor: "#007bff",
-                                barThickness: 12
+                                barThickness: 6
                             },
                         ],
                     },
