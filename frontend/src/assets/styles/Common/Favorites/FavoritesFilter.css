@@ -1,4 +1,62 @@
-.filter-menu__container{
+.filter-menu {
     position: absolute;
     display: block;
+}
+
+.filter-menu__container {
+    background-color: rgba(0, 0, 0, 0.9);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: start;
+    padding: 20px;
+    border-radius: 10px;
+    font-weight: 400;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.filter-menu-title{
+    font-weight: 600;
+}
+
+.nofification-options {
+    margin-top: 5px;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.filter-menu__container label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.filter-menu__container #price-drop-only {
+    margin-right: 5px;
+}
+
+#price-drop-sort {
+    margin-top: 5px;
+    background-color: transparent;
+    color: white;
+    border: none;
+    font-family: 'Inter', sans-serif;
+}
+
+
+#price-drop-sort::-ms-expand {
+    color: white;
+}
+
+#price-drop-sort option {
+    background-color: black;
+    color: white;
+    border: none;
+    font-family: 'Inter', sans-serif;
 }

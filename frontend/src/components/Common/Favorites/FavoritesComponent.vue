@@ -34,9 +34,10 @@
                         </label>
                     </div>
                     <div class="favs__popup--content-list">
-                        <FavoritesList v-for="fav in favoritesStore.favorites" :key="fav.user_favorites_id"
-                            :product="fav.product"
-                            @remove-favorite="handleRemoveFavorite(fav.user_favorites_id, $event)" />
+                        <FavoritesList v-for="index in favoritesStore.filteredFavoriteIndexes"
+                            :key="favoritesStore.favorites[index].user_favorites_id"
+                            :product="favoritesStore.favorites[index].product"
+                            @remove-favorite="handleRemoveFavorite(favoritesStore.favorites[index].user_favorites_id, $event)" />
                     </div>
                 </div>
             </div>
@@ -68,7 +69,7 @@ const togglePopup = async (isOpen) => {
 const handleRemoveFavorite = (favoriteId) => {
     console.log(`Received remove-favorite event for ID: ${favoriteId}`);
     // Perform your logic here, e.g., remove the item from the store
-    favoritesStore.removeFavorite(favoriteId);    
+    favoritesStore.removeFavorite(favoriteId);
 };
 
 </script>
