@@ -1,10 +1,14 @@
 <template>
-    <div class="Header__container" :style="{paddingBottom : paddingBottom, textAlign : align, paddingRight:paddingRight}">
-        <h1 class="Header__text" :style="{fontSize : fontSize, color: color,}">{{ text }}</h1>
+    <div class="Header__container" :style="{paddingBottom : paddingBottom, textAlign : align, paddingRight:paddingRight, marginLeft: responsiveMarginLeft}">
+        <h1 v-if="screenWidth >= 768" class="Header__text" :style="{fontSize : fontSize, color: color,}">{{ text }}</h1>
+        <h1 v-if="screenWidth < 768" class="Header__text" :style="{fontSize : responsiveFontSize, color: responsiveColor,}">{{ text }}</h1>
     </div>
 </template>
 <script setup>
-import { defineProps } from 'vue';
+import { defineProps, ref, onMounted, onUnmounted } from 'vue';
+const screenWidth = ref(window.innerWidth)
+
+
 defineProps({
     text: { type: String, required: true, },
     fontSize: { type: String, default: 'x-large', },
@@ -12,7 +16,27 @@ defineProps({
     paddingBottom: { type: String, default: '20px', },
     paddingRight:{type:String, default: '0px'},
     align: { type: String, default: 'left'},
+    marginLeft:{type:String, default:'0px'},
+
+    responsiveText: { type: String, required: true, },
+    responsiveFontSize: { type: String, default: 'medium', },
+    responsiveColor: { type: String, default: '#fff', },
+    responsiveMarginLeft :{ type: String, default: '0px'},
 });
+
+
+const updateScreenWidth = () => {
+  screenWidth.value = window.innerWidth;
+};
+
+onMounted(() => {
+  window.addEventListener('resize', updateScreenWidth);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('resize', updateScreenWidth);
+});
+
 
 </script>
 <style scoped>

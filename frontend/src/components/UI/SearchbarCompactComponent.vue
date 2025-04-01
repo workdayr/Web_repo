@@ -2,8 +2,8 @@
     import {defineProps, ref, defineEmits} from 'vue';
     import SearchbarComponent from '@/components/UI/SearchbarComponent.vue';
     defineProps({
-        text:String
-    });
+        text:String,
+        });
     const emit = defineEmits(['toggle-search']);
     const isSearchbarOpen =  ref(false);
 

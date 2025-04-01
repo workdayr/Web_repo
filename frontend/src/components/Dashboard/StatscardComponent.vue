@@ -14,20 +14,31 @@ defineProps({
 </template>
 <style scoped>
 .statsCard {
-    width: 30%;
+    width: 100%;
+    max-height: 100px;
     background: #fff;
     padding: 12px;
     height: 100%;
     border-radius: 5px;
     color: #321647;
+    @media(max-width:768px){
+        max-height: 60px;
+    }
+    
 }
 
 .statsCard__header {
     font-size: small;
+    @media(max-width:768px){
+        font-size: x-small;
+    }
 }
 
 .statsCard__amount {
     font-size: x-large;
     font-weight: 500;
+    @media(max-width:768px){
+        font-size: small;
+    }
 }
 </style>

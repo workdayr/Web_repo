@@ -63,6 +63,10 @@ const statusClass = (status) => {
 <style scoped>
 .notification-row{
     font-size: 60%;
+    @media(max-width: 768px){
+        font-size: 50%;
+        text-align: center;
+}
 }
 
 .store-tag {
@@ -78,6 +82,9 @@ const statusClass = (status) => {
     color: white;
     padding: 4px 8px;
     border-radius: 4px;
+    @media(max-width: 768px){
+        padding: 3px;
+}
 }
 
 .status-ends-soon {
@@ -85,6 +92,9 @@ const statusClass = (status) => {
     color: white;
     padding: 4px 8px;
     border-radius: 4px;
+    @media(max-width: 768px){
+        padding: 3px;
+}
 }
 
 .status-ended {
@@ -92,6 +102,9 @@ const statusClass = (status) => {
     color: white;
     padding: 4px 8px;
     border-radius: 4px;
+    @media(max-width: 768px){
+        padding: 3px;
+}
 }
 
 .actions {
@@ -99,6 +112,7 @@ const statusClass = (status) => {
   flex-direction: row;
   text-align: center;
   width: 80px;
+  
 }
 
 .action-btn {
@@ -107,4 +121,8 @@ const statusClass = (status) => {
   cursor: pointer;
   margin: 0 4px;
   font-size: 16px;
-}</style>
+  @media(max-width: 768px){
+    font-size: 12px;
+}
+}
+</style>
