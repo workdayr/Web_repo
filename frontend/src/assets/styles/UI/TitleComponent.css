@@ -1,0 +1,25 @@
+.title-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 20vh;
+    text-align: center;
+  }
+  
+  h1 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    color: #ffffff;
+  }
+  
+  .text-lg {
+    font-size: 2.5rem;
+  }
+  
+  .text-md {
+    font-size: 2rem;
+  }
+  
+  .text-sm {
+    font-size: 1.5rem;
+  }

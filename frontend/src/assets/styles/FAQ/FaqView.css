@@ -1,0 +1,183 @@
+  
+
+  .background__vectors {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+/* Estilos individuales de los vectores */
+.background__vector1 {
+    position: absolute;
+    top: -10%;
+    left: -5%;
+    width: 500px;
+}
+
+.background__vector2 {
+    position: absolute;
+    top:-20%;
+    right: 0%;
+    width: 500px;
+}
+
+.background__vector3 {
+    position: absolute;
+    top: 40%;
+    left: 40%;
+    width: 300px;
+}
+
+.background__vector4 {
+    position: absolute;
+    top: 80%;
+    left: 10%;
+    width: 400px;
+}
+
+.background__vector5 {
+    position: absolute;
+    top: 80%;
+    left: 68%;
+    width: 500px;
+}
+
+.background__vector6 {
+    position: absolute;
+    top: 175%;
+    left: 15%;
+    width: 300px;
+}
+
+.background__vector7 {
+    position: absolute;
+    top: 150%;
+    left: 45%;
+    width: 400px;
+}
+
+.background__vector8 {
+    position: absolute;
+    top: 180%;
+    right:0%;
+    width:300px;
+}
+
+/* Responsividad para tablets y móviles */
+/* Pantallas menores a 992px */
+@media (max-width: 992px) {
+    .background__vector1 {
+        width: 400px;
+        top: -8%;
+    }
+
+    .background__vector2 {
+        width: 400px;
+        top: -15%;
+    }
+
+    .background__vector3 {
+        width: 250px;
+        left: 35%;
+    }
+
+    .background__vector4 {
+        width: 350px;
+    }
+
+    .background__vector5 {
+        width: 400px;
+        left: 65%;
+    }
+
+    .background__vector6 {
+        width: 250px;
+    }
+
+    .background__vector7 {
+        width: 350px;
+    }
+
+    .background__vector8 {
+        width: 250px;
+    }
+}
+
+/* Pantallas menores a 688px */
+@media (max-width: 688px) {
+    .background__vector1 {
+        width: 300px;
+        top: -5%;
+    }
+
+    .background__vector2 {
+        width: 300px;
+        top: -10%;
+    }
+
+    .background__vector3 {
+        width: 200px;
+        left: 30%;
+    }
+
+    .background__vector4 {
+        width: 250px;
+    }
+
+    .background__vector5 {
+        width: 300px;
+        left: 60%;
+    }
+
+    .background__vector6 {
+        width: 200px;
+    }
+
+    .background__vector7 {
+        width: 250px;
+    }
+
+    .background__vector8 {
+        width: 200px;
+    }
+}
+
+/* Pantallas menores a 500px */
+@media (max-width: 500px) {
+    .background__vector1 {
+        width: 200px;
+        top: -3%;
+    }
+
+    .background__vector2 {
+        width: 200px;
+        top: -8%;
+    }
+
+    .background__vector3 {
+        width: 150px;
+        left: 25%;
+    }
+
+    .background__vector4 {
+        width: 200px;
+    }
+
+    .background__vector5 {
+        width: 250px;
+        left: 55%;
+    }
+
+    .background__vector6 {
+        width: 150px;
+    }
+
+    .background__vector7 {
+        width: 200px;
+    }
+
+    .background__vector8 {
+        width: 150px;
+    }
+}
