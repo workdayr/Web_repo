@@ -1,5 +1,5 @@
 <template>
-    <div class="Header__container" :style="{paddingBottom : paddingBottom, textAlign : align, paddingRight:paddingRight}">
+    <div class="Header__container" :style="{paddingBottom : paddingBottom, textAlign : align, paddingRight:paddingRight, marginLeft: responsiveMarginLeft}">
         <h1 v-if="screenWidth >= 768" class="Header__text" :style="{fontSize : fontSize, color: color,}">{{ text }}</h1>
         <h1 v-if="screenWidth < 768" class="Header__text" :style="{fontSize : responsiveFontSize, color: responsiveColor,}">{{ text }}</h1>
     </div>
@@ -16,10 +16,12 @@ defineProps({
     paddingBottom: { type: String, default: '20px', },
     paddingRight:{type:String, default: '0px'},
     align: { type: String, default: 'left'},
+    marginLeft:{type:String, default:'0px'},
 
     responsiveText: { type: String, required: true, },
     responsiveFontSize: { type: String, default: 'medium', },
     responsiveColor: { type: String, default: '#fff', },
+    responsiveMarginLeft :{ type: String, default: '0px'},
 });
 
 

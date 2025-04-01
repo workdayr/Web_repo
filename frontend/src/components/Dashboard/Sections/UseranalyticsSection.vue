@@ -52,14 +52,14 @@ onMounted(loadData);
         <div class="Section__content--graphs1">
             <div class="Section__content--graph1">
                 <div v-if="charts.length > 0" class="graph-large">
-                    <GraphTemplate v-if="screenWidth >= 768" :chartHeader="charts[0].header" :chartType="charts[0].type"
+                    <GraphTemplate v-if="screenWidth >= 766" :chartHeader="charts[0].header" :chartType="charts[0].type"
                         :chartData="charts[0].data" :chartOptions="charts[0].options"
                         :chartSubtitle="charts[0].subtitle" :customStyles="{
                             width: '100%',
                             height: '370px',
                             maxHeight: '500px'
                         }" />
-                     <GraphTemplate v-if="screenWidth < 768" :chartHeader="charts[0].header" :chartType="charts[0].type"
+                     <GraphTemplate v-if="screenWidth < 766" :chartHeader="charts[0].header" :chartType="charts[0].type"
                         :chartData="charts[0].data" :chartOptions="charts[0].options"
                         :chartSubtitle="charts[0].subtitle" :customStyles="{
                             width: '100%',
@@ -71,7 +71,7 @@ onMounted(loadData);
 
             <div class="Section__content--graph2">
                 <div v-for="(chart) in charts.slice(1, 3)" :key="chart.id" class="graphs-small">
-                    <GraphTemplate v-if="screenWidth >= 768" :chartHeader="chart.header" :chartType="chart.type" :chartData="chart.data"
+                    <GraphTemplate v-if="screenWidth >= 766" :chartHeader="chart.header" :chartType="chart.type" :chartData="chart.data"
                         :chartOptions="chart.options" :chartSubtitle="chart.subtitle" :customStyles="{
                             width: '100%',
                             height: '170px',
@@ -79,7 +79,7 @@ onMounted(loadData);
                             marginBottom: '20px'
                         }"/>
                 </div>
-                <div v-if="screenWidth < 768" class="graph2__responsive-container">
+                <div v-if="screenWidth < 766" class="graph2__responsive-container">
                 <div v-for="(chart) in charts.slice(1, 3)" :key="chart.id" class="graphs-small">
                     <GraphTemplate  :chartHeader="chart.header" :chartType="chart.type" :chartData="chart.data"
                         :chartOptions="chart.options" :chartSubtitle="chart.subtitle" :customStyles="{
@@ -95,7 +95,7 @@ onMounted(loadData);
 
         <div class="Section__content--graph3">
             <div v-if="charts.length > 0" class="graph-large">
-                    <GraphTemplate v-if="screenWidth >= 768" :chartHeader="charts[3].header" :chartType="charts[0].type"
+                    <GraphTemplate v-if="screenWidth >= 766" :chartHeader="charts[3].header" :chartType="charts[0].type"
                         :chartData="charts[3].data" :chartOptions="charts[3].options"
                         :chartSubtitle="charts[3].subtitle" :customStyles="{
                             width: '100%',
@@ -103,7 +103,7 @@ onMounted(loadData);
                             maxHeight: '200px'
                         }" />
             </div>
-            <div v-if="charts.length > 0 && screenWidth < 768" class="graph-large">
+            <div v-if="charts.length > 0 && screenWidth < 766" class="graph-large">
                     <GraphTemplate :chartHeader="charts[3].header" :chartType="charts[0].type"
                         :chartData="charts[3].data" :chartOptions="charts[3].options"
                         :chartSubtitle="charts[3].subtitle" :customStyles="{

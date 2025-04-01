@@ -2,7 +2,7 @@
 import HeaderComponent from '../HeaderComponent.vue';
 import GraphTemplate from '@/components/UI/GraphTemplate.vue';
 import { fetchNotiChartData } from '@/api/notificationsChartService';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import TableComponent from '../TableComponent.vue';
 import axios from 'axios';
 import Swal from 'sweetalert2';
@@ -10,6 +10,7 @@ import notificationRow from '../notificationRow.vue';
 const charts = ref([]);
 const stats = ref({});
 const products = ref([]);
+const screenWidth = ref(window.innerHeight);
 
 
 const fetchProducts = async () => {
@@ -77,6 +78,17 @@ const loadNotificationData = async () => {
     charts.value = chartData;
     stats.value = statsData;
 };
+const updateScreenWidth = () => {
+  screenWidth.value = window.innerWidth;
+};
+
+onMounted(() => {
+  window.addEventListener('resize', updateScreenWidth);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('resize', updateScreenWidth);
+});
 
 onMounted(loadNotificationData);
 onMounted(fetchProducts);
@@ -90,21 +102,37 @@ onMounted(fetchProducts);
         </div>
         <section class="notifications__section1">
             <div class="notifications__effective-alert-timing">
-                <div v-if="charts.length > 0" class="graph-large">
+                <div v-if="charts.length > 0 && screenWidth >= 766" class="graph-large">
                     <GraphTemplate v-if="charts[0]" :chartHeader="charts[0].header" :chartType="charts[0].type"
                         :chartData="charts[0].data" :chartOptions="charts[0].options" :customStyles="{
                             width: '100%',
                             height: '350px',
-                            maxHeight: '500px'
+                            maxHeight: '350px'
+                        }" />
+                </div>
+                <div v-if="charts.length > 0 && screenWidth < 766" class="graph-large">
+                    <GraphTemplate v-if="charts[0]" :chartHeader="charts[0].header" :chartType="charts[0].type"
+                        :chartData="charts[0].data" :chartOptions="charts[0].options" :customStyles="{
+                            width: '100%',
+                            height: '250px',
+                            maxHeight: '300px'
                         }" />
                 </div>
             </div>
             <div class="notifications__redictered-users">
-                <div v-for="(chart) in charts.slice(1, 2)" :key="chart.id" class="graph-doughnut">
-                    <GraphTemplate :chartHeader="chart.header" :chartType="chart.type" :chartData="chart.data"
-                        :chartOptions="chart.options" :chartSubtitle="chart.subtitle" :customStyles="{
+                <div v-if="charts.length > 0 && screenWidth >= 766" class="graph-doughnut">
+                    <GraphTemplate :chartHeader="charts[1].header" :chartType="charts[1].type" :chartData="charts[1].data"
+                        :chartOptions="charts[1].options" :chartSubtitle="charts[1].subtitle" :customStyles="{
                             width: '100%',
                             height: '300px',
+                            maxHeight: '300px'
+                        }" />
+                </div>
+                <div v-if="charts.length > 0 && screenWidth < 766" class="graph-doughnut">
+                    <GraphTemplate :chartHeader="charts[1].header" :chartType="charts[1].type" :chartData="charts[1].data"
+                        :chartOptions="charts[1].options" :chartSubtitle="charts[1].subtitle" :customStyles="{
+                            width: '100%',
+                            height: '220px',
                             maxHeight: '300px'
                         }" />
                 </div>
@@ -112,16 +140,14 @@ onMounted(fetchProducts);
         </section>
         <section class="notifications__section2">
             <div class="notifications__best-sales--container">
-                <HeaderComponent text="Best sales" color="#321647" fontSize="medium" />
+                <HeaderComponent v-if="screenWidth >=766" text="Best sales" color="#321647" fontSize="medium" />
+                <HeaderComponent v-if="screenWidth < 766" text="Best sales" responsive-color="#321647" responsive-font-size="small" responsive-margin-left="5%" />
                 <TableComponent :headers="['Product ID', 'Product', 'Date', 'Status', 'Stores', 'Price']"
                     :data="products" :show-actions="true">
                     <template #default="{ data }">
                         <notificationRow  :data="data" @delete="confirmDelete" @edit="handleEdit" />
                     </template>
                 </TableComponent>
-
-
-
             </div>
 
         </section>
