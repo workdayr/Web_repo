@@ -11,7 +11,7 @@ defineProps({
 <template>
   <section class="section-container">
     <div class="section-header">
-      <h1 class="sectionzz-title">{{ title }}</h1>
+      <h1 class="section-title">{{ title }}</h1>
       <img v-if="icon" :src="icon" class="section-icon">
     </div>
     <HomepageProductRow :products="products"/>

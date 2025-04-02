@@ -2,7 +2,6 @@
 import { defineProps } from 'vue';
 import AddFavoriteButton from '@/components/Common/AddFavoriteButton.vue';
 import { useFavoritesStore } from '@/store/useFavoritesStore';
-
 const props = defineProps({
   product: {
     type: Object,
@@ -39,7 +38,7 @@ const handleImageError = (event) => {
 </script>
 
 <template>
-  <div class="product-preview">
+  <div @click="$router.push('/product')" class="product-preview">
     <img 
       :src="product.imageUrl || require('@/assets/Common/DefaultImage.svg')" 
       class="product-preview__image"
