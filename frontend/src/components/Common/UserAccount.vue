@@ -8,18 +8,20 @@
                     stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
         </button>
-        <div v-if="hover" class="user-account__popup">
-            <span class="user-account__text">{{ fullName }}</span>
-            <span class="user-account__text">{{ authStore.user.email }}</span>
-            <button class="user-account__button logout" @click="logout">
-                <span class="user-account__text logout">Log out</span>
-                <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                        d="M7.04616 5.98494C7.29158 3.13494 8.75616 1.97119 11.9624 1.97119H12.0653C15.6041 1.97119 17.0212 3.38828 17.0212 6.92702V12.0887C17.0212 15.6274 15.6041 17.0445 12.0653 17.0445H11.9624C8.77991 17.0445 7.31533 15.8966 7.05408 13.0941M11.8753 9.49994H2.86616M4.63158 6.84786L1.97949 9.49994L4.63158 12.152"
-                        stroke="#D22B2B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-            </button>
-        </div>
+        <Transition name="popup">
+            <div v-if="hover" class="user-account__popup">
+                <span class="user-account__text">{{ fullName }}</span>
+                <span class="user-account__text">{{ authStore.user.email }}</span>
+                <button class="user-account__button logout" @click="logout">
+                    <span class="user-account__text logout">Log out</span>
+                    <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M7.04616 5.98494C7.29158 3.13494 8.75616 1.97119 11.9624 1.97119H12.0653C15.6041 1.97119 17.0212 3.38828 17.0212 6.92702V12.0887C17.0212 15.6274 15.6041 17.0445 12.0653 17.0445H11.9624C8.77991 17.0445 7.31533 15.8966 7.05408 13.0941M11.8753 9.49994H2.86616M4.63158 6.84786L1.97949 9.49994L4.63158 12.152"
+                            stroke="#D22B2B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </button>
+            </div>
+        </Transition>
     </div>
 </template>
 <script setup>
@@ -28,7 +30,7 @@ import { ref } from 'vue'
 import { useAuth } from '@/composables/useAuth';
 const hover = ref(false);
 const authStore = useAuthStore();
-const { logout } = useAuth(); 
+const { logout } = useAuth();
 const fullName = authStore.user.first_name + " " + authStore.user.last_name;
 
 </script>

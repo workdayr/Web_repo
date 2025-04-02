@@ -1,0 +1,126 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap');
+
+.price-comparison {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 78px; /* Espacio de 78px entre cada tarjeta */
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  flex-wrap: wrap;
+}
+
+.price-card {
+  font-family: 'Poppins', sans-serif; /* Aplicar Poppins a la tarjeta */
+  background: linear-gradient(to bottom, #4E136D, #9725D3);
+  color: white;
+  padding: 1.5rem;
+  border-radius: 35px; /* Bordes redondeados */
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+  text-align: left; /* Alineación de texto a la izquierda */
+  width: 350px;
+  height: 624px;
+  display: flex;
+  flex-direction: column; /* Asegura que los elementos se alineen en columna */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+}
+
+.price-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 20px rgba(0, 0, 0, 0.2);
+}
+
+.store-name {
+  margin-top: 5%;
+  font-size: 26px;
+  font-weight: bold;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.price-display {
+  font-size: 46px;
+  font-weight: bold;
+  margin-top: 0.5rem;
+  margin-bottom: 10px;
+}
+
+.currency {
+  font-size: 30px;
+  margin-left: 0.25rem;
+  opacity: 0.8;
+  font-weight: 400;
+}
+
+.feature-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 20px;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+}
+
+.checkmark {
+  color: #4ADE80;
+  font-size: 1.25rem;
+  margin-right: 0.5rem;
+}
+
+.feature-text {
+  flex-grow: 1;
+}
+
+.buy-button {
+  background-color: black;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 26px;
+  width: 100%;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-top: auto;
+}
+
+.buy-button:hover {
+  background-color: #1a1a1a;
+  transform: scale(1.05);
+}
+
+
+@media (max-width: 766px) {
+  .price-comparison {
+    gap: 80px;
+  }
+  .price-card {
+    width: 80%;
+    height: auto;
+    padding: 4%;
+  }
+  .store-name {
+    font-size: large;
+  }
+  .price-display {
+    font-size: large;
+  }
+  .currency {
+    font-size: medium;
+
+  }
+  .feature-list {
+    font-size: medium;
+
+  }
+  .buy-button {
+    font-size: medium;
+    border-radius: 12px;
+    border: 1px solid transparent;
+  }
+}

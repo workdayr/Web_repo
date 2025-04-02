@@ -112,7 +112,6 @@ class ProductsSerializer(serializers.ModelSerializer):
                 self.fields['primary_image_URL'] = serializers.SerializerMethodField()
 
             if 'images_URL' in self.extra_fields:
-                logging.debug('Getting the images')
                 self.fields['images_URL'] = ProductImageSerializer(many=True, source='product_images', read_only=True)
 
             if 'brand_name' in self.extra_fields:
@@ -217,11 +216,6 @@ class UserFavoritesSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserFavorites
         fields = '__all__'
-
-class UserRecordSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = UserRecord
-        fields = '__all__'
     def __init__(self, *args, **kwargs):
         # Get extra_fields from kwargs or use defaults
         extra_fields = kwargs.pop('extra_fields', ['primary_image_URL', 'brand_name', 'current_lowest_price'])
@@ -238,6 +232,12 @@ class UserRecordSerializer(serializers.ModelSerializer):
             obj.product_id,
             context={'extra_fields': self._extra_fields}
         ).data
+
+class UserRecordSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserRecord
+        fields = '__all__'
+    
 
 class ProductSerializer(serializers.ModelSerializer):
     product_id = serializers.SerializerMethodField()

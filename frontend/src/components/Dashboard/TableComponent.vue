@@ -37,11 +37,17 @@ defineProps({
     margin: 0 auto;
     height: 90%;
     overflow-y: auto;
+    @media(max-width: 768px){
+        padding: 4%;
+        border-radius: 8px;
+        max-height: 250px;
+    }
 }
 
 .data-table {
     width: 100%;
     border-collapse: collapse;
+
 }
 
 .data-table th,
@@ -57,10 +63,15 @@ defineProps({
     color: #321647;
     border-bottom: 1px solid #321647;
     font-size: x-small;
+    @media(max-width: 768px){
+        font-size: xx-small;
+        font-weight: 600;
+    }
 }
 
 .actions-header {
     width: 80px;
     text-align: center;
+    
 }
 </style>
