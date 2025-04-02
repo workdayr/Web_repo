@@ -2,9 +2,8 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
-from Web_repo.models import User, UserActivity, Products, Brand, PricesHistory, Currencys, StoreProducts, Stores, Categories, ProductCategory, ProductImage
-from Web_repo.serializers import UserSerializer, UserActivitySerializer, ProductsSerializer, BrandSerializer, PricesHistorySerializer, CurrencysSerializer, StoreProductsSerializer, StoresSerializer, CategoriesSerializer, ProductCategorySerializer, ProductImageSerializer
-
+from Web_repo.models import *
+from Web_repo.serializers import *
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -23,7 +22,53 @@ class UserActivityViewSet(viewsets.ModelViewSet):
     queryset = UserActivity.objects.all()
     serializer_class = UserActivitySerializer
 
+class ViewSet(viewsets.ModelViewSet):
+    queryset = Images.objects.all()
+    serializer_class = ImagesSerializer
+    
+class ProductsViewSet(viewsets.ModelViewSet):
+    queryset = Products.objects.all()[:30]  # Limitar a 30 productos
+    serializer_class = ProductSerializer
 
+
+class BrandViewSet(viewsets.ModelViewSet):
+    queryset = Brand.objects.all()
+    serializer_class = BrandSerializer
+
+
+class PricesHistoryViewSet(viewsets.ModelViewSet):
+    queryset = PricesHistory.objects.all()
+    serializer_class = PricesHistorySerializer
+
+
+class CurrencysViewSet(viewsets.ModelViewSet):
+    queryset = Currencys.objects.all()
+    serializer_class = CurrencysSerializer
+
+
+class StoreProductsViewSet(viewsets.ModelViewSet):
+    queryset = StoreProducts.objects.all()
+    serializer_class = StoreProductsSerializer
+
+
+class StoresViewSet(viewsets.ModelViewSet):
+    queryset = Stores.objects.all()
+    serializer_class = StoresSerializer
+
+
+class CategoriesViewSet(viewsets.ModelViewSet):
+    queryset = Categories.objects.all()
+    serializer_class = CategoriesSerializer
+
+
+class ProductCategoryViewSet(viewsets.ModelViewSet):
+    queryset = ProductCategory.objects.all()
+    serializer_class = ProductCategorySerializer
+
+
+class ProductImageViewSet(viewsets.ModelViewSet):
+    queryset = ProductImage.objects.all()
+    serializer_class = ProductImageSerializer
 
 
 

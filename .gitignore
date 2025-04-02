@@ -23,7 +23,7 @@ pnpm-debug.log*
 *.sw?
 
 # database files
-*.sqlite3
+
 
 #python cache
 *__pycache__/
