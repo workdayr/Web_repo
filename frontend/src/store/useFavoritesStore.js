@@ -3,8 +3,6 @@ import { ref, computed, watch } from 'vue';
 import { favoritesService } from '@/api/favoritesService'
 import { useAuthStore } from './useAuthStore';
 
-//check auth in authstore
-// computed and watch instances
 
 export const useFavoritesStore = defineStore('favoritesStore', () => {
     const favorites = ref([]);
@@ -121,6 +119,7 @@ export const useFavoritesStore = defineStore('favoritesStore', () => {
             favorites.value.splice(index, 1);
             followedProducts.value.delete(product_id);
             productFollowStatus.value.delete(product_id);
+            applyFilters();
         }
 
         try {
@@ -147,6 +146,7 @@ export const useFavoritesStore = defineStore('favoritesStore', () => {
             followedProducts.value.delete(productIdToRemove);
             productFollowStatus.value.delete(productIdToRemove);
             favorites.value.splice(index, 1);
+            applyFilters();
         } catch (err) {
             console.error('Failed to remove favorite:', err);
         } finally {
@@ -163,6 +163,7 @@ export const useFavoritesStore = defineStore('favoritesStore', () => {
         try {
             await favoritesService.patchFavorites(favorites[index].user_favorites_id, data);
             Object.assign(favorites.value[index], data);
+            applyFilters();
         } catch (err) {
             console.error("Failed to update favorite:", err);
         } finally {

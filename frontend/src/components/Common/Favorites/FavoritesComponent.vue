@@ -7,7 +7,7 @@
                     stroke="white" />
             </svg>
         </button>
-        <Transition>
+        <Transition name="popup">
             <div class="favs__popup" v-if="hover">
                 <div class="favs__popup--header">
                     <h2 class="favs__popup--title">Favorites</h2>
@@ -67,7 +67,6 @@ const togglePopup = async (isOpen) => {
 }
 
 const handleRemoveFavorite = (favoriteId) => {
-    console.log(`Received remove-favorite event for ID: ${favoriteId}`);
     // Perform your logic here, e.g., remove the item from the store
     favoritesStore.removeFavorite(favoriteId);
 };

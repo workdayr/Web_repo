@@ -27,6 +27,7 @@
     width: 400px;
     transform: translate(-90%, 0);
     overflow: hidden;
+    transform-origin: top right; 
 }
 
 .favs__popup--header {
@@ -112,10 +113,6 @@
    
 }
 
-::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 5px;
-  }
 
 @media (max-width: 768px) {
     .favs{

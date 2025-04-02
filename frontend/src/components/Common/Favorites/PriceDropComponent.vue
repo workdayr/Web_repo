@@ -39,17 +39,13 @@
 
 <script setup>
 import { defineProps, ref, nextTick } from 'vue'
-const props = defineProps({
+defineProps({
     currentPrice: Number,
     priceDrop: Number,
     date: String,
     store: String,
 
 });
-
-
-console.log(props.priceDrop);
-
 
 const displayText = ref(false);
 
