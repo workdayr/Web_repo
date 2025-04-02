@@ -9,7 +9,7 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
-  flex-wrap: wrap; /* Permite que las tarjetas se acomoden en pantallas pequeñas */
+  flex-wrap: wrap;
 }
 
 .price-card {
@@ -25,6 +25,7 @@
   display: flex;
   flex-direction: column; /* Asegura que los elementos se alineen en columna */
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+
 }
 
 .price-card:hover {
@@ -93,79 +94,33 @@
   transform: scale(1.05);
 }
 
-/* Responsividad para Tablets (max-width: 768px) */
-@media (max-width: 768px) {
+
+@media (max-width: 766px) {
   .price-comparison {
-    gap: 40px;
+    gap: 80px;
   }
   .price-card {
     width: 80%;
     height: auto;
-    padding: 1rem;
+    padding: 4%;
   }
   .store-name {
-    font-size: 22px;
+    font-size: large;
   }
   .price-display {
-    font-size: 40px;
+    font-size: large;
   }
   .currency {
-    font-size: 26px;
-  }
-  .feature-list {
-    font-size: 18px;
-  }
-  .buy-button {
-    font-size: 24px;
-  }
-}
+    font-size: medium;
 
-/* Responsividad para Celulares Medianos (max-width: 480px) */
-@media (max-width: 480px) {
-  .price-comparison {
-    flex-direction: column;
-    align-items: center;
-  }
-  .price-card {
-    width: 90%;
-    padding: 0.8rem;
-  }
-  .store-name {
-    font-size: 20px;
-  }
-  .price-display {
-    font-size: 36px;
-  }
-  .currency {
-    font-size: 24px;
   }
   .feature-list {
-    font-size: 16px;
-  }
-  .buy-button {
-    font-size: 22px;
-  }
-}
+    font-size: medium;
 
-/* Responsividad para Celulares Pequeños (max-width: 320px) */
-@media (max-width: 320px) {
-  .price-card {
-    width: 95%;
-    padding: 0.5rem;
-  }
-  .store-name {
-    font-size: 18px;
-  }
-  .price-display {
-    font-size: 32px;
-  }
-  .currency {
-    font-size: 22px;
-  }
-  .feature-list {
-    font-size: 14px;
   }
   .buy-button {
-    font-size: 20px;
+    font-size: medium;
+    border-radius: 12px;
+    border: 1px solid transparent;
   }
 }
