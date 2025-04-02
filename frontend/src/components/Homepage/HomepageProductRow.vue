@@ -1,47 +1,61 @@
 <script setup>
-import { defineProps, ref , onMounted} from 'vue';
+import { ref, onMounted, nextTick, defineProps } from 'vue'; // Añade defineProps aquí
 import ProductPreview from '@/components/Common/ProductPreview.vue';
 
-defineProps({
+const props = defineProps({
     products: {
         type: Array,
-        required: true
+        required: true,
+        default: () => []
     }
 });
-const sliderWrapper = ref(null);
-let scrollAmount= 0;
 
-onMounted(() => {
-  if (sliderWrapper.value) {
-    const computedStyle = window.getComputedStyle(sliderWrapper.value);
-    const children = sliderWrapper.value.children;
-    const gap = computedStyle.gap;
-    const gapValue = parseFloat(gap);    
-    scrollAmount = gapValue+Array.from(children)[0].getBoundingClientRect().width;
-  }
-});
+const sliderWrapper = ref(null);
+const scrollAmount = ref(300);
 
 const scrollPrev = () => {
     if (sliderWrapper.value) {
-        sliderWrapper.value.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+        sliderWrapper.value.scrollBy({ left: -scrollAmount.value, behavior: 'smooth' });
     }
 };
 
 const scrollNext = () => {
     if (sliderWrapper.value) {
-        sliderWrapper.value.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        sliderWrapper.value.scrollBy({ left: scrollAmount.value, behavior: 'smooth' });
     }
 };
+
+onMounted(async () => {
+  await nextTick();
+  
+  if (sliderWrapper.value?.children?.length > 0) {
+    const firstChild = sliderWrapper.value.children[0];
+    if (firstChild) {
+      const style = window.getComputedStyle(sliderWrapper.value);
+      const gap = parseFloat(style.gap) || 0;
+      scrollAmount.value = firstChild.getBoundingClientRect().width + gap;
+    }
+  }
+});
 </script>
 
 <template>
     <div class="product__row">
-        <button class="nav-button prev" @click="scrollPrev"><img src="@/assets/Common/Back.svg" alt=""></button>
-        <button class="nav-button next" @click="scrollNext"><img src="@/assets/Common/Back.svg" alt=""></button>
-
+        <button class="nav-button prev" @click="scrollPrev">
+            <img src="@/assets/Common/Back.svg" alt="Previous">
+        </button>
+        
         <div class="slider-wrapper" ref="sliderWrapper">
-            <ProductPreview v-for="product in products" :key="product.id" :product="product" />
+            <ProductPreview 
+                v-for="product in props.products" 
+                :key="product.product_id || product.id" 
+                :product="product" 
+            />
         </div>
+        
+        <button class="nav-button next" @click="scrollNext">
+            <img src="@/assets/Common/Back.svg" alt="Next">
+        </button>
     </div>
 </template>
 

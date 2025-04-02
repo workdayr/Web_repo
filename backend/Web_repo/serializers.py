@@ -90,6 +90,7 @@ class BrandSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ProductsSerializer(serializers.ModelSerializer):
+    current_lowest_price = serializers.StringRelatedField()
     brand = serializers.PrimaryKeyRelatedField(queryset=Brand.objects.all())
     current_lowest_price = serializers.PrimaryKeyRelatedField(queryset=PricesHistory.objects.all(), allow_null=True)
 
@@ -123,7 +124,12 @@ class ProductsSerializer(serializers.ModelSerializer):
     def get_primary_image_URL(self, obj):
         primary_image = obj.product_images.filter(is_primary=True).first() 
         return primary_image.image_url if primary_image else None
+    def get_current_lowest_price(self, obj):
+        if obj.current_lowest_price:
+            return obj.current_lowest_price.price
+        return None
 
+    
 
 
 

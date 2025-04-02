@@ -27,8 +27,8 @@ class ViewSet(viewsets.ModelViewSet):
     serializer_class = ImagesSerializer
     
 class ProductsViewSet(viewsets.ModelViewSet):
-    queryset = Products.objects.all()
-    serializer_class = ProductsSerializer
+    queryset = Products.objects.all()[:30]  # Limitar a 30 productos
+    serializer_class = ProductSerializer
 
 
 class BrandViewSet(viewsets.ModelViewSet):

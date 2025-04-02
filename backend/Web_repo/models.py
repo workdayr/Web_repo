@@ -21,7 +21,22 @@ class Products(models.Model):
     last_price_change = models.FloatField(null=True, blank=True) 
     
     def __str__(self):
+        
+        if self.current_lowest_price:
+            return f"{self.name} - ${self.current_lowest_price.price}"
         return self.name
+    def get_lowest_price(self, obj):
+        """
+        Obtiene el precio más bajo del producto buscando en PricesHistory
+        """
+        store_products = StoreProducts.objects.filter(product_id=obj)
+        prices = PricesHistory.objects.filter(store_product_id__in=store_products).values_list('price', flat=True)
+
+        return min(prices) if prices else None
+
+
+
+
     
 
 class PricesHistory(models.Model):
@@ -32,7 +47,9 @@ class PricesHistory(models.Model):
     store_product_id = models.ForeignKey('StoreProducts', on_delete=models.CASCADE, related_name="prices")
     
     def __str__(self):
-        return self.change_date
+        
+        return f"Price: {self.price}, Date: {self.change_date.strftime('%Y-%m-%d %H:%M:%S')}"
+
 
 
 class Currencys(models.Model):
