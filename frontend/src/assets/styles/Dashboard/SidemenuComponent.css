@@ -41,6 +41,13 @@
 
 }
 
+.sideMenu__container .searchbar{
+    font-size: x-small;
+    color: #AEB9E1;
+    background-color: #321647;
+    padding-left: 35px;
+}
+
 @media (max-width: 768px) {
     .sideMenu__container {
         position:fixed;

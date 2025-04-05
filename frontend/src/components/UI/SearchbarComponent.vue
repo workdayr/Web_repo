@@ -2,13 +2,7 @@
 import { defineProps, onMounted, ref } from 'vue';
 const props = defineProps({
   text: { type: String, required: true, default: 'Search' },
-  fontSize: { type: String, default: 'x-small', },
-  color: { type: String, default: '#AEB9E1', },
-  background: { type: String, default: '#321647', },
-  paddingLeft: { type: String, default: '35px', },
-  width: { type: String, default: '230px' },
-  height: { type: String, default: '40px' },
-  marginLeft: { type: String, default: '0px' },
+  focus: { type: Boolean, default: false },
 });
 
 const inputRef = ref(null);
@@ -23,7 +17,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="searchbar-container" :style="{ marginLeft: marginLeft, width: width, height: height }">
+  <div class="searchbar-container">
     <img class="search-icon" src="@/assets/Common/SearchIcon.svg" alt="Search Icon">
     <input class="searchbar" :style="{
       fontSize: fontSize, color: color, backgroundColor: background,

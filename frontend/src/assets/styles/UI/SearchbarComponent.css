@@ -6,6 +6,7 @@
     border-radius: 30px;
     height: 100%;
     max-height: 40px;
+    min-height: 25px;
 }
 
 .search-icon {
@@ -26,6 +27,7 @@
     font-family: 'Inter', sans-serif;
     font-weight: 400;
     outline: none;
+    padding-left: 35px;
 }
 
 .searchbar::placeholder {

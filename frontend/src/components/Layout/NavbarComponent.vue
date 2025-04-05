@@ -1,7 +1,7 @@
 <template>
 	<nav class="navBar__container" :style="{ '--nav-height': navbarHeight + 'px' }" :class="{ 'navBar__search-active': isCompactSearchActive , 'navBar__solid-background':  solidBackground}">
 		<LogoComponent :render-title="!isMobile" class="navBar__logo"/>
-		<SearchbarComponent v-if="!isMobile" class="navBar__searchBar" text="Search" background="FFF" width="30%" height="55%"/>
+		<SearchbarComponent v-if="!isMobile" class="navBar__searchBar" text="Search" background="FFF" width="30%" height="60%"/>
 		<SearchbarCompactComponent v-else class="navBar__searchBar" @toggle-search="openSearchbar($event)"/>
 		
 		<span  @click="$router.push('/faq')" v-if="!isMobile" class="navBar__--FQA">FAQ</span>
