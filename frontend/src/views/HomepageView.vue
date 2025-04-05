@@ -37,6 +37,13 @@ const carouselSlides = ref([
     "icon": require("@/assets/Carrusel_icons/Slide1.svg"),
     "textPosition": "center-left",
     "iconPosition": "center-right"
+  },
+  {
+    "text": "Compare prices across \ndifferent ",
+    "gradient": "linear-gradient(to bottom, #4D1270, #561960)",
+    "icon": require("@/assets/Carrusel_icons/Slide1.svg"),
+    "textPosition": "center-left",
+    "iconPosition": "center-right"
   }
 ]);
 
