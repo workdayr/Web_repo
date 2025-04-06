@@ -1,8 +1,7 @@
 from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
-from django.db.models import F, Q
-from Web_repo.models import UserFavorites
-from Web_repo.serializers import UserFavoritesSerializer
+from Web_repo.models.user import UserFavorites, User
+from Web_repo.serializers.user import *
 from Web_repo.authentication import CookieJWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -10,6 +9,23 @@ from rest_framework.decorators import action
 from rest_framework import status
 
 import logging
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+    def create(self, request, *args, **kwargs):
+        """Sobreescribe create para enviar un correo de bienvenida al nuevo usuario."""
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserActivityViewSet(viewsets.ModelViewSet):
+    queryset = UserActivity.objects.all()
+    serializer_class = UserActivitySerializer
 
 
 class UserFavoritesPagination(PageNumberPagination):
