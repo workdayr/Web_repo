@@ -15,7 +15,8 @@ class Products(models.Model):
     description = models.CharField(max_length=2500)
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE, related_name="products")
     current_lowest_price = models.ForeignKey('PricesHistory', on_delete=models.SET_NULL, null=True, blank=True)
-    last_price_change = models.FloatField(null=True, blank=True) 
+    last_price_change = models.FloatField(null=True, blank=True, db_index=True) 
+    categories = models.ManyToManyField('Categories', through='ProductCategory', related_name='products')
     
     def __str__(self):
         
@@ -65,7 +66,7 @@ class StoreProducts(models.Model):
 
 
 class Stores(models.Model):
-    Stores_id = models.AutoField(primary_key=True)
+    store_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255, null=False, blank=False, default="Tienda Generica")
     url = models.CharField(max_length=255, unique=True)
     search_url = models.CharField(max_length=255)

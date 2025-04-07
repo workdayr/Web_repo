@@ -20,48 +20,52 @@ let refreshPromise = null;
 api.interceptors.response.use(
     (response) => response,
     async (error) => {
-        if (error.response) {
-            //console.error('Response Error:', error.response.data);
-            //console.error('Status Code:', error.response.status);
-
-            if (error.response.status === 401 && error.config && !error.config._retry) {
-                error.config._retry = true;
-
-                // Skip refresh if the request was already for the refresh token
-                if (error.config.url === "/api/token-refresh") {
-                    return Promise.reject(error);
+      const originalRequest = error.config;
+  
+      // Always reject login and refresh errors immediately
+      if (originalRequest?.url === "/login/" || originalRequest?.url === "/token-refresh/") {
+        return Promise.reject(error); // Let login handle its own 401
+      }
+      if (error.response) {
+        if (
+          error.response.status === 401 &&
+          originalRequest &&
+          !originalRequest._retry
+        ) {
+          originalRequest._retry = true;
+  
+          if (!isRefreshing) {
+            isRefreshing = true;
+            refreshPromise = authAPI
+              .tokenRefresh()
+              .then(() => api(originalRequest))
+              .catch(async (refreshError) => {
+                try {
+                  await useAuth().logout();
+                } catch (logoutError) {
+                  console.error("Logout error:", logoutError);
+                } finally {
+                  router.push("/login");
                 }
-
-                if (!isRefreshing) {
-                    isRefreshing = true;
-                    console.log('promise executing');
-                    refreshPromise = authAPI.tokenRefresh()
-                        .then(() => api(error.config)) // Retry original request
-                        .catch(async (refreshError) => {
-                            try {
-                                await useAuth().logout();
-                            } catch (logoutError) {
-                                console.error('Logout error:', logoutError);
-                            } finally {
-                                router.push('/login');
-                            }
-                            return Promise.reject(refreshError);
-                        })
-                        .finally(() => {
-                            isRefreshing = false;
-                            refreshPromise = null;
-                        });
-                }
-
-                return refreshPromise.then(() => api(error.config));
-            }
-        } else {
-            console.error('Network or server error:', error);
+                return Promise.reject(refreshError);
+              })
+              .finally(() => {
+                isRefreshing = false;
+                refreshPromise = null;
+              });
+          }
+  
+          return refreshPromise;
         }
-
-        return Promise.reject(error);
+      } else {
+        console.error("Network or server error:", error);
+      }
+  
+      return Promise.reject(error);
     }
-);
+  );
+  
+  
 
 
 export default api;

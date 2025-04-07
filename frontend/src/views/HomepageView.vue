@@ -8,7 +8,7 @@
       <FindBestPrices/>
       
       <HomepageSection 
-        v-for="section in visibleSections"
+        v-for="section in sections"
         class="homepage-section" 
         :key="section.id" 
         :title="section.title" 
@@ -22,8 +22,8 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue';
-import axios from 'axios';
+import { ref, onMounted} from 'vue';
+import {homepageService} from '@/api/homepageService.js';
 import NavbarComponent from '@/components/Layout/NavbarComponent.vue';
 import CarouselComponent from '@/components/Layout/CarouselComponent.vue'; 
 import FindBestPrices from '@/components/Homepage/FindBestPrices.vue';
@@ -47,36 +47,16 @@ const carouselSlides = ref([
   }
 ]);
 
-const sectionsData = ref([
-  {
-    id: 0, 
-    title: "Best Sales", 
-    icon: require("@/assets/Layout/Footer/instagram-icon.png"),
-    products: []
-  },
-  {
-    id: 1, 
-    title: "You may also like", 
-    products: []
-  }
-]);
-
-const visibleSections = computed(() => {
-  return sectionsData.value.filter(section => section.products.length > 0);
-});
+const sections = ref([]);
 
 onMounted(async () => {
   try {
-    const response = await axios.get('http://127.0.0.1:8000/api/products/');
-    const allProducts = response.data || [];
-    
-    const half = Math.ceil(allProducts.length / 2);
-    sectionsData.value = [
-      { ...sectionsData.value[0], products: allProducts.slice(0, half) },
-      { ...sectionsData.value[1], products: allProducts.slice(half) }
-    ];
+    const response = await homepageService.getSections();
+    console.log('fetching sections');
+    console.log(response.data);
+    sections.value = response.data;
   } catch (error) {
-    console.error("Error al obtener productos:", error);
+    console.error("error trying to fetch products:", error);
   }
 });
 </script>
