@@ -52,7 +52,7 @@ class ProductsSerializer(serializers.ModelSerializer):
         
     def get_primary_image_URL(self, obj):
         primary_image = obj.product_images.filter(is_primary=True).first()
-        return primary_image.image_id.image_url if primary_image and primary_image.image_id else None
+        return primary_image.image_id.image_url if primary_image else None
 
     def get_images_URL(self, obj):
         return [

@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from Web_repo.models import User
+from Web_repo.models.user import User
 # authentication
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken

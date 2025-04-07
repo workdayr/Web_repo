@@ -69,6 +69,7 @@ const handleImageError = (event) => {
         class="product-preview__favorite-button" 
         @update:isFollowed="handleFollowChange"
         aria-label="Añadir a favoritos"
+        @click.stop
       />
     </div>
   </div>

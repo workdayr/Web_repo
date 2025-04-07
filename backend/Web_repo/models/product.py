@@ -104,5 +104,5 @@ class Images (models.Model):
 class ProductImage(models.Model):
     product_image_id = models.AutoField(primary_key=True)
     is_primary = models.BooleanField(default=False)
-    image_id = models.ForeignKey(Images, on_delete=models.CASCADE, related_name="Image",default=1)
-    product_id = models.ForeignKey(Products, on_delete=models.CASCADE, related_name="product")
+    image_id = models.ForeignKey(Images, on_delete=models.CASCADE, related_name="image_products",default=1)
+    product_id = models.ForeignKey(Products, on_delete=models.CASCADE, related_name="product_images")
