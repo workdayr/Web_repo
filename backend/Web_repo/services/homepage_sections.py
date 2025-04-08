@@ -27,12 +27,12 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 def get_best_offers(limit=10, offset=0):
-    products = Products.objects.order_by('-last_price_change')[offset:offset+limit]
+    products = Products.objects.order_by('-last_price_change_percentage')[offset:offset+limit]
     serializer = ProductSerializer(products, many=True)
     return serializer.data
 
 def get_category_section(category_id, offset=0, limit=10):
-    products = Products.objects.order_by('-last_price_change').filter(categories=category_id)[offset:offset+limit] #.exclude(userfavorites__user_id=user) 
+    products = Products.objects.order_by('-last_price_change_percentage').filter(categories=category_id)[offset:offset+limit] #.exclude(userfavorites__user_id=user) 
     if products.exists():
         category_name = products[0].categories.first().name # Assuming categories is a ManyToManyField
         serializer = ProductSerializer(products, many=True)
@@ -46,7 +46,7 @@ def get_category_section(category_id, offset=0, limit=10):
     return None 
 
 def get_brand_section(brand_id, offset=0, limit=10):
-    products = Products.objects.order_by('-last_price_change').filter(brand=brand_id)[offset:offset+limit] #.exclude(userfavorites__user_id=user) 
+    products = Products.objects.order_by('-last_price_change_percentage').filter(brand=brand_id)[offset:offset+limit] #.exclude(userfavorites__user_id=user) 
     if products.exists():
         brand_name = products[0].brand.name
         serializer = ProductSerializer(products, many=True)
@@ -61,7 +61,7 @@ def get_brand_section(brand_id, offset=0, limit=10):
 
 def get_top_offers_grouped_by_store():
     top_offers_by_store = defaultdict(list)
-    products = Products.objects.order_by('-last_price_change').select_related('current_lowest_price__store_product_id__store_id')
+    products = Products.objects.order_by('-last_price_change_percentage').select_related('current_lowest_price__store_product_id__store_id')
 
     for product in products:
         if product.current_lowest_price and product.current_lowest_price.store_product_id:

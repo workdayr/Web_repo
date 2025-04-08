@@ -6,6 +6,18 @@ class ProductsViewSet(viewsets.ModelViewSet):
     queryset = Products.objects.all()
     serializer_class = ProductsSerializer
 
+class ProductPreviewViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Products.objects.only(
+        'id', 'name', 'brand_id', 'current_lowest_price_id'
+    ).select_related(
+        'brand', 'current_lowest_price'
+    ).prefetch_related(
+        'product_images__image_id'
+    )
+    serializer_class = ProductPreviewSerializer
+
+
+
 
 class BrandViewSet(viewsets.ModelViewSet):
     queryset = Brand.objects.all()

@@ -30,8 +30,8 @@
                 <select id="price-drop-sort" v-model="filters.sortBy">
                     <option value="liked_at-asc">Last Followed</option>
                     <option value="liked_at-desc">First Followed</option>
-                    <option value="dropPrice-asc">Highest Drop Price</option>
-                    <option value="dropPrice-desc">Lowest Drop Price</option>
+                    <option value="product_id__last_price_change_percentage-asc">Highest Drop Price</option>
+                    <option value="product_id__last_price_change_percentage-desc">Lowest Drop Price</option>
                 </select>
             </div>
         </div>

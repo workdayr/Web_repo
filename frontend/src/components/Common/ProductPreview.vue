@@ -14,7 +14,7 @@ const props = defineProps({
 });
 
 const favoritesStore = useFavoritesStore();
-
+console.log(props.product)
 
 const handleFollowChange = (isFavorited) => {
   if (isFavorited) {
@@ -53,7 +53,7 @@ const handleImageError = (event) => {
             {{ (product.lowest_price % 1).toFixed(2).slice(2) || '00' }}
           </span>
         </div>
-        <div v-else class="product-preview__price">Precio no disponible</div>
+        <div v-else class="product-preview__price">Price not available</div>
       </div>
 
       <AddFavoriteButton 

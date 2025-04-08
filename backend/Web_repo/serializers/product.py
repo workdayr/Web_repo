@@ -66,6 +66,24 @@ class ProductsSerializer(serializers.ModelSerializer):
             return obj.current_lowest_price.price
         return None
 
+class ProductPreviewSerializer(serializers.ModelSerializer):
+    primary_image_URL = serializers.SerializerMethodField()
+    brand_name = serializers.CharField(source='brand.name', read_only=True)
+    current_lowest_price = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Products
+        fields = ['id', 'name', 'brand_name', 'primary_image_URL', 'current_lowest_price']
+
+    def get_primary_image_URL(self, obj):
+        primary_image = obj.product_images.filter(is_primary=True).first()
+        return primary_image.image_id.image_url if primary_image else None
+
+    def get_current_lowest_price(self, obj):
+        if obj.current_lowest_price:
+            return obj.current_lowest_price.price
+        return None
+
 class PricesHistorySerializer(serializers.ModelSerializer):
     currency_id = serializers.PrimaryKeyRelatedField(queryset=Currencys.objects.all())
     store_product_id = serializers.PrimaryKeyRelatedField(queryset=StoreProducts.objects.all())
@@ -97,11 +115,16 @@ class PricesHistorySerializer(serializers.ModelSerializer):
             if current_lowest_price is None or new_price <= current_lowest_price.price or \
                current_lowest_price.store_product_id.store_id == store_product.store_id:
                 product.last_price_change = (new_price - current_lowest_price.price) if current_lowest_price else 0
+                product.last_price_change_percentage = (new_price - current_lowest_price.price) / current_lowest_price.price * 100 if current_lowest_price else 0
                 product.current_lowest_price = price_history
                 should_update = True
 
             if should_update:
-              product.save(update_fields=['last_price_change', 'current_lowest_price'])
+                product.save(update_fields=[
+                    'last_price_change',
+                    'last_price_change_percentage',
+                    'current_lowest_price'
+                ])
 
         return price_history
 
