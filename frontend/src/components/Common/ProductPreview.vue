@@ -38,8 +38,8 @@ const handleImageError = (event) => {
 </script>
 
 <template>
-  <div @click="$router.push('/product')" class="product-preview">
-    <img 
+  <div  class="product-preview">
+    <img @click="$router.push('/product')"
       :src="product.imageUrl || require('@/assets/Common/DefaultImage.svg')" 
       class="product-preview__image"
       loading="lazy" 
@@ -48,7 +48,7 @@ const handleImageError = (event) => {
     />
 
     <div class="product-preview__bottom">
-      <div class="product-preview__data">
+      <div @click="$router.push('/product')" class="product-preview__data">
         <h2 class="product-preview__title">{{ product.name }}</h2>
 
         <!-- Precio completo formateado -->

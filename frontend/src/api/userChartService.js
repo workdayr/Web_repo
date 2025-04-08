@@ -41,7 +41,7 @@ export const fetchChartData = async () => {
                 data: data.registeredUsers,
                 borderColor: "#321647",
                 fill: {
-                  target: 'origin',  // Changed from 'true' to this object
+                  target: 'origin', 
                   above: 'rgba(170, 138, 243, 0.3)'
                 },
                 tension: 0.4,
