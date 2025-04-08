@@ -55,17 +55,6 @@ const isLoading = ref(false);
 const scrollSentinel = ref(null);
 
 onMounted(async () => {
-  /*
-  try {
-    const response = await homepageService.getSections();
-    console.log('fetching sections');
-    console.log(response.data);
-    sections.value = response.data;
-  } catch (error) {
-    console.error("error trying to fetch products:", error);
-  }
-*/
-  //TESTING SCROLL LOADING
   const observer = new IntersectionObserver(
     ([entry]) => {
       if (entry.isIntersecting && hasMoreSections.value && !isLoading.value) {

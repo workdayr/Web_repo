@@ -46,7 +46,7 @@ class UserFavoritesViewSet(viewsets.ModelViewSet):
         sort_by = self.request.query_params.get('sortBy', 'liked_at')
         desc = self.request.query_params.get('desc', 'false').lower() == 'true'
         
-        valid_sort_fields = ['liked_at', 'price_threshold', 'percentage_threshold']
+        valid_sort_fields = ['liked_at', 'product_id__last_price_change_percentage']
         if sort_by not in valid_sort_fields:
             sort_by = 'liked_at'
             

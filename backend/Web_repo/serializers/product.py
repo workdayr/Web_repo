@@ -21,13 +21,9 @@ class BrandSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ProductsSerializer(serializers.ModelSerializer):
-    current_lowest_price = serializers.StringRelatedField()
-    brand = serializers.PrimaryKeyRelatedField(queryset=Brand.objects.all())
-    current_lowest_price = serializers.PrimaryKeyRelatedField(queryset=PricesHistory.objects.all(), allow_null=True)
-
     class Meta:
         model = Products
-        fields = '__all__'
+        abstract = True
 
     def __init__(self, *args, **kwargs):
         self._context = kwargs.get('context', {})
@@ -49,6 +45,13 @@ class ProductsSerializer(serializers.ModelSerializer):
 
             if 'current_lowest_price' in self.extra_fields:
                 self.fields['current_lowest_price'] = PricesHistorySerializer(read_only=True)
+
+            if 'store_name' in self.extra_fields:
+                self.fields['store_name'] = serializers.SerializerMethodField()
+            
+            if 'store_image' in self.extra_fields:
+                self.fields['store_image'] = serializers.SerializerMethodField()
+
         
     def get_primary_image_URL(self, obj):
         primary_image = obj.product_images.filter(is_primary=True).first()
@@ -65,6 +68,24 @@ class ProductsSerializer(serializers.ModelSerializer):
         if obj.current_lowest_price:
             return obj.current_lowest_price.price
         return None
+    
+    def get_store_name(self, obj):
+        if obj.current_lowest_price:
+            return obj.current_lowest_price.store_product_id.store_id.name
+        return None
+
+    def get_store_image(self, obj):
+        if obj.current_lowest_price:
+            return obj.current_lowest_price.store_product_id.store_id.Image_url
+        return None
+
+class ProductPreviewSerializer(ProductsSerializer):
+    class Meta(ProductsSerializer.Meta):
+        fields = ['product_id', 'name'] 
+
+class ProductDetailSerializer(ProductsSerializer):
+    class Meta(ProductsSerializer.Meta):
+        fields = '__all__'   
 
 class PricesHistorySerializer(serializers.ModelSerializer):
     currency_id = serializers.PrimaryKeyRelatedField(queryset=Currencys.objects.all())
@@ -97,11 +118,16 @@ class PricesHistorySerializer(serializers.ModelSerializer):
             if current_lowest_price is None or new_price <= current_lowest_price.price or \
                current_lowest_price.store_product_id.store_id == store_product.store_id:
                 product.last_price_change = (new_price - current_lowest_price.price) if current_lowest_price else 0
+                product.last_price_change_percentage = (new_price - current_lowest_price.price) / current_lowest_price.price * 100 if current_lowest_price else 0
                 product.current_lowest_price = price_history
                 should_update = True
 
             if should_update:
-              product.save(update_fields=['last_price_change', 'current_lowest_price'])
+                product.save(update_fields=[
+                    'last_price_change',
+                    'last_price_change_percentage',
+                    'current_lowest_price'
+                ])
 
         return price_history
 

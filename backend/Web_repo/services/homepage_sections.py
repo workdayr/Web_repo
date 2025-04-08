@@ -1,5 +1,6 @@
 from Web_repo.models.product import Products, Stores
 from Web_repo.models.user import UserFavorites
+from Web_repo.serializers.product import ProductPreviewSerializer
 from collections import Counter, defaultdict
 import logging
 
@@ -19,23 +20,16 @@ def get_user_preferred_categories_and_brands(user, top_n=3):
 
     return top_category_ids, top_brand_ids
 
-from rest_framework import serializers
-
-class ProductSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Products
-        fields = '__all__'
-
 def get_best_offers(limit=10, offset=0):
-    products = Products.objects.order_by('-last_price_change')[offset:offset+limit]
-    serializer = ProductSerializer(products, many=True)
+    products = Products.objects.order_by('-last_price_change_percentage').only('product_id', 'name')[offset:offset+limit]
+    serializer = ProductPreviewSerializer(products, many=True, context={'extra_fields':  ['primary_image_URL', 'current_lowest_price', 'store_name', 'store_image']})
     return serializer.data
 
 def get_category_section(category_id, offset=0, limit=10):
-    products = Products.objects.order_by('-last_price_change').filter(categories=category_id)[offset:offset+limit] #.exclude(userfavorites__user_id=user) 
+    products = Products.objects.order_by('-last_price_change_percentage').filter(categories=category_id)[offset:offset+limit] #.exclude(userfavorites__user_id=user) 
     if products.exists():
         category_name = products[0].categories.first().name # Assuming categories is a ManyToManyField
-        serializer = ProductSerializer(products, many=True)
+        serializer = ProductPreviewSerializer(products, many=True, context={'extra_fields':  ['primary_image_URL', 'current_lowest_price', 'store_name', 'store_image']})
         section = {
             "id": f"cat_{category_id}",
             "title": f"From {category_name}",
@@ -46,10 +40,10 @@ def get_category_section(category_id, offset=0, limit=10):
     return None 
 
 def get_brand_section(brand_id, offset=0, limit=10):
-    products = Products.objects.order_by('-last_price_change').filter(brand=brand_id)[offset:offset+limit] #.exclude(userfavorites__user_id=user) 
+    products = Products.objects.order_by('-last_price_change_percentage').filter(brand=brand_id).only('product_id', 'name')[offset:offset+limit] #.exclude(userfavorites__user_id=user) 
     if products.exists():
         brand_name = products[0].brand.name
-        serializer = ProductSerializer(products, many=True)
+        serializer = ProductPreviewSerializer(products, many=True, context={'extra_fields':  ['primary_image_URL', 'current_lowest_price', 'store_name', 'store_image']})
         section = {
             "id": f"brand_{brand_id}",
             "title": f"From {brand_name}",
@@ -61,7 +55,12 @@ def get_brand_section(brand_id, offset=0, limit=10):
 
 def get_top_offers_grouped_by_store():
     top_offers_by_store = defaultdict(list)
-    products = Products.objects.order_by('-last_price_change').select_related('current_lowest_price__store_product_id__store_id')
+   
+    products = Products.objects.order_by('-last_price_change_percentage').select_related('current_lowest_price__store_product_id__store_id').only(
+        'product_id', 
+        'name',
+        'current_lowest_price'
+    )
 
     for product in products:
         if product.current_lowest_price and product.current_lowest_price.store_product_id:
@@ -112,7 +111,7 @@ def get_homepage_section(user, section_index=0, inner_offset=0, inner_limit=10, 
                 return get_brand_section(item_id, inner_offset, inner_limit), True
         
     # After personalized ones, load store sections
-    store_index_to_fetch = section_index - (1 + len(top_categories) + len(top_brands))
+    store_index_to_fetch = section_index - ((1 + len(top_categories) + len(top_brands)) if user.is_authenticated else 1)
     top_offers_grouped = get_top_offers_grouped_by_store()
     store_ids = list(top_offers_grouped.keys())  
 
@@ -125,12 +124,12 @@ def get_homepage_section(user, section_index=0, inner_offset=0, inner_limit=10, 
                 products,
                 key=lambda p: p.current_lowest_price.price if p.current_lowest_price else float('inf')
             )
-            product_serializer = ProductSerializer(sorted_products, many=True)
+            serializer = ProductPreviewSerializer(sorted_products, many=True, context={'extra_fields':  ['primary_image_URL', 'current_lowest_price', 'store_name', 'store_image']})
             return {
                 "id": f"store_{store.store_id}",
                 "title": f"Best from {store.name}",
                 "icon": None,
-                "products": product_serializer.data
+                "products": serializer.data
             }, True
         else:
             return None, False

@@ -4,7 +4,7 @@
         <img class="favorites-element__img" :src="imageSource" @error="useDefaultImage">
         <span class="favorites-element__title">{{ product?.name }}</span>
         <PriceDropComponent :current-price="product?.current_lowest_price?.price"
-            :price-drop="((product?.last_price_change / product?.current_lowest_price?.price) * 100).toFixed(2)" :date="product?.current_lowest_price?.price"
+            :price-drop="product?.last_price_change_percentage" :date="product?.current_lowest_price?.price"
             :store="product?.current_lowest_price?.price" />
         <button class="favorites-element__button" @click="handleRemove">
             <img class="favorites-element__delete" src="@/assets/Common/delete.svg" alt="">

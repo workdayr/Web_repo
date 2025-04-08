@@ -6,7 +6,7 @@ from dns.resolver import resolve, NXDOMAIN, NoAnswer
 from dns.exception import DNSException
 from django.template.loader import render_to_string
 from django.conf import settings
-from Web_repo.serializers.product import ProductsSerializer
+from Web_repo.serializers.product import ProductPreviewSerializer
 
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)  # Ocultar contraseña en la respuesta
@@ -79,7 +79,7 @@ class UserFavoritesSerializer(serializers.ModelSerializer):
         self._extra_fields = extra_fields
 
     def get_product(self, obj):
-        return ProductsSerializer(
+        return ProductPreviewSerializer(
             obj.product_id,
             context={'extra_fields': self._extra_fields}
         ).data
