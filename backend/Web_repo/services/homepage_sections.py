@@ -1,4 +1,4 @@
-from Web_repo.models.product import Products, StoreProducts, PricesHistory, Stores
+from Web_repo.models.product import Products, Stores
 from Web_repo.models.user import UserFavorites
 from collections import Counter, defaultdict
 import logging
@@ -26,42 +26,10 @@ class ProductSerializer(serializers.ModelSerializer):
         model = Products
         fields = '__all__'
 
-def get_best_offers(limit=10):
-    products = Products.objects.order_by('-last_price_change')[:limit]
+def get_best_offers(limit=10, offset=0):
+    products = Products.objects.order_by('-last_price_change')[offset:offset+limit]
     serializer = ProductSerializer(products, many=True)
     return serializer.data
-
-
-def get_dynamic_recommendation_sections(user, offset=0, limit=10):
-    top_categories, top_brands = get_user_preferred_categories_and_brands(user)
-    sections = []
-    logging.debug(f"brands {top_brands} categoties {top_categories}")
-    
-    for i, category_id in enumerate(top_categories):
-        products = Products.objects.order_by('-last_price_change').filter(categories=category_id)[offset:offset+limit] #.exclude(userfavorites__user_id=user) 
-        if products.exists():
-            category_name = products[0].categories.first().name # Assuming categories is a ManyToManyField
-            serializer = ProductSerializer(products, many=True)
-            sections.append({
-                "id": f"cat_{category_id}",
-                "title": f"From {category_name}",
-                "icon": None,
-                "products": serializer.data
-            })
-
-    for i, brand_id in enumerate(top_brands):
-        products = Products.objects.order_by('-last_price_change').filter(brand=brand_id)[offset:offset+limit] #.exclude(userfavorites__user_id=user) 
-        if products.exists():
-            brand_name = products[0].brand.name
-            serializer = ProductSerializer(products, many=True)
-            sections.append({
-                "id": f"brand_{brand_id}",
-                "title": f"From {brand_name}",
-                "icon": None,
-                "products": serializer.data
-            })
-    
-    return sections
 
 def get_category_section(category_id, offset=0, limit=10):
     products = Products.objects.order_by('-last_price_change').filter(categories=category_id)[offset:offset+limit] #.exclude(userfavorites__user_id=user) 
@@ -91,77 +59,34 @@ def get_brand_section(brand_id, offset=0, limit=10):
         return section
     return None 
 
-def get_products_grouped_by_store_structured():
-    sections = []
-    products = Products.objects.order_by('-last_price_change').select_related('current_lowest_price')
-    store_products_map = defaultdict(list)
-    store_info_map = {}
-    
+def get_top_offers_grouped_by_store():
+    top_offers_by_store = defaultdict(list)
+    products = Products.objects.order_by('-last_price_change').select_related('current_lowest_price__store_product_id__store_id')
+
     for product in products:
-        if product.current_lowest_price:
-            store_product = product.current_lowest_price.store_product_id
-            store = store_product.store_id
-            store_products_map[store.store_id].append(product)
-            store_info_map[store.store_id] = {'id': store.store_id, 'name': store.name}
-
-    for store_id, product_list in store_products_map.items():
-        if store_id in store_info_map:
-            store_data = store_info_map[store_id]
-            sorted_products = sorted(
-                product_list,
-                key=lambda p: p.current_lowest_price.price if p.current_lowest_price else float('inf')
-            )
-            product_serializer = ProductSerializer(sorted_products, many=True)
-            sections.append({
-                "id": f"store_{store_data['id']}",
-                "title": f"Best from {store_data['name']}",
-                "icon": None,
-                "products": product_serializer.data
-            })
-
-    return sections
-
-def get_homepage_sections(user, page=0, per_section_limit=10):
-    offset = page * per_section_limit
-    sections = []
-
-    if page == 0:
-        # Static Top Best Offers
-        sections.append({
-            "id": "best_offers",
-            "title": "Best Offers",
-            "icon": None,
-            "products": get_best_offers(limit=per_section_limit)
-        })
-    
-    
-    if user.is_authenticated:
-        # Personalized Sections (From X / From Y)
-        sections.extend(get_dynamic_recommendation_sections(user, offset=offset, limit=per_section_limit))
-
-    # Grouped by store, loaded at any page    
-    store_sections = get_products_grouped_by_store_structured()
-    sections.extend(store_sections)
-
-    return sections
+        if product.current_lowest_price and product.current_lowest_price.store_product_id:
+            store = product.current_lowest_price.store_product_id.store_id
+            top_offers_by_store[store.store_id].append(product)
+    return top_offers_by_store
 
 def get_homepage_section(user, section_index=0, inner_offset=0, inner_limit=10, section_limit=15, personalized_sections_limit=10):
     """
     Returns ONE section based on vertical index.
     """
     if section_index > section_limit:
-        return None
+        return None, False
     
     if section_index == 0:
         return {
             "id": "best_offers",
             "title": "Best Offers",
             "products": get_best_offers(limit=inner_limit, offset=inner_offset)
-        }
+        }, True
 
     if user.is_authenticated:
-        top_categories, top_brands = get_user_preferred_categories_and_brands(user, top_n= personalized_sections_limit/2)
-    
+        top_categories, top_brands = get_user_preferred_categories_and_brands(user, top_n= personalized_sections_limit//2)
+        logging.debug(f"brands {top_brands}")
+        
         index = section_index - 1  # offset from best offers
         
         # Interleave brands and categories
@@ -182,15 +107,34 @@ def get_homepage_section(user, section_index=0, inner_offset=0, inner_limit=10, 
         if index < len(all_ids):
             section_type, item_id = all_ids[index]
             if section_type == "category":
-                return get_category_section(item_id, inner_offset, inner_limit)
+                return get_category_section(item_id, inner_offset, inner_limit), True
             else:
-                return get_brand_section(item_id, inner_offset, inner_limit)
-
+                return get_brand_section(item_id, inner_offset, inner_limit), True
+        
     # After personalized ones, load store sections
-    store_sections = get_products_grouped_by_store_structured()
-    store_index = section_index - (1 + len(top_categories) + len(top_brands))
-    if store_index < len(store_sections):
-        return store_sections[store_index]
+    store_index_to_fetch = section_index - (1 + len(top_categories) + len(top_brands))
+    top_offers_grouped = get_top_offers_grouped_by_store()
+    store_ids = list(top_offers_grouped.keys())  
 
-    return None
+    if store_index_to_fetch < len(store_ids):
+        store_id = store_ids[store_index_to_fetch]
+        if store_id in top_offers_grouped:
+            store = Stores.objects.get(store_id=store_id)
+            products = top_offers_grouped[store_id]
+            sorted_products = sorted(
+                products,
+                key=lambda p: p.current_lowest_price.price if p.current_lowest_price else float('inf')
+            )
+            product_serializer = ProductSerializer(sorted_products, many=True)
+            return {
+                "id": f"store_{store.store_id}",
+                "title": f"Best from {store.name}",
+                "icon": None,
+                "products": product_serializer.data
+            }, True
+        else:
+            return None, False
+   
+
+    return None, False
 

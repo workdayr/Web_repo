@@ -15,6 +15,7 @@
         :icon="section.icon" 
         :products="section.products"
       />
+      <div ref="scrollSentinel"></div>
     </div>
 
     <FooterComponent/>
@@ -48,8 +49,13 @@ const carouselSlides = ref([
 ]);
 
 const sections = ref([]);
+const sectionIndex = ref(0);
+const hasMoreSections = ref(true);
+const isLoading = ref(false);
+const scrollSentinel = ref(null);
 
 onMounted(async () => {
+  /*
   try {
     const response = await homepageService.getSections();
     console.log('fetching sections');
@@ -58,6 +64,51 @@ onMounted(async () => {
   } catch (error) {
     console.error("error trying to fetch products:", error);
   }
+*/
+  //TESTING SCROLL LOADING
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      if (entry.isIntersecting && hasMoreSections.value && !isLoading.value) {
+        loadNextSection();
+      }
+    },
+    {
+      root: null, // viewport
+      rootMargin: "100px", // trigger early
+      threshold: 0.1
+    }
+  );
+  observer.observe(scrollSentinel.value);
+});
+
+
+
+
+const loadNextSection = async () => {
+  isLoading.value = true;
+
+  try {
+    console.log("loading sections", sectionIndex.value);
+  
+    const response = await homepageService.getSections(sectionIndex.value);
+    const data = response.data;
+    if (data.section) {
+      sections.value.push(data.section);
+      sectionIndex.value++;
+    }
+    
+    hasMoreSections.value = data.has_next_section;
+  
+  } catch (error) {
+    console.error("Error loading next section:", error);
+    hasMoreSections.value = false; // Stop loading on error
+  } finally {
+    isLoading.value = false;
+  }
+};
+
+onMounted(() => {
+  
 });
 </script>
 

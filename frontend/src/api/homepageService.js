@@ -1,5 +1,5 @@
 import api from "./axios";
 
 export const homepageService = {
-  getSections: () => api.get(`/homepage-sections/`),
+  getSections: (sectionIndex) => api.get(`/homepage-sections/?section_index=${sectionIndex}`),
 };  
