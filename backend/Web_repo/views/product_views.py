@@ -1,6 +1,6 @@
 from rest_framework import viewsets
-from Web_repo.models import Products, Brand, PricesHistory, Currencys, StoreProducts, Stores, Categories, ProductCategory, ProductImage
-from Web_repo.serializers import ProductsSerializer, BrandSerializer, PricesHistorySerializer, CurrencysSerializer, StoreProductsSerializer, StoresSerializer, CategoriesSerializer, ProductCategorySerializer, ProductImageSerializer
+from Web_repo.models.product import *
+from Web_repo.serializers.product import *
 
 class ProductsViewSet(viewsets.ModelViewSet):
     queryset = Products.objects.all()
@@ -45,3 +45,7 @@ class ProductCategoryViewSet(viewsets.ModelViewSet):
 class ProductImageViewSet(viewsets.ModelViewSet):
     queryset = ProductImage.objects.all()
     serializer_class = ProductImageSerializer
+
+class ImagesViewSet(viewsets.ModelViewSet):
+    queryset = Images.objects.all()
+    serializer_class = ImagesSerializer

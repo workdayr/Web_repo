@@ -15,14 +15,6 @@ const props = defineProps({
 
 const favoritesStore = useFavoritesStore();
 
-// Debug detallado
-console.log('Datos del producto:', {
-  id: props.product.product_id,
-  name: props.product.name,
-  image: props.product.imageUrl,
-  price: props.product.lowest_price,
-  currency: props.product.symbol
-});
 
 const handleFollowChange = (isFavorited) => {
   if (isFavorited) {
@@ -69,6 +61,7 @@ const handleImageError = (event) => {
         class="product-preview__favorite-button" 
         @update:isFollowed="handleFollowChange"
         aria-label="Añadir a favoritos"
+        @click.stop
       />
     </div>
   </div>
