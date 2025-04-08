@@ -48,7 +48,7 @@ urlpatterns = [
     path("api/token-refresh/", RefreshTokenView.as_view(), name="token-refresh"),
     path("api/restore-session/", RestoreSessionView.as_view(), name="restore-session"),
     path("api/homepage-sections/", HomepageView.as_view(), name="homepage-sections"),
-    
+     path('api/product_details/', ProductDetailsView.as_view(), name='product_details'),
 
     path("api/user_analytics/", UserAnalyticsView.as_view(), name="user_analytics"),
     path('api/notification_analytics/' , NotificationAnalyticsView.as_view(), name = 'notification_analytics'),

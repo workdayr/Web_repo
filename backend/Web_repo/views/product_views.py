@@ -1,10 +1,35 @@
 from rest_framework import viewsets
 from Web_repo.models.product import *
 from Web_repo.serializers.product import *
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from django.shortcuts import get_object_or_404
+
+import logging
 
 class ProductsViewSet(viewsets.ModelViewSet):
     queryset = Products.objects.all()
     serializer_class = ProductDetailSerializer
+
+class ProductDetailsView(APIView):
+    def get(self, request):
+        product_id = request.query_params.get('product_id')
+        logging.debug(product_id)
+        if not product_id:
+            return Response({"error": "product_id parameter is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            product = get_object_or_404(Products, product_id=product_id)
+        except Products.DoesNotExist:
+            return Response({"error": f"Product with id '{product_id}' not found."}, status=status.HTTP_404_NOT_FOUND)
+        except ValueError:
+            return Response({"error": "Invalid product_id format."}, status=status.HTTP_400_BAD_REQUEST)
+
+        serializer = ProductDetailSerializer(product, context={'extra_fields':  ['images_URL', 'brand_name', 'current_lowest_price', 'store_name', 'store_image']})
+        
+        logging.debug(serializer.data)
+        return Response(serializer.data)
 
 class BrandViewSet(viewsets.ModelViewSet):
     queryset = Brand.objects.all()

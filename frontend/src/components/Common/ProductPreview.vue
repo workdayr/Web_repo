@@ -14,7 +14,6 @@ const props = defineProps({
 });
 
 const favoritesStore = useFavoritesStore();
-console.log(props.product.current_lowest_price)
 
 const handleFollowChange = (isFavorited) => {
   if (isFavorited) {
@@ -30,7 +29,7 @@ const handleImageError = (event) => {
 </script>
 
 <template>
-  <div @click="$router.push('/product')" class="product-preview">
+  <div @click="product && product.product_id ? $router.push('/product/'+product.product_id) : console.warn('Product ID is missing or invalid')" class="product-preview">
     <img 
       :src="product.primary_image_URL || require('@/assets/Common/DefaultImage.svg')" 
       class="product-preview__image"
@@ -60,7 +59,7 @@ const handleImageError = (event) => {
         :isFollowed="favoritesStore.isProductFollowed(product.product_id)"
         class="product-preview__favorite-button" 
         @update:isFollowed="handleFollowChange"
-        aria-label="Añadir a favoritos"
+        aria-label="Add to favorites"
         @click.stop
       />
     </div>
