@@ -7,11 +7,14 @@
 }
 .favorites-element__img {
     max-width: 60px;
+    min-width: 60px;
+    max-height: 60px;
     min-height: 60px;
     width: auto;
     height: auto;
     background-color: #fff;
     border-radius: 15px;
+    object-fit: contain;
 }
 .favorites-element__button{
     background: none;

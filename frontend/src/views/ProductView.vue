@@ -138,5 +138,5 @@ const handleFollowChange = (isFavorited) => {
 </template>
 
 <style scoped>
-@import "@/assets/styles/Product/ProductView.css";
+@import "@/assets/styles/Views/ProductView.css";
 </style>
