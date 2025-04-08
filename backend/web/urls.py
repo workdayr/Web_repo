@@ -47,9 +47,7 @@ urlpatterns = [
     path("api/logout/", LogoutView.as_view(), name="logout"),
     path("api/token-refresh/", RefreshTokenView.as_view(), name="token-refresh"),
     path("api/restore-session/", RestoreSessionView.as_view(), name="restore-session"),
-
     path("api/homepage-sections/", HomepageView.as_view(), name="homepage-sections"),
-    #path("api/homepage-sections/<int:page>", HomepageView.as_view(), name="homepage-sections"),
     
 
     path("api/user_analytics/", UserAnalyticsView.as_view(), name="user_analytics"),
