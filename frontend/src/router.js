@@ -17,7 +17,7 @@ const routes = [
   { path: "/Register", component: RegisterComponent},
   {path: "/Dashboard", component: DashboardView},
   {path: '/faq',component: FaqView},
-  {path: '/product', component: ProductView},
+  {path: '/product/:productId', component: ProductView, name: 'ProductDetail' },
 ];
 
 const router = createRouter({

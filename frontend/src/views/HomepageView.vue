@@ -8,13 +8,14 @@
       <FindBestPrices/>
       
       <HomepageSection 
-        v-for="section in visibleSections"
+        v-for="section in sections"
         class="homepage-section" 
         :key="section.id" 
         :title="section.title" 
         :icon="section.icon" 
         :products="section.products"
       />
+      <div ref="scrollSentinel"></div>
     </div>
 
     <FooterComponent/>
@@ -22,8 +23,8 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue';
-import axios from 'axios';
+import { ref, onMounted} from 'vue';
+import {homepageService} from '@/api/homepageService.js';
 import NavbarComponent from '@/components/Layout/NavbarComponent.vue';
 import CarouselComponent from '@/components/Layout/CarouselComponent.vue'; 
 import FindBestPrices from '@/components/Homepage/FindBestPrices.vue';
@@ -47,37 +48,56 @@ const carouselSlides = ref([
   }
 ]);
 
-const sectionsData = ref([
-  {
-    id: 0, 
-    title: "Best Sales", 
-    icon: require("@/assets/Layout/Footer/instagram-icon.png"),
-    products: []
-  },
-  {
-    id: 1, 
-    title: "You may also like", 
-    products: []
-  }
-]);
-
-const visibleSections = computed(() => {
-  return sectionsData.value.filter(section => section.products.length > 0);
-});
+const sections = ref([]);
+const sectionIndex = ref(0);
+const hasMoreSections = ref(true);
+const isLoading = ref(false);
+const scrollSentinel = ref(null);
 
 onMounted(async () => {
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      if (entry.isIntersecting && hasMoreSections.value && !isLoading.value) {
+        loadNextSection();
+      }
+    },
+    {
+      root: null, // viewport
+      rootMargin: "100px", // trigger early
+      threshold: 0.1
+    }
+  );
+  observer.observe(scrollSentinel.value);
+});
+
+
+
+
+const loadNextSection = async () => {
+  isLoading.value = true;
+
   try {
-    const response = await axios.get('http://127.0.0.1:8000/api/products/');
-    const allProducts = response.data || [];
+    console.log("loading sections", sectionIndex.value);
+  
+    const response = await homepageService.getSections(sectionIndex.value);
+    const data = response.data;
+    if (data.section) {
+      sections.value.push(data.section);
+      sectionIndex.value++;
+    }
     
-    const half = Math.ceil(allProducts.length / 2);
-    sectionsData.value = [
-      { ...sectionsData.value[0], products: allProducts.slice(0, half) },
-      { ...sectionsData.value[1], products: allProducts.slice(half) }
-    ];
+    hasMoreSections.value = data.has_next_section;
+  
   } catch (error) {
-    console.error("Error al obtener productos:", error);
+    console.error("Error loading next section:", error);
+    hasMoreSections.value = false; // Stop loading on error
+  } finally {
+    isLoading.value = false;
   }
+};
+
+onMounted(() => {
+  
 });
 </script>
 

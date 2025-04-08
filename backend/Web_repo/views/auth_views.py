@@ -53,8 +53,7 @@ class LoginView(APIView):
             logging.debug(f"From login Response cookies: {response.cookies}")
             
             return response
-
-        return Response({"error": "Invalid credentials from authenticate function"}, status=status.HTTP_401_UNAUTHORIZED)
+        return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
 
 
 class RestoreSessionView(APIView):

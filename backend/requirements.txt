@@ -3,3 +3,4 @@ djangorestframework
 djangorestframework-simplejwt
 dnspython
 django-cors-headers
+psycopg2-binary
