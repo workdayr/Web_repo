@@ -29,3 +29,6 @@ pnpm-debug.log*
 *__pycache__/
 *.pyc
 *.pyo
+
+#env
+*.env
