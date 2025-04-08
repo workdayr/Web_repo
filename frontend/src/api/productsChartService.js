@@ -49,13 +49,13 @@ export const fetchProductsChartData = async () => {
                             legend: {
                                 display: true,
                                 position: "bottom",
-                                align:'start',
-                                labels:{
+                                align: 'start',
+                                labels: {
                                     usePointStyle: true,
                                     pointStyle: "circle",
                                 },
                             },
-                           
+
                         },
                     },
                 },
@@ -87,22 +87,23 @@ export const fetchProductsChartData = async () => {
                             },
                         ],
                     },
-                    options: { responsive: true, maintainAspectRatio: false,
+                    options: {
+                        responsive: true, maintainAspectRatio: false,
                         plugins: {
                             legend: {
                                 display: true,
                                 position: "top",
-                                align:'center',
-                                labels:{
+                                align: 'center',
+                                labels: {
                                     usePointStyle: true,
                                     pointStyle: "circle",
-                                    
+
 
                                 },
                             },
-                           
+
                         },
-                     },
+                    },
                 },
                 {
                     id: 3,
@@ -113,42 +114,39 @@ export const fetchProductsChartData = async () => {
                         datasets: [
                             {
                                 label: "Amazon",
-                                data: data.totalViews,
-                                backgroundColor: "#CB3CFF",
-                                barThickness: 6
+                                data: data.totalViews,  
+                                backgroundColor: "#2B3695",
                             },
                             {
                                 label: "Mercado Libre",
                                 data: data.totalViews,
-                                backgroundColor: "#ffc107",
-                                barThickness: 6
+                                backgroundColor: "#6976EB",
                             },
                             {
                                 label: "Apple Store",
                                 data: data.totalViews,
-                                backgroundColor: "#007bff",
-                                barThickness: 6
+                                backgroundColor: "#ADB4F3",
                             },
                         ],
                     },
-                    options: { responsive: true, maintainAspectRatio: false,
+                    options: {
+                        responsive: true, maintainAspectRatio: false,
                         plugins: {
                             legend: {
                                 display: true,
-                                position: "top",
-                                align:'center',
-                                labels:{
+                                position: "bottom",
+                                align: 'center',
+                                labels: {
                                     usePointStyle: true,
-                                    pointStyle: "circle",
-                                    
-
+                                    pointStyle: 'rect', // Usar un cuadrado en lugar de un círculo
+                                    boxWidth: 10, // Tamaño del cuadrado
                                 },
                             },
-                           
+
                         },
-                     },
+                    },
                 },
-                
+
             ],
         };
     } catch (error) {

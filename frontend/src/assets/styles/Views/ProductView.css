@@ -184,8 +184,12 @@
   
   }
 }
-.dynamic-table-section{
-  margin-bottom: 90px;
+.graph__section--graph1{
+  background: #FFF;
+  border-radius: 20px;
+  padding: 3%;
+  width: 100%;
+  margin-bottom: 5%;
   @media(max-width: 766px){
   margin-bottom: 200px;
   

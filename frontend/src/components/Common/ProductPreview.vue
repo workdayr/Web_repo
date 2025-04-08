@@ -39,7 +39,7 @@ const handleImageError = (event) => {
     />
 
     <div class="product-preview__bottom">
-      <div class="product-preview__data">
+      <div @click="$router.push('/product')" class="product-preview__data">
         <h2 class="product-preview__title">{{ product.name }}</h2>
 
         <!-- Precio completo formateado -->
