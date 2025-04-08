@@ -106,45 +106,50 @@ export const fetchProductsChartData = async () => {
                 },
                 {
                     id: 3,
-                    header: "New Signups",
-                    type: "bar",
-                    data: {
-                        labels: data.months,
-                        datasets: [
-                            {
-                                label: "Signups",
-                                data: data.newUsers,
-                                backgroundColor: "#ffc107",
-                            },
-                        ],
-                    },
-                    options: { responsive: true, maintainAspectRatio: false },
-                },
-                {
-                    id: 4,
-                    header: "Average time of sesions",
+                    header: "Item aprovals in",
                     type: "line",
                     data: {
                         labels: data.months,
                         datasets: [
                             {
-                                label: "Signups",
-                                data: data.newUsers,
+                                label: "Amazon",
+                                data: data.totalViews,
+                                backgroundColor: "#CB3CFF",
+                                barThickness: 6
+                            },
+                            {
+                                label: "Mercado Libre",
+                                data: data.totalViews,
                                 backgroundColor: "#ffc107",
+                                barThickness: 6
+                            },
+                            {
+                                label: "Apple Store",
+                                data: data.totalViews,
+                                backgroundColor: "#007bff",
+                                barThickness: 6
                             },
                         ],
                     },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        width: 100,
-                        height: 50,
-                    },
+                    options: { responsive: true, maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: "top",
+                                align:'center',
+                                labels:{
+                                    usePointStyle: true,
+                                    pointStyle: "circle",
+                                    
+
+                                },
+                            },
+                           
+                        },
+                     },
                 },
+                
             ],
-            stats: {
-                totalNewSignups: totalSignupsCount,
-              },
         };
     } catch (error) {
         console.error("Error fetching chart data:", error);

@@ -1,66 +1,59 @@
-<script>
+<script setup>
+import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { useRoute } from 'vue-router';
+
 import NavBarComponent from '@/components/Layout/NavbarComponent.vue';
 import FooterComponent from '@/components/Layout/FooterComponent.vue';
 import PriceCard from '@/components/UI/PriceCard.vue';
 import AddFavoriteButton from '@/components/Common/AddFavoriteButton.vue';
 
+const screenWidth = ref(window.innerWidth);
+const isDescriptionExpanded = ref(false);
+const productData = ref(null);
+const loading = ref(true);
+const error = ref(null);
+const selectedImage = ref(null);
+const thumbnails = ref([]);
 
-export default {
-  components: {
-    NavBarComponent,
-    PriceCard,
-    FooterComponent,
-    AddFavoriteButton
-  },
+const route = useRoute();
+const productId = ref(route.params.productId); // Change the route if necessary
 
-  data() {
-    return {
-      screenWidth: window.innerWidth,
-      isDescriptionExpanded: false,
-      productData: null,
-      loading: true,
-      error: null,
-      selectedImage: "https://picsum.photos/451/432", // Imagen principal por defecto
-      thumbnails: [
-        "https://picsum.photos/451/432?random=1",
-        "https://picsum.photos/451/432?random=2",
-        "https://picsum.photos/451/432?random=3"
-      ]
-    };
-  },
-  methods: {
-    updateScreenWidth() {
-      this.screenWidth = window.innerWidth;
-    },
-    toggleDescription() {
-      this.isDescriptionExpanded = !this.isDescriptionExpanded;
-    },
-    changeImage(newImage) {
-      this.selectedImage = newImage;
-    },
-    async fetchProductData() {
-      try {
-        const response = await fetch('/api/producto?id=123');
-        if (!response.ok) throw new Error('Error al cargar datos');
-        this.productData = await response.json();
-      } catch (err) {
-        this.error = err.message;
-      } finally {
-        this.loading = false;
-      }
-    }
-  },
-  mounted() {
-    window.addEventListener('resize', this.updateScreenWidth);
-  },
-  beforeUnmount(){
-    window.removeEventListener("resize", this.updateScreenWidth); 
-  },
-  created() {
-    this.fetchProductData();
+// Methods
+const updateScreenWidth = () => {
+  screenWidth.value = window.innerWidth;
+};
+
+const toggleDescription = () => {
+  isDescriptionExpanded.value = !isDescriptionExpanded.value;
+};
+
+const changeImage = (newImage) => {
+  selectedImage.value = newImage;
+};
+
+const fetchProductData = async () => {
+  try {
+    const response = await fetch(`/api/products?id=${productId.value}&extra_fields=primary_image_URL`);
+    if (!response.ok) throw new Error('Error at loading data for this product');
+    productData.value = await response.json();
+  } catch (err) {
+    error.value = err.message;
+  } finally {
+    loading.value = false;
   }
-}
+};
+
+onMounted(() => {
+  window.addEventListener('resize', updateScreenWidth);
+  fetchProductData();
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', updateScreenWidth);
+});
 </script>
+
+
 
 <template>
   <div class="product-view">
@@ -77,8 +70,7 @@ export default {
         </div>
       </div>
       <div class="product-details">
-        <h2 class="product-title">LG 34GPT63A-B UltraWide Gaming Monitor 34" VA WQHD 160Hz 1ms MBR AMD FreeSync Premium,
-          HDMI, Display Port, Curvo 1800R</h2>
+        <h2 class="product-title">{{ productData?.name || 'Loading name...' }}</h2>
         <div v-if="screenWidth < 766" class="product-section">
 
           <img :src="selectedImage" alt="Product Image" class="product-image">
@@ -89,19 +81,14 @@ export default {
           </div>
         </div>
         <p class="price-label">Lowest price:</p>
-        <p class="product-price">$9,999.99 MXN</p>
-        <p class="store-product">on amazon</p>
+        <p class="product-price">{{ productData?.price || 'Loading price...' }}</p>
+        <p class="store-product">on {{ productData?.store || 'Loading store...' }}</p>
 
-        <!-- Descripción con efecto click-to-expand -->
         <div class="description-container">
           <p class="description-text"
             :class="{ 'collapsed': !isDescriptionExpanded, 'expanded': isDescriptionExpanded }"
             @click="toggleDescription">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent porttitor efficitur mauris, a vehicula mi
-            congue non. Aenean a viverra mauris. Pellentesque nulla dui, consequat et leo sit amet, placerat volutpat
-            mi. Phasellus id urna quis erat commodo ultricies ut eu tortor. Morbi sapien risus, maximus eu diam eu,
-            ultrices dapibus lacus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas elit dolor,
-            lobortis ut lacinia eu, rhoncus quis magna. Aliquam et orci quis nunc placerat gravida.
+            {{ productData?.description || 'Loading description...' }}
           </p>
         </div>
 
@@ -116,23 +103,15 @@ export default {
     </div>
 
     <div class="price-comparison">
-      <PriceCard store="Amazon" :price="0"
-        :features="['Envio gratis o con tarifas de importación', 'Metodos de pago: Tarjeta, Efectivo (tiendas participantes), Kueski Pay', 'Cuenta de Amazon requerida']" />
-      <PriceCard store="Mercado Libre" :price="0"
-        :features="['Costo de envio depende del producto/vendedor', 'Metodos de pago: Tarjeta, Efectivo (tiendas participantes), Mercado pago, Depositos y transferencias bancarias', 'Cuenta de Mercado libre requerida']" />
-      <PriceCard store="Walmart" :price="0"
-        :features="['Envio gratis', 'Metodos de pago: Tarjeta, Cashi, PayPal, pagar en tienda', 'Cuenta de Walmart requerida']" />
+      <PriceCard v-for="(offer, index) in productData?.prices || []" :key="index" :store="offer.store"
+        :price="offer.price" :features="offer.features" />
     </div>
 
-    
+
   </div>
   <FooterComponent />
 </template>
 
-
-
 <style scoped>
 @import "@/assets/styles/Product/ProductView.css";
-
-
 </style>
