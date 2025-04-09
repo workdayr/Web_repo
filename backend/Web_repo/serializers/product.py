@@ -81,7 +81,7 @@ class ProductsSerializer(serializers.ModelSerializer):
 
 class ProductPreviewSerializer(ProductsSerializer):
     class Meta(ProductsSerializer.Meta):
-        fields = ['product_id', 'name'] 
+        fields = ['product_id', 'name', 'last_price_change_percentage'] 
 
 class ProductDetailSerializer(ProductsSerializer):
     class Meta(ProductsSerializer.Meta):

@@ -15,7 +15,7 @@ class ProductsViewSet(viewsets.ModelViewSet):
 class ProductDetailsView(APIView):
     def get(self, request):
         product_id = request.query_params.get('product_id')
-        logging.debug(product_id)
+        
         if not product_id:
             return Response({"error": "product_id parameter is required."}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -28,7 +28,6 @@ class ProductDetailsView(APIView):
 
         serializer = ProductDetailSerializer(product, context={'extra_fields':  ['images_URL', 'brand_name', 'current_lowest_price', 'store_name', 'store_image']})
         
-        logging.debug(serializer.data)
         return Response(serializer.data)
 
 class BrandViewSet(viewsets.ModelViewSet):
