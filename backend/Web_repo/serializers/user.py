@@ -70,7 +70,7 @@ class UserFavoritesSerializer(serializers.ModelSerializer):
         fields = '__all__'
     def __init__(self, *args, **kwargs):
         # Get extra_fields from kwargs or use defaults
-        extra_fields = kwargs.pop('extra_fields', ['primary_image_URL','brand_name', 'current_lowest_price'])
+        extra_fields = kwargs.pop('extra_fields', ['primary_image_URL','store_name', 'current_lowest_price'])
         
         super().__init__(*args, **kwargs)
         

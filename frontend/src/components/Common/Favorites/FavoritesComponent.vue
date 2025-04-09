@@ -1,5 +1,6 @@
 <template>
-    <div class="favs" @mouseover="togglePopup(true)" @mouseleave="togglePopup(false)">
+    <div v-if="hover" id="overlay"></div>
+    <div class="favs" :class="{'favs_overlay': hover}" @mouseover="togglePopup(true)" @mouseleave="togglePopup(false)">
         <button class="favs__button" @click="addToFavorites">
             <svg class="favs__image" width="26" height="25" viewBox="0 0 26 25" xmlns="http://www.w3.org/2000/svg">
                 <path
@@ -23,9 +24,9 @@
                 </div>
                 <div class="favs__popup--content">
                     <div class="favs__popup--content-filters">
-                        <button class="favs__popup--content-filters-button">
+                        <button @mouseover="displayFilters=true" @mouseleave="displayFilters=false" class="favs__popup--content-filters-button">
                             <span class="favs__popup--content-filters-text"
-                                @click="displayFilters = !displayFilters">Filter By</span>
+                            >Filter By</span>
                             <FavoritesFilter v-if="displayFilters" />
                         </button>
                         <label class="favs__popup--content-filters-text">

@@ -2,9 +2,20 @@
     display: flex;
     height: 60px;
     align-items: center;
-    gap: 20px;
+    gap: 15px;
     margin: 15px;
+    width: calc(100% - 30px);
 }
+
+.favorites-element__clickable {
+    display: flex;
+    text-align: center;
+    width: 100%;
+    overflow: hidden;
+    gap: 15px;
+    cursor: pointer;
+}
+
 .favorites-element__img {
     max-width: 60px;
     min-width: 60px;
@@ -35,6 +46,8 @@
     overflow: hidden; 
     white-space: nowrap; 
     width: 100%;
+    align-content: center;
+    text-align: left;
 }
 .favorites-element__delete{
     width: 25px;
@@ -43,10 +56,12 @@
 
 @media (max-width: 520px) {
     .favorites-element{
-        gap: 12px;
+        gap: 10px;
     }
     .favorites-element__img  {
         max-width: 50px;
+        min-width: 50px;
+        max-height: 50px;
         min-height: 50px;
     }
     .favorites-element__delete{
@@ -58,13 +73,6 @@
         font-size: 0.8rem;
     }
     .favorites-element{
-        gap: 12px;
-    }
-    .favorites-element__img  {
-        max-width: 50px;
-        min-height: 50px;
-    }
-    .favorites-element__delete{
-        width: 22px;
+        gap: 8px;
     }
 }
