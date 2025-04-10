@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { ref, onMounted, onBeforeUnmount, nextTick, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { productDetailsService } from '@/api/productDetailsService'
 
@@ -22,14 +22,32 @@ const thumbnails = ref([]);
 const favoritesStore = useFavoritesStore();
 const route = useRoute();
 const productId = ref(route.params.productId); // Change the route if necessary
+const descriptionMaxHeight = ref(6.2);
+const isCollapsible = ref(false);
+const descriptionContainer = ref(null);
 
 // Methods
 const loadData = async () => {
-    const { charts: chartData } = await fetchProductHistoryChartData();
-    charts.value = chartData;
+	const { charts: chartData } = await fetchProductHistoryChartData();
+	charts.value = chartData;
 };
 
-onMounted(loadData);
+function checkCollapsibility() {
+	nextTick(() => {
+		if (!descriptionContainer.value) return;
+
+		const container = descriptionContainer.value;
+		const maxHeightPx = descriptionMaxHeight.value * parseFloat(getComputedStyle(document.documentElement).fontSize);
+
+		const scrollHeight = container.scrollHeight;
+		console.log(scrollHeight, maxHeightPx)
+		isCollapsible.value = scrollHeight > maxHeightPx;
+	});
+}
+
+watch(() => productData.value?.description, () => {
+	checkCollapsibility();
+});
 
 const updateScreenWidth = () => {
 	screenWidth.value = window.innerWidth;
@@ -47,18 +65,19 @@ const fetchProductData = async () => {
 	try {
 		const response = await productDetailsService.getProduct(productId.value);
 		productData.value = response.data;
-		console.log("current lowest ", productData.value.current_lowest_price)
 	} catch (err) {
 		error.value = err.message;
 	} finally {
 		loading.value = false;
-		console.log(productData.value);
 	}
 };
 
 onMounted(() => {
+
 	window.addEventListener('resize', updateScreenWidth);
 	fetchProductData();
+	checkCollapsibility();
+	loadData
 });
 
 onBeforeUnmount(() => {
@@ -66,7 +85,7 @@ onBeforeUnmount(() => {
 });
 
 const handleFollowChange = (isFavorited) => {
-	if(loading.value)return;
+	if (loading.value) return;
 	if (isFavorited) {
 		favoritesStore.addFavorite(productData.value.product_id);
 	} else {
@@ -75,8 +94,6 @@ const handleFollowChange = (isFavorited) => {
 };
 
 </script>
-
-
 
 <template>
 	<div class="product-view">
@@ -116,52 +133,58 @@ const handleFollowChange = (isFavorited) => {
 				</p>
 				<p class="store-product">on {{ productData?.store_name || 'Loading store...' }}</p>
 
-				<div class="description-container">
-					<p class="description-text"
-						:class="{ 'collapsed': !isDescriptionExpanded, 'expanded': isDescriptionExpanded }"
-						@click="toggleDescription">
-						{{ productData?.description || 'Loading description...' }}
-					</p>
+				<div class="description-container" @click="toggleDescription">
+					<div class="description-text-container" ref="descriptionContainer"
+						:style="{ '--description-max-height': descriptionMaxHeight + 'rem' }"
+						:class="{ 'collapsed': isCollapsible && !isDescriptionExpanded }">
+						<p class="description-text">
+							{{ productData?.description || 'Loading description...' }}
+						</p>
+						<p class="description-text-highlighted">
+							<span> Brand: </span> {{ productData?.brand_name || 'Loading brand...' }}
+						</p>
+					</div>
+					<span class="see-button" v-if="isCollapsible && !isDescriptionExpanded">
+						↓ See more
+					</span>
+					<span class="see-button" v-if="isCollapsible && isDescriptionExpanded">
+						↑ See less
+					</span>
 				</div>
 
 				<div class="favorite-button-container">
 					<AddFavoriteButton :isFollowed="favoritesStore.isProductFollowed(productData?.product_id)"
-						@update:isFollowed="handleFollowChange"
-						aria-label="Add to favorites" />
-					<p v-if="!favoritesStore.isProductFollowed(productData?.product_id)" class="follow-text">Follow product</p>
+						@update:isFollowed="handleFollowChange" aria-label="Add to favorites" />
+					<p v-if="!favoritesStore.isProductFollowed(productData?.product_id)" class="follow-text">Follow
+						product</p>
 					<p v-else class="follow-text">Followed</p>
 				</div>
 			</div>
 		</div>
 
-      <div class="graph__section--graph1">
-                <div v-if="charts.length > 0" class="graph-large">
-                    <GraphTemplate v-if="screenWidth >= 766" :chartHeader="charts[0].header" :chartType="charts[0].type"
-                        :chartData="charts[0].data" :chartOptions="charts[0].options"
-                        :customStyles="{
-                            width: '100%',
-                            height: '400px',
-                            maxHeight: '500px'
-                        }" />
-                    <GraphTemplate v-if="screenWidth < 766" :chartHeader="charts[0].header" :chartType="charts[0].type"
-                        :chartData="charts[0].data" :chartOptions="charts[0].options"
-                        :customStyles="{
-                            width: '100%',
-                            height: '200px',
-                            maxHeight: '500px'
-                        }" />
-                </div>
-    </div>
-      
+		<div class="graph__section--graph1">
+			<div v-if="charts.length > 0" class="graph-large">
+				<GraphTemplate v-if="screenWidth >= 766" :chartHeader="charts[0].header" :chartType="charts[0].type"
+					:chartData="charts[0].data" :chartOptions="charts[0].options" :customStyles="{
+						width: '100%',
+						height: '400px',
+						maxHeight: '500px'
+					}" />
+				<GraphTemplate v-if="screenWidth < 766" :chartHeader="charts[0].header" :chartType="charts[0].type"
+					:chartData="charts[0].data" :chartOptions="charts[0].options" :customStyles="{
+						width: '100%',
+						height: '200px',
+						maxHeight: '500px'
+					}" />
+			</div>
+		</div>
 
-    <div class="price-comparison">
-  <PriceCard 
-    v-for="(offer, index) in productData?.prices || [{ price: 'Cargando...', store: 'Cargando...', features: 'Cargando...' }]" 
-    :key="index" 
-    :store="offer.store"
-    :price="offer.price" 
-    :features="offer.features" />
-</div>
+
+		<div class="price-comparison">
+			<PriceCard
+				v-for="(offer, index) in productData?.prices || [{ price: 'Cargando...', store: 'Cargando...', features: 'Cargando...' }]"
+				:key="index" :store="offer.store" :price="offer.price" :features="offer.features" />
+		</div>
 
 	</div>
 	<FooterComponent />

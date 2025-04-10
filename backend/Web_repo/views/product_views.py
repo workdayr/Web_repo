@@ -28,7 +28,7 @@ class ProductDetailsView(APIView):
             return Response({"error": "Invalid product_id format."}, status=status.HTTP_400_BAD_REQUEST)
 
         serializer = ProductDetailSerializer(product, context={'extra_fields':  ['images_URL', 'brand_name', 'current_lowest_price', 'store_name', 'store_image']})
-        
+        logging.debug(serializer.data)
         return Response(serializer.data)
     
 
@@ -38,8 +38,6 @@ class ProductPriceHistoryChartView(APIView):
         if not product_id:
             return Response({"error": "El parámetro product_id es requerido."},
                             status=status.HTTP_400_BAD_REQUEST)
-
-        product = get_object_or_404(Products, product_id=product_id)
 
         price_history_qs = PricesHistory.objects.filter(
             store_product_id__product_id=product_id
