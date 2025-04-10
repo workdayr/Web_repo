@@ -8,7 +8,7 @@ import FooterComponent from '@/components/Layout/FooterComponent.vue';
 import PriceCard from '@/components/UI/PriceCard.vue';
 import AddFavoriteButton from '@/components/Common/AddFavoriteButton.vue';
 import { useFavoritesStore } from '@/store/useFavoritesStore';
-import { fetchProductHistoryChartData } from '@/api/productViewChartService'; 
+import { fetchProductHistoryChartData } from '@/api/productViewChartService';
 import GraphTemplate from '@/components/UI/GraphTemplate.vue';
 
 const charts = ref([]);
@@ -136,15 +136,15 @@ const handleFollowChange = (isFavorited) => {
 
       <div class="graph__section--graph1">
                 <div v-if="charts.length > 0" class="graph-large">
-                    <GraphTemplate v-if="screenWidth >= 766" :chartHeader="charts[0].header" :chartType="charts[0].type"
-                        :chartData="charts[0].data" :chartOptions="charts[0].options"
+                    <GraphTemplate v-if="screenWidth >= 766" :chartHeader="charts[2].header" :chartType="charts[2].type"
+                        :chartData="charts[2].data" :chartOptions="charts[2].options"
                         :customStyles="{
                             width: '100%',
                             height: '400px',
                             maxHeight: '500px'
                         }" />
-                    <GraphTemplate v-if="screenWidth < 766" :chartHeader="charts[0].header" :chartType="charts[0].type"
-                        :chartData="charts[0].data" :chartOptions="charts[0].options"
+                    <GraphTemplate v-if="screenWidth < 766" :chartHeader="charts[2].header" :chartType="charts[2].type"
+                        :chartData="charts[2].data" :chartOptions="charts[2].options"
                         :customStyles="{
                             width: '100%',
                             height: '200px',
@@ -161,6 +161,16 @@ const handleFollowChange = (isFavorited) => {
     :price="offer.price" 
     :features="offer.features" />
 </div>
+    <div class="price-comparison">
+  <PriceCard 
+    v-for="(offer, index) in productData?.prices || [{ price: 'Cargando...', store: 'Cargando...', features: 'Cargando...' }]" 
+    :key="index" 
+    :store="offer.store"
+    :price="offer.price" 
+    :features="offer.features" />
+</div>
+
+
 
 
 
