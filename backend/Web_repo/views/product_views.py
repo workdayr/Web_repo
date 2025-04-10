@@ -5,6 +5,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
+from collections import defaultdict
 
 import logging
 
@@ -30,6 +31,53 @@ class ProductDetailsView(APIView):
         
         logging.debug(serializer.data)
         return Response(serializer.data)
+    
+
+class ProductPriceHistoryChartView(APIView):
+    def get(self, request):
+        product_id = request.query_params.get('product_id')
+        if not product_id:
+            return Response({"error": "El parámetro product_id es requerido."},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        product = get_object_or_404(Products, product_id=product_id)
+
+        price_history_qs = PricesHistory.objects.filter(
+            store_product_id__product_id=product_id
+        ).select_related('store_product_id__store_id').order_by('change_date')
+
+        store_data = defaultdict(list)
+        labels_set = set()
+
+        for history in price_history_qs:
+            store_name = history.store_product_id.store_id.name
+            labels_set.add(history.change_date.isoformat())
+            store_data[store_name].append({
+                "date": history.change_date.isoformat(),
+                "price": history.price
+            })
+
+        labels = sorted(list(labels_set))
+        datasets = []
+        color_palette = ["#2B3695", "#6976EB", "#DD5144", "#ADB4F3", "#AA66CC"]
+
+        for idx, (store, entries) in enumerate(store_data.items()):
+            date_price_map = {entry["date"]: entry["price"] for entry in entries}
+            data = [date_price_map.get(label, None) for label in labels]
+
+            datasets.append({
+                "label": store,
+                "data": data,
+                "borderColor": color_palette[idx % len(color_palette)],
+                "tension": 0.3,
+                "fill": False
+            })
+
+        return Response({
+            "labels": labels,
+            "datasets": datasets
+        })
+    
 
 class BrandViewSet(viewsets.ModelViewSet):
     queryset = Brand.objects.all()

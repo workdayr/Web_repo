@@ -57,5 +57,7 @@ urlpatterns = [
     #path('api/product/', ProductView.as_view(), name='products-list'),
     path('api/product/<int:pk>/', ProductView.as_view(), name='products-detail'),
     path('api/Images/<int:pk>/', ProductView.as_view(), name='Images'),
+    path('api/product/price-history/', ProductPriceHistoryChartView.as_view(), name='product-price-history'),
+
     
     ]

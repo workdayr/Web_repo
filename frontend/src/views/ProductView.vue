@@ -8,7 +8,7 @@ import FooterComponent from '@/components/Layout/FooterComponent.vue';
 import PriceCard from '@/components/UI/PriceCard.vue';
 import AddFavoriteButton from '@/components/Common/AddFavoriteButton.vue';
 import { useFavoritesStore } from '@/store/useFavoritesStore';
-import { fetchProductsChartData } from '@/api/productsChartService';
+import { fetchProductHistoryChartData } from '@/api/productViewChartService';
 import GraphTemplate from '@/components/UI/GraphTemplate.vue';
 
 const charts = ref([]);
@@ -24,12 +24,17 @@ const route = useRoute();
 const productId = ref(route.params.productId); // Change the route if necessary
 
 // Methods
-const loadData = async () => {
-    const { charts: chartData } = await fetchProductsChartData();
-    charts.value = chartData;
+const loadChartData = async () => {
+  const { charts: chartData } = await fetchProductHistoryChartData(productId.value);
+  charts.value[0] = chartData[0];
 };
 
-onMounted(loadData);
+onMounted(() => {
+  window.addEventListener('resize', updateScreenWidth);
+  fetchProductData();
+  loadChartData();
+});
+
 
 const updateScreenWidth = () => {
 	screenWidth.value = window.innerWidth;
@@ -136,15 +141,15 @@ const handleFollowChange = (isFavorited) => {
 
       <div class="graph__section--graph1">
                 <div v-if="charts.length > 0" class="graph-large">
-                    <GraphTemplate v-if="screenWidth >= 766" :chartHeader="charts[2].header" :chartType="charts[2].type"
-                        :chartData="charts[2].data" :chartOptions="charts[2].options"
+                    <GraphTemplate v-if="screenWidth >= 766" :chartHeader="charts[0].header" :chartType="charts[0].type"
+                        :chartData="charts[0].data" :chartOptions="charts[0].options"
                         :customStyles="{
                             width: '100%',
                             height: '400px',
                             maxHeight: '500px'
                         }" />
-                    <GraphTemplate v-if="screenWidth < 766" :chartHeader="charts[2].header" :chartType="charts[2].type"
-                        :chartData="charts[2].data" :chartOptions="charts[2].options"
+                    <GraphTemplate v-if="screenWidth < 766" :chartHeader="charts[0].header" :chartType="charts[0].type"
+                        :chartData="charts[0].data" :chartOptions="charts[0].options"
                         :customStyles="{
                             width: '100%',
                             height: '200px',
@@ -161,8 +166,6 @@ const handleFollowChange = (isFavorited) => {
     :price="offer.price" 
     :features="offer.features" />
 </div>
-
-
 
 	</div>
 	<FooterComponent />
