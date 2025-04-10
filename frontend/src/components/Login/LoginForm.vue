@@ -10,7 +10,8 @@ const router = useRouter();
 
 const form = ref({
 	email: '',
-	password: ''
+	password: '',
+	rememberMe: false,
 });
 
 const submitted = ref(false);
@@ -32,6 +33,7 @@ const submitForm = async () => {
 	const payload = {
 		email: form.value.email,
 		password: form.value.password,
+		rememberMe: form.value.rememberMe
 	};
 
 	try {
