@@ -8,7 +8,7 @@ import FooterComponent from '@/components/Layout/FooterComponent.vue';
 import PriceCard from '@/components/UI/PriceCard.vue';
 import AddFavoriteButton from '@/components/Common/AddFavoriteButton.vue';
 import { useFavoritesStore } from '@/store/useFavoritesStore';
-import { fetchProductHistoryChartData } from '@/api/productViewChartService';
+import { fetchProductHistoryChartData } from '@/api/productViewChartService'; 
 import GraphTemplate from '@/components/UI/GraphTemplate.vue';
 
 const charts = ref([]);
@@ -24,17 +24,12 @@ const route = useRoute();
 const productId = ref(route.params.productId); // Change the route if necessary
 
 // Methods
-const loadChartData = async () => {
-  const { charts: chartData } = await fetchProductHistoryChartData(productId.value);
-  charts.value[0] = chartData[0];
+const loadData = async () => {
+    const { charts: chartData } = await fetchProductHistoryChartData();
+    charts.value = chartData;
 };
 
-onMounted(() => {
-  window.addEventListener('resize', updateScreenWidth);
-  fetchProductData();
-  loadChartData();
-});
-
+onMounted(loadData);
 
 const updateScreenWidth = () => {
 	screenWidth.value = window.innerWidth;
@@ -166,7 +161,9 @@ const handleFollowChange = (isFavorited) => {
     :price="offer.price" 
     :features="offer.features" />
 </div>
-		
+
+
+
 	</div>
 	<FooterComponent />
 </template>
