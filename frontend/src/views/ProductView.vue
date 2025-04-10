@@ -18,7 +18,6 @@ const productData = ref(null);
 const loading = ref(true);
 const error = ref(null);
 const selectedImage = ref(null);
-const thumbnails = ref([]);
 const favoritesStore = useFavoritesStore();
 const route = useRoute();
 const productId = ref(route.params.productId); // Change the route if necessary
@@ -114,12 +113,14 @@ const handleFollowChange = (isFavorited) => {
 				<h2 class="product-title">{{ productData?.name || 'Loading name...' }}</h2>
 				<div v-if="screenWidth < 766" class="product-section">
 
-					<img :src="selectedImage" alt="Product Image" class="product-image">
+					<template v-if="productData && productData.images_URL && productData.images_URL.length > 0">
+					<img :src="selectedImage || productData.images_URL[0]" alt="Product Image" class="product-image">
 
 					<div class="thumbnail-container">
-						<img v-for="(thumb, index) in thumbnails" :key="index" :src="thumb" alt="Thumbnail"
+						<img v-for="(thumb, index) in productData.images_URL" :key="index" :src="thumb" alt="Thumbnail"
 							class="thumbnail-image" @click="changeImage(thumb)">
 					</div>
+				</template>
 				</div>
 				<p class="price-label">Lowest price:</p>
 				<p class="product-price">
