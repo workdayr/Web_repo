@@ -1,6 +1,11 @@
 <script setup>
 import FormHeader from '@/components/Form/FormHeader.vue';
 import LoginForm from '@/components/Login/LoginForm.vue';
+import ErrorMessage from '@/components/Common/ErrorMessage.vue'
+import { ref } from 'vue'
+
+const showError = ref(true) //True para verlo, false para quitarlo
+
 </script>
 
 <template>
@@ -11,7 +16,16 @@ import LoginForm from '@/components/Login/LoginForm.vue';
 
     <div class="login__form--container">
         <FormHeader title="Log In"/>
+ <!--  mensaje de error -->
+ <ErrorMessage
+      :show="showError"
+      :message="'Invalid Credentials. Email or Password Incorrect'"
+      @close="showError = false"
+    />
+
         <LoginForm />
+
+        
 
         <div id="login__other-login-options">
             <p>Other <span class="login__other-login-options--highlited-word">Login</span> options</p>
