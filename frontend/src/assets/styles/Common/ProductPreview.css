@@ -15,19 +15,42 @@
     background-color: #fff;
     border-radius: 20px;
     object-fit: contain;
+    margin-bottom: 5%;
 }
 
 /* ============================
    Bottom Section
    ============================ */
+.product-preview__discount{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    width: 100%;
+    padding: 3%;
+    padding-bottom: 0;
+    margin-bottom: 1%;
 
+}
+.product-preview__discount__card{
+    background-color: #562F7F;
+    width: min-content;
+    border-radius: 10px;
+    padding: 1%;
+}
+
+.product-preview__discount__title{
+    font-size: 1rem;
+    color: #D2C0FD;
+    margin: 0;
+    font-weight: 600;
+}
 .product-preview__bottom {
     display: flex;
     align-items: center; 
     justify-content: space-between; 
     width: 100%;
-    height: 100%;
-    padding: 4%;
+    height: min-content;
+    padding: 0 4%;
     background-image: none;
     color: #ffff;
     
