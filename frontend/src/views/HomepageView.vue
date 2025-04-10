@@ -75,9 +75,7 @@ const loadNextSection = async () => {
 };
 
 onMounted(async () => {
-	console.log("length", homeCache.sections.value)
   if (sections.value.length>0) {
-	console.log("scrolling");
     await nextTick();
     window.scrollTo(0, homeCache.scrollY);
   } else {

@@ -19,7 +19,7 @@
                 <span> at </span>
                 <span class="pricedrop__highlight-text">{{ store }}</span>
                 <template v-if="priceDrop && !isNaN(priceDrop)">
-                    <span>{{" "+ priceDrop }}</span>%
+                    <span>{{" "+ priceDrop.toFixed(2) }}</span>%
                     <br>
                     <span v-if="priceDrop > 0">
                         <span class="pricedrop__highlight-text"> Higher </span>
@@ -28,7 +28,7 @@
                         <span class="pricedrop__highlight-text"> Lower </span>
                     </span>
                     <span>than price on </span>
-                    <span class="pricedrop__highlight-text">{{date}}</span>
+                    <span class="pricedrop__highlight-text">{{formatDateToDDMMYY(date)}}</span>
                 </template>
 
             </div>
@@ -63,6 +63,14 @@ const togglePopup = async (display) => {
         popup.value.style.left = `${rect.left + window.scrollX}px`;
     }
 };
+function formatDateToDDMMYY(isoString) {
+  const date = new Date(isoString);
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // months are 0-based
+  const year = String(date.getFullYear()).slice(-2); // get last 2 digits
+
+  return `${day}-${month}-${year}`;
+}
 </script>
 <style scoped>
 @import "@/assets/styles/Common/Favorites/PriceDropComponent.css";

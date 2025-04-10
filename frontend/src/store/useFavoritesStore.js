@@ -67,7 +67,7 @@ export const useFavoritesStore = defineStore('favoritesStore', () => {
         filteredFavoriteIndexes.value = favorites.value
             .map((favorite, index) => ({ favorite, index }))
             .filter(({ favorite }) => {
-                const hasPriceDrop = !filters.value.priceDropOnly || favorite.product.last_price_change < 0;
+                const hasPriceDrop = !filters.value.priceDropOnly || favorite.product.last_price_change_percentage < 0;
                 const hasNotificationFilter = filters.value.notificationStatus.length === 1;
                 const shouldShowActiveNotifications = hasNotificationFilter
                     ? filters.value.notificationStatus[0] === 'on'

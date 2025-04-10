@@ -1,5 +1,6 @@
 <template>
-    <div class="user-account__container" @mouseover="hover = true" @mouseleave="hover = false">
+    <div v-if="hover" id="overlay"></div>
+    <div class="user-account__container" :class="{'user-account_overlay': hover}" @mouseover="hover = true" @mouseleave="hover = false">
         <button class="user-account__button" @click="addToFavorites">
             <svg class="user-account__icon" width="21" height="21" viewBox="0 0 22 23" fill="none"
                 xmlns="http://www.w3.org/2000/svg">

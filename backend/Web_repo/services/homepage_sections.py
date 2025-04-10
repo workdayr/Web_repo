@@ -84,7 +84,6 @@ def get_homepage_section(user, section_index=0, inner_offset=0, inner_limit=10, 
 
     if user.is_authenticated:
         top_categories, top_brands = get_user_preferred_categories_and_brands(user, top_n= personalized_sections_limit//2)
-        logging.debug(f"brands {top_brands}")
         
         index = section_index - 1  # offset from best offers
         
@@ -128,7 +127,7 @@ def get_homepage_section(user, section_index=0, inner_offset=0, inner_limit=10, 
             return {
                 "id": f"store_{store.store_id}",
                 "title": f"Best from {store.name}",
-                "icon": None,
+                "icon": store.Image_url,
                 "products": serializer.data
             }, True
         else:

@@ -166,7 +166,7 @@ const handleFollowChange = (isFavorited) => {
     :price="offer.price" 
     :features="offer.features" />
 </div>
-
+		
 	</div>
 	<FooterComponent />
 </template>
