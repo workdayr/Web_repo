@@ -5,6 +5,7 @@
     border: none;
     height: auto;
     min-width: 400px;
+    cursor: pointer;
 }
 
 .product-preview__image {

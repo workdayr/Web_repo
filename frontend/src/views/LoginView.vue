@@ -36,7 +36,7 @@ const showError = ref(true) //True para verlo, false para quitarlo
             </div>
             <div id="create-account-container">
                 <img class="userIcon" src="@/assets/Form/FullName.svg" alt="UserIcon">
-                <a class="create-account-container__header">Create account</a>
+                <a class="create-account-container__header" @click="$router.push('/register')">Create account</a>
             </div>
         </div>
     </div>
