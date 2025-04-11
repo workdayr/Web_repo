@@ -14,26 +14,27 @@
     </div>
   </template>
   
-  <script>
-  export default {
-    name: 'ErrorMessage',
-    props: {
-      message: {
-        type: String,
-        default: 'Invalid Credentials. Email or Password Incorrect'
-      },
-      show: {
-        type: Boolean,
-        default: false
-      }
-    },
-    methods: {
-      close() {
-        this.$emit('close');
-      }
-    }
+  <script setup>
+import { defineProps, defineEmits } from 'vue';
+
+defineProps({
+  message: {
+    type: String,
+    default: 'Invalid Credentials. Email or Password Incorrect'
+  },
+  show: {
+    type: Boolean,
+    default: false
   }
-  </script>
+})
+
+const emit = defineEmits(['close']);
+
+function close() {
+  emit('close')
+}
+</script>
+
   
   <style scoped>
  @import "@/assets/styles/Common/ErrorMessage.css";

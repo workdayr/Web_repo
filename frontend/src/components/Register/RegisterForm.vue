@@ -5,10 +5,16 @@ import AppSubmitButton from '@/components/Form/FormSubmitButton.vue';
 import { useRegisterValidation } from '@/composables/useRegisterValidation';
 import { useRouter } from 'vue-router';
 import { useAuth } from "@/composables/useAuth";
+import ErrorMessage from '../Common/ErrorMessage.vue';
 
 const router = useRouter();
-
 const states = ['State A', 'State B', 'State C'];
+const showError = ref(false);
+const errorText = ref('');
+const handleCloseError = () => {
+	showError.value = false;
+	errorText.value = '';
+};
 
 const form = ref({
 	fullName: '',
@@ -22,25 +28,25 @@ const form = ref({
 const submitted = ref(false);
 const sent = ref(false);
 const { validFields, errorMessage } = useRegisterValidation(form);
-const { register } = useAuth(); 
+const { register } = useAuth();
 // submit form function	
 const submitForm = async () => {
-    submitted.value = true;
+	submitted.value = true;
 
 	// Client form validation
 	let isValid = Object.values(validFields.value).every(Boolean);
 	if (!isValid || sent.value) {
 		return;
 	}
-	
+
 	const payload = {
 		username: form.value.email,
-		first_name: form.value.fullName.split(' ')[0], 
-		last_name: form.value.fullName.split(' ').slice(1).join(' ') || "", 
+		first_name: form.value.fullName.split(' ')[0],
+		last_name: form.value.fullName.split(' ').slice(1).join(' ') || "",
 		email: form.value.email,
-		password: form.value.password, 
+		password: form.value.password,
 		date_of_birth: form.value.birthday,
-		state: form.value.state 
+		state: form.value.state
 	};
 
 	try {
@@ -51,20 +57,24 @@ const submitForm = async () => {
 
 	} catch (error) {
 		console.error('Error al registrar usuario', error);
+		showError.value = true;
 
 		if (error.response) {
 			const errorData = error.response.data;
-			if (errorData && errorData.email && errorData.email.length > 0) {
-				const emailError = errorData.email[0];
-				console.log('Email error:', emailError);
-				// add user incorrect email message
+
+			if (errorData?.email?.[0]?.includes('already')) {
+				errorText.value = 'This email is already registered. Try logging in.';
+			} else if (errorData?.username?.[0]?.includes('already')) {
+				errorText.value = 'Username is already taken.';
+			} else {
+				errorText.value = 'Registration failed. Please check your input.';
 			}
 			return error.response;
 		} else if (error.request) {
-			console.error('No response received:', error.request);
+			errorText.value = 'No response from server. Please try again later.';
 			return error.request;
 		} else {
-			console.error('Error setting up the request:', error.message);
+			errorText.value = 'Unexpected error. Please try again.';
 			return error;
 		}
 
@@ -75,6 +85,8 @@ const submitForm = async () => {
 </script>
 
 <template>
+	<ErrorMessage :show="showError" :message="errorText" @close="handleCloseError" />
+
 	<form class="register__form" @submit.prevent="submitForm">
 
 		<AppInput v-model="form.fullName" :src="require('@/assets/Form/FullName.svg')" placeholder="Full Name"

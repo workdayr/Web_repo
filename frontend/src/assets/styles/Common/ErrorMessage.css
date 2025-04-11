@@ -1,10 +1,10 @@
 
  .error-container {
-    position: fixed;
-    top: 20px;
+    position: relative;
     left: 50%;
     transform: translateX(-50%);
     width: 90%;
+    margin-bottom:5%;
     max-width: 1000px;
     z-index: 9999;
     animation: slideDown 0.3s ease-out forwards;

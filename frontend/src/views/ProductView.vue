@@ -27,9 +27,10 @@ const descriptionContainer = ref(null);
 
 // Methods
 const loadData = async () => {
-	const { charts: chartData } = await fetchProductHistoryChartData();
+	const { charts: chartData } = await fetchProductHistoryChartData(productId.value);
 	charts.value = chartData;
 };
+
 
 function checkCollapsibility() {
 	nextTick(() => {
@@ -72,13 +73,11 @@ const fetchProductData = async () => {
 };
 
 onMounted(() => {
-
 	window.addEventListener('resize', updateScreenWidth);
 	fetchProductData();
 	checkCollapsibility();
-	loadData
+	loadData();
 });
-
 onBeforeUnmount(() => {
 	window.removeEventListener('resize', updateScreenWidth);
 });
@@ -114,13 +113,14 @@ const handleFollowChange = (isFavorited) => {
 				<div v-if="screenWidth < 766" class="product-section">
 
 					<template v-if="productData && productData.images_URL && productData.images_URL.length > 0">
-					<img :src="selectedImage || productData.images_URL[0]" alt="Product Image" class="product-image">
+						<img :src="selectedImage || productData.images_URL[0]" alt="Product Image"
+							class="product-image">
 
-					<div class="thumbnail-container">
-						<img v-for="(thumb, index) in productData.images_URL" :key="index" :src="thumb" alt="Thumbnail"
-							class="thumbnail-image" @click="changeImage(thumb)">
-					</div>
-				</template>
+						<div class="thumbnail-container">
+							<img v-for="(thumb, index) in productData.images_URL" :key="index" :src="thumb"
+								alt="Thumbnail" class="thumbnail-image" @click="changeImage(thumb)">
+						</div>
+					</template>
 				</div>
 				<p class="price-label">Lowest price:</p>
 				<p class="product-price">
