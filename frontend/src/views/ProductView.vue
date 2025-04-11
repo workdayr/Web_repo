@@ -5,7 +5,6 @@ import { productDetailsService } from '@/api/productDetailsService'
 
 import NavBarComponent from '@/components/Layout/NavbarComponent.vue';
 import FooterComponent from '@/components/Layout/FooterComponent.vue';
-import PriceCard from '@/components/UI/PriceCard.vue';
 import AddFavoriteButton from '@/components/Common/AddFavoriteButton.vue';
 import { useFavoritesStore } from '@/store/useFavoritesStore';
 import { fetchProductHistoryChartData } from '@/api/productViewChartService';
@@ -179,14 +178,6 @@ const handleFollowChange = (isFavorited) => {
 					}" />
 			</div>
 		</div>
-
-
-		<div class="price-comparison">
-			<PriceCard
-				v-for="(offer, index) in productData?.prices || [{ price: 'Cargando...', store: 'Cargando...', features: 'Cargando...' }]"
-				:key="index" :store="offer.store" :price="offer.price" :features="offer.features" />
-		</div>
-
 	</div>
 	<FooterComponent />
 </template>
