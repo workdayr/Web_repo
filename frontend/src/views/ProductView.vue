@@ -1,185 +1,34 @@
 <script setup>
-import { ref, onMounted, onBeforeUnmount, nextTick, watch } from 'vue';
+import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { useRoute } from 'vue-router';
-import { productDetailsService } from '@/api/productDetailsService'
-
 import NavBarComponent from '@/components/Layout/NavbarComponent.vue';
-import FooterComponent from '@/components/Layout/FooterComponent.vue';
+import ProductDetails from '@/components/Product/ProductDetails.vue';
+import ProducPriceGraph from '@/components/Product/ProducPriceGraph.vue';
 import PriceCard from '@/components/UI/PriceCard.vue';
-import AddFavoriteButton from '@/components/Common/AddFavoriteButton.vue';
-import { useFavoritesStore } from '@/store/useFavoritesStore';
-import { fetchProductHistoryChartData } from '@/api/productViewChartService';
-import GraphTemplate from '@/components/UI/GraphTemplate.vue';
+import FooterComponent from '@/components/Layout/FooterComponent.vue';
 
-const charts = ref([]);
 const screenWidth = ref(window.innerWidth);
-const isDescriptionExpanded = ref(false);
 const productData = ref(null);
-const loading = ref(true);
-const error = ref(null);
-const selectedImage = ref(null);
-const favoritesStore = useFavoritesStore();
 const route = useRoute();
-const productId = ref(route.params.productId); // Change the route if necessary
-const descriptionMaxHeight = ref(6.2);
-const isCollapsible = ref(false);
-const descriptionContainer = ref(null);
-
-// Methods
-const loadData = async () => {
-	const { charts: chartData } = await fetchProductHistoryChartData();
-	charts.value = chartData;
-};
-
-function checkCollapsibility() {
-	nextTick(() => {
-		if (!descriptionContainer.value) return;
-
-		const container = descriptionContainer.value;
-		const maxHeightPx = descriptionMaxHeight.value * parseFloat(getComputedStyle(document.documentElement).fontSize);
-
-		const scrollHeight = container.scrollHeight;
-		console.log(scrollHeight, maxHeightPx)
-		isCollapsible.value = scrollHeight > maxHeightPx;
-	});
-}
-
-watch(() => productData.value?.description, () => {
-	checkCollapsibility();
-});
+const productId = ref(route.params.productId);
 
 const updateScreenWidth = () => {
 	screenWidth.value = window.innerWidth;
 };
-
-const toggleDescription = () => {
-	isDescriptionExpanded.value = !isDescriptionExpanded.value;
-};
-
-const changeImage = (newImage) => {
-	selectedImage.value = newImage;
-};
-
-const fetchProductData = async () => {
-	try {
-		const response = await productDetailsService.getProduct(productId.value);
-		productData.value = response.data;
-	} catch (err) {
-		error.value = err.message;
-	} finally {
-		loading.value = false;
-	}
-};
-
 onMounted(() => {
-
 	window.addEventListener('resize', updateScreenWidth);
-	fetchProductData();
-	checkCollapsibility();
-	loadData
 });
-
 onBeforeUnmount(() => {
 	window.removeEventListener('resize', updateScreenWidth);
 });
-
-const handleFollowChange = (isFavorited) => {
-	if (loading.value) return;
-	if (isFavorited) {
-		favoritesStore.addFavorite(productData.value.product_id);
-	} else {
-		favoritesStore.removeFavoriteByProductId(productData.value.product_id);
-	}
-};
 
 </script>
 
 <template>
 	<div class="product-view">
 		<NavBarComponent />
-
-		<div class="first-half">
-			<div v-if="screenWidth >= 766" class="product-section">
-				<template v-if="productData && productData.images_URL && productData.images_URL.length > 0">
-					<img :src="selectedImage || productData.images_URL[0]" alt="Product Image" class="product-image">
-
-					<div class="thumbnail-container">
-						<img v-for="(thumb, index) in productData.images_URL" :key="index" :src="thumb" alt="Thumbnail"
-							class="thumbnail-image" @click="changeImage(thumb)">
-					</div>
-				</template>
-			</div>
-			<div class="product-details">
-				<h2 class="product-title">{{ productData?.name || 'Loading name...' }}</h2>
-				<div v-if="screenWidth < 766" class="product-section">
-
-					<template v-if="productData && productData.images_URL && productData.images_URL.length > 0">
-					<img :src="selectedImage || productData.images_URL[0]" alt="Product Image" class="product-image">
-
-					<div class="thumbnail-container">
-						<img v-for="(thumb, index) in productData.images_URL" :key="index" :src="thumb" alt="Thumbnail"
-							class="thumbnail-image" @click="changeImage(thumb)">
-					</div>
-				</template>
-				</div>
-				<p class="price-label">Lowest price:</p>
-				<p class="product-price">
-					{{ productData?.current_lowest_price?.price
-						? (productData.current_lowest_price.symbol || '$') + ' ' +
-						parseFloat(productData.current_lowest_price.price).toLocaleString('en-US', {
-							minimumFractionDigits:
-								2, maximumFractionDigits: 2
-						})
-						: 'Loading price...' }}
-				</p>
-				<p class="store-product">on {{ productData?.store_name || 'Loading store...' }}</p>
-
-				<div class="description-container" @click="toggleDescription">
-					<div class="description-text-container" ref="descriptionContainer"
-						:style="{ '--description-max-height': descriptionMaxHeight + 'rem' }"
-						:class="{ 'collapsed': isCollapsible && !isDescriptionExpanded }">
-						<p class="description-text">
-							{{ productData?.description || 'Loading description...' }}
-						</p>
-						<p class="description-text-highlighted">
-							<span> Brand: </span> {{ productData?.brand_name || 'Loading brand...' }}
-						</p>
-					</div>
-					<span class="see-button" v-if="isCollapsible && !isDescriptionExpanded">
-						↓ See more
-					</span>
-					<span class="see-button" v-if="isCollapsible && isDescriptionExpanded">
-						↑ See less
-					</span>
-				</div>
-
-				<div class="favorite-button-container">
-					<AddFavoriteButton :isFollowed="favoritesStore.isProductFollowed(productData?.product_id)"
-						@update:isFollowed="handleFollowChange" aria-label="Add to favorites" />
-					<p v-if="!favoritesStore.isProductFollowed(productData?.product_id)" class="follow-text">Follow
-						product</p>
-					<p v-else class="follow-text">Followed</p>
-				</div>
-			</div>
-		</div>
-
-		<div class="graph__section--graph1">
-			<div v-if="charts.length > 0" class="graph-large">
-				<GraphTemplate v-if="screenWidth >= 766" :chartHeader="charts[0].header" :chartType="charts[0].type"
-					:chartData="charts[0].data" :chartOptions="charts[0].options" :customStyles="{
-						width: '100%',
-						height: '400px',
-						maxHeight: '500px'
-					}" />
-				<GraphTemplate v-if="screenWidth < 766" :chartHeader="charts[0].header" :chartType="charts[0].type"
-					:chartData="charts[0].data" :chartOptions="charts[0].options" :customStyles="{
-						width: '100%',
-						height: '200px',
-						maxHeight: '500px'
-					}" />
-			</div>
-		</div>
-
+		<ProductDetails :product_id="productId" :screen-width="screenWidth" />
+		<ProducPriceGraph :product_id="productId" :screen-width="screenWidth"/>
 
 		<div class="price-comparison">
 			<PriceCard

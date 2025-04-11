@@ -6,6 +6,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
 from collections import defaultdict
+from django.utils import timezone
+from datetime import timedelta
 
 import logging
 
@@ -28,50 +30,53 @@ class ProductDetailsView(APIView):
             return Response({"error": "Invalid product_id format."}, status=status.HTTP_400_BAD_REQUEST)
 
         serializer = ProductDetailSerializer(product, context={'extra_fields':  ['images_URL', 'brand_name', 'current_lowest_price', 'store_name', 'store_image']})
-        logging.debug(serializer.data)
         return Response(serializer.data)
     
 
 class ProductPriceHistoryChartView(APIView):
     def get(self, request):
         product_id = request.query_params.get('product_id')
-        if not product_id:
-            return Response({"error": "El parámetro product_id es requerido."},
-                            status=status.HTTP_400_BAD_REQUEST)
-
+        duration_param = request.query_params.get('duration')
+        start_date = timezone.now() - timedelta(days=int(duration_param))
+        if duration_param:
+            start_date = timezone.now() - timedelta(days=int(duration_param))
+                
+        logging.debug(start_date)
         price_history_qs = PricesHistory.objects.filter(
-            store_product_id__product_id=product_id
+            store_product_id__product_id=product_id,
+            change_date__gte=start_date,
         ).select_related('store_product_id__store_id').order_by('change_date')
 
+        
         store_data = defaultdict(list)
-        labels_set = set()
 
         for history in price_history_qs:
             store_name = history.store_product_id.store_id.name
-            labels_set.add(history.change_date.isoformat())
+            original_dt = history.change_date
+            start_of_day_dt = original_dt.replace(hour=0, minute=0, second=0, microsecond=0)
+
             store_data[store_name].append({
-                "date": history.change_date.isoformat(),
-                "price": history.price
+                "x": start_of_day_dt.isoformat(),
+                "y": history.price
             })
 
-        labels = sorted(list(labels_set))
+
+        
         datasets = []
         color_palette = ["#2B3695", "#6976EB", "#DD5144", "#ADB4F3", "#AA66CC"]
 
-        for idx, (store, entries) in enumerate(store_data.items()):
-            date_price_map = {entry["date"]: entry["price"] for entry in entries}
-            data = [date_price_map.get(label, None) for label in labels]
-
+        for idx, (store, data_points) in enumerate(store_data.items()):
             datasets.append({
                 "label": store,
-                "data": data,
+                "data": data_points,
                 "borderColor": color_palette[idx % len(color_palette)],
                 "tension": 0.3,
-                "fill": False
+                "fill": True
             })
 
+        
+        logging.debug(f"datasets {datasets}")
         return Response({
-            "labels": labels,
             "datasets": datasets
         })
     

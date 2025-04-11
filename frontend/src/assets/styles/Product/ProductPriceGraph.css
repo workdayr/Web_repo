@@ -1,0 +1,14 @@
+.product-price-graph_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px; 
+    padding: 0 5%;
+}
+.product-price-graph_title {
+    color: #321647;
+    margin: 0; 
+}
+#duration-select{
+    border: none;
+}
