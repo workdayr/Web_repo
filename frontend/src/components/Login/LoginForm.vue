@@ -2,11 +2,12 @@
 import { ref } from 'vue';
 import FormInput from '@/components/Form/FormInput.vue';
 import FormSubmitButton from '@/components/Form/FormSubmitButton.vue';
+import ErrorMessage from '@/components/Common/ErrorMessage.vue'; // Asegúrate de importar tu componente
 import { useRegisterValidation } from '@/composables/useRegisterValidation';
 import { useRouter } from 'vue-router';
 import { useAuth } from "@/composables/useAuth";
 
-const router = useRouter(); 
+const router = useRouter();
 
 const form = ref({
 	email: '',
@@ -17,17 +18,18 @@ const form = ref({
 const submitted = ref(false);
 const sent = ref(false);
 
-const { validFields, errorMessage } = useRegisterValidation(form);
-const { login } = useAuth(); 
+const showError = ref(false);
+const errorText = ref('');
 
-// submit form function
+const { validFields, errorMessage } = useRegisterValidation(form);
+const { login } = useAuth();
+
 const submitForm = async () => {
 	submitted.value = true;
-	// Client form validation
-	let isValid = Object.values(validFields.value).every(Boolean);
-	if (!isValid || sent.value) {
-		return;
-	}
+
+	const isValid = Object.values(validFields.value).every(Boolean);
+	if (!isValid || sent.value) return;
+
 	sent.value = true;
 
 	const payload = {
@@ -40,25 +42,31 @@ const submitForm = async () => {
 		await login(payload);
 		router.push('/');
 	} catch (error) {
-		if (error.response) {
-			const errorData = error.response.data;
-			console.error('Error response received:', errorData);
-			return error.response;
-		} else if (error.request) {
-			console.error('No response received:', error.request);
-			return error.request;
+		showError.value = true;
+		const status = error.response?.status;
+
+		if (status === 401) {
+			errorText.value = 'Invalid Credentials. Email or Password Incorrect';
+		} else if (status === 404) {
+			errorText.value = 'Login service not found. Please contact support.';
 		} else {
-			console.error('Error setting up the request:', error.message);
-			return error;
+			errorText.value = 'An unexpected error occurred. Please try again.';
 		}
 	} finally {
-		sent.value = false; // Rehabilitamos el botón después de la petición
+		sent.value = false;
 	}
+};
+
+const closeError = () => {
+	showError.value = false;
 };
 </script>
 
+
 <template>
+	<ErrorMessage :message="errorText" :show="showError" @close="closeError" />
 	<form class="login__form" @submit.prevent="submitForm">
+		
 		<FormInput id="login__input--email" v-model="form.email" :src="require('@/assets/Form/Email.svg')"
 			:placeholder="'Email'" :is-valid="validFields.email" :submitted="submitted"
 			:error-message="errorMessage.email" />

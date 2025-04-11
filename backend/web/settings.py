@@ -97,6 +97,17 @@ WSGI_APPLICATION = 'web.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
+# Find .env by walking up from current directory
+current = Path(__file__).resolve()
+for parent in current.parents:
+    candidate = parent / '.env'
+    if candidate.exists():
+        env_path = candidate
+        break
+else:
+    env_path = None
+
+
 
 DATABASES = {
     'default': {
@@ -104,7 +115,7 @@ DATABASES = {
         'NAME': os.environ.get('POSTGRES_DB', 'webapp_development'),
         'USER': os.environ.get('POSTGRES_USER', 'webapp_user'),
         'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'Str0ngAndUniqueP@sswOrd123'),
-        'HOST': os.environ.get('POSTGRES_HOST', 'db'), 
+        'HOST': os.environ.get('POSTGRES_HOST', 'localhost'), 
         'PORT': os.environ.get('POSTGRES_PORT', '5432'),
     }
 }
