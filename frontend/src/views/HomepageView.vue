@@ -40,8 +40,23 @@ const carouselSlides = ref([
     icon: require("@/assets/Carrusel_icons/Slide1.svg"),
     textPosition: "center-left",
     iconPosition: "center-right"
+  },
+  {
+    text: "Track product prices \nover time",
+    gradient: "linear-gradient(to bottom, #562F7F, #835EAB)",
+    icon: require("@/assets/Carrusel_icons/Slide1.svg"),
+    textPosition: "center-right",
+    iconPosition: "center-left"
+  },
+  {
+    text: "Stay Signed In For \nNotifications On Price Changes",
+    gradient: "linear-gradient(to bottom, #833AB4, #FF003C)",
+    icon: require("@/assets/Carrusel_icons/Slide1.svg"),
+    textPosition: "center-left",
+    iconPosition: "center-right"
   }
 ]);
+
 
 const scrollSentinel = ref(null);
 const hasMoreSections = ref(true);
