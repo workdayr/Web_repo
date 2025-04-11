@@ -97,6 +97,17 @@ WSGI_APPLICATION = 'web.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
+# Find .env by walking up from current directory
+current = Path(__file__).resolve()
+for parent in current.parents:
+    candidate = parent / '.env'
+    if candidate.exists():
+        env_path = candidate
+        break
+else:
+    env_path = None
+
+
 
 DATABASES = {
     'default': {

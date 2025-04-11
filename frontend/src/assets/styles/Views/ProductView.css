@@ -193,8 +193,6 @@
   cursor: pointer;
 }
 
-
-
 .favorite-button-container {
   display: flex;
   align-items: center;
@@ -206,7 +204,8 @@
   background: #FFF;
   border-radius: 20px;
   padding: 3%;
-  width: 100%;
+  width: 90%;
+  margin: auto;
   margin-bottom: 5%;
   margin-top: 10%;
   @media(max-width: 766px) {

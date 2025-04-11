@@ -15,7 +15,8 @@
 
 <script setup>
 import { defineProps, computed } from "vue";
-import { Line, Bar, Pie, Doughnut } from "vue-chartjs";
+import { Line, Bar, Pie, Doughnut,  } from "vue-chartjs";
+import 'chartjs-adapter-date-fns';
 import {
   Chart as ChartJS,
   Title,
@@ -27,6 +28,7 @@ import {
   PointElement,
   LinearScale,
   CategoryScale,
+  TimeScale
 } from "chart.js";
 
 // Register Chart.js modules
@@ -39,7 +41,8 @@ ChartJS.register(
   ArcElement,
   PointElement,
   LinearScale,
-  CategoryScale
+  CategoryScale,
+  TimeScale
 );
 
 // Define props
